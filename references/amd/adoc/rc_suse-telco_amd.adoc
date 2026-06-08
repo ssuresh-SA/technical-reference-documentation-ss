@@ -1,0 +1,219 @@
+:docinfo:
+include::./common_docinfo_vars.adoc[]
+include::./rc_suse-telco_amd-vars.adoc[]
+[#art-{article-id}]
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// SUSE Technical Reference Documentation
+// Reference Configuration
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// DOCUMENT ATTRIBUTES AND VARIABLES
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// 1. Define variables (document attributes) in the vars file.
+// 2. Develop content and reference variables in the adoc file.
+// 3. Update the docinfo.xml file as needed.
+// 4. Update DC file (at a minimum, deactivate DRAFT mode)
+//
+// For further guidance, see
+//   https://github.com/SUSE/technical-reference-documentation/blob/main/common/templates/start/README.md
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+
+= {doctitle}: {docsubtitle}
+
+
+
+== Introduction
+
+Telecom operators today face intensifying demands driven by 5G-Advanced and Open RAN deployments, including stricter latency and jitter requirements, severe power and space constraints at the edge, and the growing need to integrate AI into network operations. 
+{stelco-brand} running on {amd-brand} (code-named Turin) provides a robust, CPU-centric solution that addresses these challenges through high core density, strong memory performance, and flexible resource tuning capabilities.
+
+This reference architecture shows how the combination enables efficient workload consolidation for vRAN, 5G Core, and AI-augmented functions while delivering the determinism, power efficiency, and operational simplicity operators need to scale intelligently and reduce complexity in their networks.
+
+
+=== Acknowledgments
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// Recognize by name other individuals who contributed to the development
+// of the document.
+// Use 'editor' and 'contrib' variables defined in your Vars file.
+// If there are no acknowledgments, comment out this section.
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+The following individuals contributed to the creation of this document:
+
+* firstname surname, jobtitle, orgname
+* firstname surname, jobtitle, orgname
+
+
+== Telco Market Challenges and Requirements
+
+The rapid evolution toward 5G-Advanced and the large-scale deployment of Open RAN (O-RAN) have placed unprecedented computational demands on telecommunications infrastructure. 
+Operators are moving away from traditional, hardware-centric designs toward fully software-defined architectures that must deliver significantly higher performance while operating under real-world constraints. 
+This transition brings increased expectations around scalability, flexibility, and intelligence, but it also surfaces several critical technical challenges that 
+general-purpose infrastructure must now overcome:
+
+* **Stricter Latency and Jitter Limits:** The move to O-RAN and Ultra-Reliable Low-Latency Communications (URLLC) has introduced much stricter requirements for latency and jitter, particularly within the O-RAN fronthaul and midhaul interfaces. 
+Engineering teams must achieve the same level of deterministic precision and timing accuracy on general-purpose CPU architectures that was previously exclusive to specialized Application-Specific Integrated Circuits (ASICs).
+
+* **Physical Edge Constraints with Power Efficiency:** Expanding compute capacity at edge sites introduces severe physical bottlenecks, including restricted rack space, tight thermal envelopes, and limited power availability. 
+Maximizing performance-per-watt and throughput-per-rack-unit is essential to scaling capacity without increasing physical footprints.
+
+* **AI Integration at the Edge:** Embedding AI directly into the network fabric, for real-time beamforming optimization, traffic steering, and automated fault detection, adds massive computational intensity. 
+These advanced workloads require a combination of high core counts, wide memory bandwidth, and efficient data movement to ensure deterministic execution during complex inference tasks.
+
+To address these needs, this reference architecture presents a validated integration of {stelco-long} on {amd-processors} (code-named Turin). 
+This software-defined blueprint combines the high core density and memory throughput of the {amd} Turin architecture with {stelco-provider}’s robust cloud-native management. 
+The result is a future-proof, x86-based foundation for vRAN, 5G Core, and AI-augmented network functions, providing the deterministic performance and extreme density required for next-generation intelligent networks.
+
+
+
+
+== The Solution
+
+=== Hardware Architecture: 5th Gen {amd-processors}
+
+The {amd-epyc-website}[5th Generation {amd-processors}] bring a modular chiplet design built around Zen 5 cores.
+
+
+
+image::image1.png[title="{amd-processors} with central I/O Die and 16 Zen 5 Classic-based Core Complex Dies",  {amd-processors} with central I/O Die and 16 Zen 5 Classic-based Core Complex Dies, align="center", width=50%]
+
+
+image::image9.png[title="{amd-processors} with central I/O Die and 12 Zen 5c “Dense”-based Core Complex Dies",  A{amd-processors} with central I/O Die and 12 Zen 5c “Dense”-based Core Complex Dies, align="center", width=50%]
+
+
+Each Core Complex (CCX) groups up to eight Zen 5 cores that share a 32 MB L3 cache, delivering fast data access for threads working closely together.
+
+
+
+image::image8.png[title="CCX with eight Zen5 compute cores and 32 MB shared L3 cache (corresponds to figure above)",  CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache, align="center", width=50%]
+
+
+image::image7.png[title="CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache (corresponds to figure above)",  CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache, align="center", width=50%]
+
+
+These CCXs reside on Core Complex Dies (CCDs), which connect through a central I/O Die using {amd} Infinity Fabric. 
+This architecture provides high core counts, substantial memory bandwidth via multiple DDR5 channels, and highly configurable Non-Uniform Memory Access (NUMA) topologies that telco operators can tune precisely to their workloads.
+
+
+
+image::image3.png[title="{amd} EPYC 9005 IOD",  {amd} EPYC 9005 IOD, align="center", width=80%]
+
+
+
+In dual-socket configurations, the platform delivers massive parallelism (up to 128 cores) while offering generous PCIe Gen5 lanes for high-speed networking cards and accelerators when needed. 
+The design balances raw throughput with the predictable, low-jitter behavior essential for real-time telco applications. 
+Features such as flexible NUMA Nodes Per Socket (NPS) settings and the option to treat individual L3 caches as NUMA domains give infrastructure teams fine-grained control over resource locality, memory interleaving, and thread pinning. 
+This helps minimize cross-NUMA traffic that can introduce unwanted latency variation in packet processing or timing-critical functions.
+
+
+For telco operators, these capabilities translate into better workload consolidation, improved power efficiency per core, and the ability to run both high-throughput data plane tasks and latency-sensitive control plane operations on the same general-purpose hardware. 
+The architecture supports the industry shift toward CPU-centric designs that reduce dependency on specialized accelerators while still meeting strict performance service level objectives.
+
+=== Software Architecture: {stelco-long}
+
+{suse-telco-url}[{stelco-long}] builds on {suse-linux-micro-url}[{slemicro}], a lightweight, immutable operating system designed for edge and telco environments. 
+It incorporates hardened real-time kernel capabilities, comprehensive automation for day-1 and day-2 operations, and full support for both virtual network functions (VNFs) and cloud-native network functions (CNFs). 
+The platform integrates tightly with {rancher-prime-url}[{srancherprime}] for container orchestration and management, enabling GitOps-driven deployments that improve consistency and reduce human error across distributed sites.
+
+
+
+image::SUSE-telco-cloud-AMD-architecture.svg[title="{stelco-long} Architecture",  {stelco-long} Architecture, align="center", width=100%]
+
+Key telco-focused features include advanced observability tools, security hardening aligned with industry standards, and automated lifecycle management that simplifies patching and upgrades without disrupting live services. 
+{stelco-long} also provides optimized networking stacks with DPDK support, SR-IOV capabilities, and precise CPU isolation mechanisms that work hand-in-hand with the underlying hardware’s NUMA and cache architecture.
+
+Together, the stack lets telco operators run consolidated workloads on general-purpose hardware while maintaining the isolation, determinism, and performance guarantees traditionally associated with specialized appliances. 
+This carrier-grade foundation helps service providers accelerate innovation, lower total cost of ownership, and build infrastructure that can evolve smoothly toward 6G and greater AI integration in the network.
+
+== Deployment and Tuning for Deterministic Low Latency
+
+(detailed deployment details are documented internally at {stelco-provider} {duel-soc-amd-tunrin}[here] and will be added in the full technical reference documentation)
+
+The Validation and performance testing focused heavily on ensuring real-time consistency using `cyclictest` under heavy execution load. During evaluation, a rigorous set of low-latency best practices were applied to the platform:
+
+{stelco-long} on {amd-processors}
+
+* **Core and Thread Topology:** Simultaneous Multithreading (SMT) was disabled, and housekeeping operating system cores were isolated exclusively to the first CCX (cores 0–7).
+
+* **Kernel Optimization:** A real-time kernel was deployed utilizing standard `isolcpus`, `nohz_full`, and `rcu_nocbs` boot parameters.
+
+* **NUMA Configuration:** Testing ran explicitly without forcing `numa=off`, allowing the underlying hardware NUMA capabilities to operate optimally.
+
+A primary area of exploration involved testing the various NUMA Nodes Per Socket (NPS) BIOS configurations to evaluate workload behavior across different granularities:
+
+[cols="1,3,3",options="header"]
+|===
+|NPS Setting
+|Configuration Profile
+|Ideal Workload Target
+
+|NPS4
+|Four NUMA domains per socket.
+|Provides the tightest hardware locality between cores, memory, and local I/O adapters.
+
+|NPS2
+|Two NUMA domains per socket.
+|Offers a balanced domain split ideal for many common virtual network functions.
+
+|NPS1
+|Single NUMA node per socket.
+|Enables full memory interleaving across the entire socket channel space.
+
+|NPS0
+|System-wide single NUMA domain (Dual-socket only).
+|Simplifies resource allocation for less NUMA-aware workloads.
+|===
+
+**Validation Performance Note:** Across all tested configurations, the platform demonstrated strong, deterministic real-time behavior. 
+Maximum latencies consistently remained in the low teens to upper single-digit microseconds under representative network traffic loads.
+
+== Practical Benefits for Telco Operators
+
+This combination supports the shift toward CPU-only architectures. 
+By removing reliance on discrete accelerators for many use cases, operators can simplify supply chains, reduce validation cycles, and lower both CAPEX and OPEX. 
+The high core density and memory subsystem efficiency help maximize workload consolidation per site while keeping power and cooling demands manageable. 
+The platform also aligns well with AI-native telco roadmaps. 
+Strong per-core performance and cache hierarchies support both traditional packet processing and emerging inference tasks running alongside RAN or core functions.
+
+== Looking Ahead
+
+The successful validation of {stelco-long} on {amd-processors} gives telco operators another proven path for building efficient, future-ready networks. 
+Whether the priority is maximum density at the edge, deterministic performance for Open RAN, or a balanced platform ready for AI services, the joint solution offers the configurability and performance needed.
+The telecommunications sector is changing rapidly. 
+Platforms that combine raw processing capability with operational simplicity and open standards will separate industry leaders from the rest. 
+{stelco-provider} and {amd} deliver precisely that foundation.
+
+If you are currently evaluating next-generation telecom infrastructure, reach out to the {stelco-provider} and {amd} account teams to initiate a technical proof of concept tailored to your specific deployment environment.
+
+
+
+
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// Do not modify below this break.
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+++++
+<?pdfpagebreak?>
+++++
+
+
+:leveloffset: 0
+
+== Legal notice
+include::common_trd_legal_notice.adoc[]
+
+++++
+<?pdfpagebreak?>
+++++
+
+
+:leveloffset: 0
+include::common_gfdl1.2_i.adoc[]
+
+//end
