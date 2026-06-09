@@ -35,7 +35,7 @@
 //   :rev1-description: Original version
 // Set docdate to the most recent revision.
 //-
-:rev1-date: YYYY-MM-DD
+:rev1-date: 2026-06-08
 :rev1-description: Original version
 :docdate: {rev1-date}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -249,10 +249,58 @@
 //         To list additional authors or contributors on the cover page,
 //         you must add the variables here AND edit the Docinfo file.
 // -
-:author1-firstname: first (given) name
-:author1-surname: surname
-:author1-jobtitle: job title
-:author1-orgname: organization affiliation
+:author1-firstname: Piotr
+:author1-surname: Weglicki
+:author1-jobtitle: Telco Lead Server Business Unit
+:author1-orgname: AMD
+
+:author2-firstname: Keesang
+:author2-surname: Song
+:author2-jobtitle: Senior Cloud Architect
+:author2-orgname: AMD
+
+
+:author3-firstname: Alberto
+:author3-surname: Morgante
+:author3-jobtitle: Principal Telco Engineer
+:author3-orgname: SUSE
+
+:author4-firstname: Antonio Alonso
+:author4-surname: Alarcon
+:author4-jobtitle: Senior Telco Engineer
+:author4-orgname: SUSE
+
+:author5-firstname: Tim
+:author5-surname: Irnich
+:author5-jobtitle: Senior Distinguished Telco Product Manager
+:author5-orgname: SUSE
+
+
+
+:editor1-firstname: Jivaji
+:editor1-surname: Ihare
+:editor1-jobtitle: Partner Solution Architect
+:editor1-orgname: SUSE
+
+:editor2-firstname: Terry
+:editor2-surname: Smith
+:editor2-jobtitle: Ecosystem Solution Innovation Director
+:editor2-orgname: SUSE
+
+:editor3-firstname: Vesselin
+:editor3-surname: Matev
+:editor3-jobtitle: Partner Solutions Manager
+:editor3-orgname: SUSE
+
+:editor4-firstname: Andrés
+:editor4-surname: Valero
+:editor4-jobtitle: Principal Technology Advocate
+:editor4-orgname: SUSE
+
+
+
+
+
 //:author2-firstname: first (given) name
 //:contrib1-firstname: first (given) name
 //:editor1-firstname: first (given) name

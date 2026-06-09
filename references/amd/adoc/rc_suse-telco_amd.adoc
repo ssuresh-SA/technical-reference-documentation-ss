@@ -45,8 +45,11 @@ This reference architecture shows how the combination enables efficient workload
 
 The following individuals contributed to the creation of this document:
 
-* firstname surname, jobtitle, orgname
-* firstname surname, jobtitle, orgname
+ * {editor1-firstname} {editor1-surname}, {editor1-jobtitle}, {editor1-orgname}
+ * {editor2-firstname} {editor2-surname}, {editor2-jobtitle}, {editor2-orgname}
+ * {editor3-firstname} {editor3-surname}, {editor3-jobtitle}, {editor3-orgname}
+ * {editor4-firstname} {editor4-surname}, {editor4-jobtitle}, {editor4-orgname}
+
 
 
 == Telco Market Challenges and Requirements
