@@ -19,7 +19,7 @@
 //   This is typically a series of words (often from the document title)
 //   separated by hyphens (-).
 //   (e.g., "rancher-kubflow-deployment")
-:article-id: unique-article-id
+:article-id: rc_suse-telco_amd-epyc
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,12 +131,14 @@
 
 
 
+
 :amd-provider: AMD
+:amd-version1: 9005
+:amd-brand: {amd-provider}® EPYC™ {amd-version1} Series Processors
+:amd-long: {amd-provider} EPYC {amd-version1} Series Processors
+
 :amd: AMD
-:amd-brand: {amd}® EPYC 9005 Series Processors
-:amd-long: {amd}
-:amd-processors: AMD EPYC 9005 Series Processors
-:amd-version1:
+//:amd-processors: AMD EPYC 9005 Series Processors
 :amd-website: 
 :amd-docs:
 :amd-contact: 
@@ -187,17 +189,17 @@
 //        will appear as:
 //          "Integrating SUSE Virtualization with Hitachi VSP Storage"
 // -
-:doctitle: {stelco-long} on {amd-processors}
+:doctitle: {stelco-long} on {amd-long}
 
 :docsubtitle: Validated reference architecture
 
-:usecase: (<55 characters) use case
+:usecase: Open RAN and 5G Infrastructure Validation
 
-:description: (<150 characters) description
+:description: Reference architecture showing how {stelco-long} and {amd-long} deliver deterministic performance for Open RAN and 5G workloads.
 
-:description-social: (<55 characters) social media description
+:description-social: {stelco-long} and {amd-long} for Open RAN
 
-:executive-summary: This reference architecture demonstrates how {stelco-long} on {amd-processors} delivers deterministic performance, high workload density, and power-efficient scalability for Open RAN, 5G Core, and AI-enabled telecom networks through a validated cloud-native infrastructure platform.
+:executive-summary: Telecom operators today face intensifying demands driven by 5G-Advanced and Open RAN deployments, including stricter latency and jitter requirements, severe power and space constraints at the edge, and the growing need to integrate AI into network operations. {stelco-brand} running on {amd-brand} (code-named Turin) provides a robust, CPU-centric solution that addresses these challenges through high core density, strong memory performance, and flexible resource tuning capabilities. This reference architecture shows how the combination enables efficient workload consolidation for vRAN, 5G Core, and AI-augmented functions while delivering the determinism, power efficiency, and operational simplicity operators need to scale intelligently and reduce complexity in their networks.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

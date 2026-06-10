@@ -73,8 +73,8 @@
      - This list is NOT visible in the rendered document.
 -->
 <meta name="productname">
-  <productname version="{stelco-version1}">{stelco-long}</productname>
-  <productname version="{amd-version1}">{amd-long}</productname>
+  <productname version="">{stelco-long}</productname>
+  <productname version="">{amd-long}</productname>
 </meta>
 
 
@@ -84,7 +84,7 @@
        versions, unless needed.
      - This list appears above the title in the rendered document.
 -->
-<productname>{stelco} {stelco-version1}, {amd} {amd-version1}</productname>
+<productname>{stelco}, {amd}</productname>
 
 
 
@@ -93,8 +93,8 @@
      - However, in the meantime, mirror the component content
        of the productname metadata above.
 -->
-<meta name="platform">{stelco-long} {stelco-version1}</meta>
-<meta name="platform">{amd-long} {amd-version1}</meta>
+<meta name="platform">{stelco-long}</meta>
+<meta name="platform">{amd-long}</meta>
 
 
 <!-- Partner metadata
