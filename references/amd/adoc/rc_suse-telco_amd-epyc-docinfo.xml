@@ -84,7 +84,7 @@
        versions, unless needed.
      - This list appears above the title in the rendered document.
 -->
-<productname>{stelco}, {amd}</productname>
+<productname>{stelco}, {amd-provider}</productname>
 
 
 

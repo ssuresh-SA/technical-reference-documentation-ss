@@ -136,9 +136,6 @@
 :amd-version1: 9005
 :amd-brand: {amd-provider}® EPYC™ {amd-version1} Series Processors
 :amd-long: {amd-provider} EPYC {amd-version1} Series Processors
-
-:amd: AMD
-//:amd-processors: AMD EPYC 9005 Series Processors
 :amd-website: 
 :amd-docs:
 :amd-contact: 
