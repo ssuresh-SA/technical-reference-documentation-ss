@@ -16,9 +16,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ARTICLE IDENTIFIER
 //   Provide a unique article identifier.
-//   This is typically a series of words (often from the document title)
-//   separated by hyphens (-).
-//   (e.g., "rancher-kubflow-deployment")
+//   This is typically a series of words separate by hyphens (-).
+//   Typically, you can use the root file name of your main content file.
+//   For example:
+//     "rc_suse-rancher_everpure-portworx_tna-topology"
 :article-id: rc_suse-telco_amd-epyc
 
 
@@ -43,74 +44,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TECHNICAL COMPONENTS
-//   Identify the technical components featured in the guide.
-//   Use variables to store information about the solution components,
-//   such as full product names, versions, websites, documentation
-//   URLs, and so on.
-//   This makes it much easier to update the document for future
-//   version upgrades, URL changes, etc.
-//
-//   Variables are especially useful for referring to various
-//   aspects of the solution components, such as properly written names,
-//   product/project versions, website URLs, and so on.
-//   Keep in mind the following best practices for variable names:
-//     1. Be consistent.
-//     2. Prefer recognizable variable names over generic ones.
-//        E.g.: 'sles' and 'srancher' are better variable
-//        names than 'comp1' and 'component2'.
-//     3. Prefer short variable names over long ones.
-//        E.g.: 'sles' is better than 'suselinux', and
-//        'svirt' is better than 'susevirtualization'.
-//     4. Consider following a simple pattern to associate related variables,
-//        such as `base[-modifier]'.
-//        E.g.: 'svirt-brand', 'srancher-docs', 'sles-version'.
-//        Some standard '-modifiers' could include:
-//         -provider: Name of company or project providing the component
-//            E.g.: 'SUSE', 'HPE', 'Microsoft', 'Veeam'
-//         -long: Full name of the product without trademark symbols
-//            E.g.: 'SUSE Rancher Prime', 'Portworx Enterprise by Everpure'
-//         -brand: Branded, full name of the component
-//            E.g.: 'SUSE® Virtualization', 'NetApp® Trident™'
-//         -version: The relevant product version referenced in
-//            the document
-//            E.g.: '15 SP7', '3.2.4'
-//            If additional product versions are called out in the
-//            document, you could store them in separate variables.
-//            E.g.: 'k3s-version1', 'k3s-version2')
-//         -website: Product website
-//            E.g.: 'https://www.suse.com/products/server/'
-//         -docs: Product documentation
-//            E.g.: 'https://documentation.suse.com/sles/'
-//
-// IMPORTANT: The templates leverage generic variable names, such as
-//            'comp1' and 'comp2-version1'.
-//            Be sure to replace these generic variable names with your
-//            own variables wherever they occur, including:
-//            in the Vars file, the Docinfo file, and your Main content file.
 // -
-//:comp1-provider: provider
-//:comp1: short name
-//:comp1-long: full product name
-//:comp1-brand: branded product name
-//:comp1-version1: first relevant version
-//:comp1-website: product website URL
-//:comp1-docs: product documentation URL
-
-//:comp2-provider: provider
-//:comp2: short name
-//:comp2-long: full product name
-//:comp2-brand: branded product name
-//:comp2-version1: first relevant version
-//:comp2-website: product website URL
-//:comp2-docs: product documentation URL
-
-
-
-
-
-
-
-
 :stelco-provider: SUSE
 :stelco-brand: SUSE® Telco Cloud
 :stelco-long: SUSE Telco Cloud
@@ -129,27 +63,12 @@
 :rancher-prime-url: https://www.suse.com/products/rancher/
 
 
-
-
-
 :amd-provider: AMD
 :amd-version1: 9005
 :amd-brand: {amd-provider}® EPYC™ {amd-version1} Series Processors
 :amd-long: {amd-provider} EPYC {amd-version1} Series Processors
-:amd-website: 
-:amd-docs:
-:amd-contact: 
-
 :amd-epyc-website: https://www.amd.com/en/products/processors/server/epyc/9005-series.html
-:duel-soc-amd-tunrin: https://docs.google.com/document/d/1wwCkRf4oRomJBTJ3wCH8HdiRZTNXYpdOzLR-v9rkifA/edit?pli=1&tab=t.0#heading=h.5nk21n8hs3wk
-
-
-
-
-
-
-
-
+:amd-turin-dual-soc: https://docs.google.com/document/d/1wwCkRf4oRomJBTJ3wCH8HdiRZTNXYpdOzLR-v9rkifA/edit?pli=1&tab=t.0#heading=h.5nk21n8hs3wk
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -157,40 +76,12 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DOCUMENT TITLES AND DESCRIPTIONS
-//   Describe the guide by its purpose, use case, value.
-//
-// title: (<75 characters) Concise subject of the document
-//        E.g.: "Enterprise AI Lifecycle with SUSE AI and ClearML"
-// subititle: (<75 characters) Expanded subject of the document
-//            E.g.: "Delivering a Secure, Scalable, and Observable Platform for AI Workloads"
-// usecase: (<55 characters) A use case for or purpose of the solution
-//          E.g.: "Database-as-a-Service", "edge analytics in healthcare",
-//                "Kubernetes-native object storage"
-// description: (<150 characters) Brief description of the document subject
-// description-social: (<55 characters) Condensed description suitable for
-//                     social media.
-// executive-summary: (<300 characters) A brief summary of the the document,
-//                    typically noting business case and technical components
-//                    NOTE: This text appears near the beginning of the rendered
-//                    document.
-//
-// TIP: You can reference defined variables when defining new variables.
-//      For example:
-//        Say that you have defined above these component variables:
-//          :svirt-long : SUSE Virtualization
-//          :vsp-long: Hitachi VSP Storage
-//        Then, you could reference them when you define the title
-//        variable like this:
-//          :doctitle: Integrating {svirt-long} with {vsp-long}
-//        When rendered, the variables will be expanded and the title
-//        will appear as:
-//          "Integrating SUSE Virtualization with Hitachi VSP Storage"
 // -
 :doctitle: {stelco-long} on {amd-long}
 
 :docsubtitle: Validated reference architecture
 
-:usecase: Open RAN and 5G Infrastructure Validation
+:usecase: Open RAN and 5G Infrastructure
 
 :description: Reference architecture showing how {stelco-long} and {amd-long} deliver deterministic performance for Open RAN and 5G workloads.
 
@@ -235,18 +126,6 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CONTRIBUTORS
-//   Specify information about authors, editors, and other
-//   contributors here.
-//
-//   Follow the pattern below to provide fist name, surname, job title,
-//   and organization name for each contributor.
-//
-//   TIP: Other contributors and editors are typically listed in
-//        an Acknowledgments section.
-//
-//   NOTE:
-//         To list additional authors or contributors on the cover page,
-//         you must add the variables here AND edit the Docinfo file.
 // -
 :author1-firstname: Piotr
 :author1-surname: Weglicki
@@ -296,13 +175,6 @@
 :editor4-jobtitle: Principal Technology Advocate
 :editor4-orgname: SUSE
 
-
-
-
-
-//:author2-firstname: first (given) name
-//:contrib1-firstname: first (given) name
-//:editor1-firstname: first (given) name
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 

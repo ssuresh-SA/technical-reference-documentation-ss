@@ -82,21 +82,20 @@ The result is a future-proof, x86-based foundation for vRAN, 5G Core, and AI-aug
 The {amd-epyc-website}[5th Generation {amd-long}] bring a modular chiplet design built around Zen 5 cores.
 
 
-
-image::image1.png[title="{amd-long} with central I/O Die and 16 Zen 5 Classic-based Core Complex Dies",  {amd-long} with central I/O Die and 16 Zen 5 Classic-based Core Complex Dies, align="center", width=30%]
-
-
-image::image9.png[title="{amd-long} with central I/O Die and 12 Zen 5c “Dense”-based Core Complex Dies", {amd-long} with central I/O Die and 12 Zen 5c “Dense”-based Core Complex Dies, align="center", width=30%]
+[cols=".>a,.>a", frame=none, grid=none]
+|===
+|image::image1.png[title="{amd-long} with central I/O Die and 16 Zen 5 Classic-based Core Complex Dies",  {amd-long} with central I/O Die and 16 Zen 5 Classic-based Core Complex Dies, align="center", scaledwidth=45%, role=half-view-width]
+|image::image9.png[title="{amd-long} with central I/O Die and 12 Zen 5c “Dense”-based Core Complex Dies", {amd-long} with central I/O Die and 12 Zen 5c “Dense”-based Core Complex Dies, align="center", scaledwidth=45%, role=half-view-width]
+|===
 
 
 Each Core Complex (CCX) groups up to eight Zen 5 cores that share a 32 MB L3 cache, delivering fast data access for threads working closely together.
 
-
-
-image::image8.png[title="CCX with eight Zen5 compute cores and 32 MB shared L3 cache",  CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache, align="center", width=30%]
-
-
-image::image7.png[title="CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache",  CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache, align="center", width=30%]
+[cols=".>a,.>a", frame=none, grid=none]
+|===
+|image::image8.png[title="CCX with eight Zen5 compute cores and 32 MB shared L3 cache",  CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache, align="center", scaledwidth=45%, role=half-view-width]
+|image::image7.png[title="CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache",  CCX with sixteen Zen5c compute cores and 32 MB shared L3 cache, align="center", scaledwidth=45%, role=half-view-width]
+|===
 
 
 These CCXs reside on Core Complex Dies (CCDs), which connect through a central I/O Die using {amd-provider} Infinity Fabric. 
@@ -104,7 +103,7 @@ This architecture provides high core counts, substantial memory bandwidth via mu
 
 
 
-image::image3.png[title="{amd-provider} EPYC 9005 IOD",  {amd-provider} EPYC 9005 IOD, align="center", width=50%]
+image::image3.png[title="{amd-provider} EPYC 9005 IOD",  {amd-provider} EPYC 9005 IOD, align="center", scaledwidth=50%, role=half-view-width]
 
 
 
@@ -135,7 +134,7 @@ This carrier-grade foundation helps service providers accelerate innovation, low
 
 == Deployment and tuning for deterministic low latency
 
-(detailed deployment details are documented internally at {stelco-provider} {duel-soc-amd-tunrin}[here] and will be added in the full technical reference documentation)
+(detailed deployment details are documented internally at {stelco-provider} {amd-turin-dual-soc}[here] and will be added in the full technical reference documentation)
 
 The Validation and performance testing focused heavily on ensuring real-time consistency using `cyclictest` under heavy execution load. During evaluation, a rigorous set of low-latency best practices were applied to the platform:
 
