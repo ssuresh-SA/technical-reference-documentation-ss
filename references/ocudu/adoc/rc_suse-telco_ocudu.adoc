@@ -102,7 +102,9 @@ As a foundational component for AI-RAN, {ocudu} allows seamless integration of r
 Together, these components create a complete horizontal solution anchored in the Project Sylva reference architecture and delivered through {stelco-long}. 
 By using Kubernetes as the interoperability layer where telco software converges, the stack fully decouples RAN software from proprietary hardware. 
 This architecture directly addresses the fragmentation and lock-in challenges outlined earlier by providing operators with a standardized, portable, and consistent operating model. 
-It eliminates the need for site-specific custom integrations, dramatically reduces deployment times from weeks to minutes, lowers CAPEX through hardware efficiency, and enables true "Develop Once, Deploy Anywhere" portability, all while delivering carrier-grade performance at scale.
+This solution eliminates the need for site-specific custom integrations while delivering carrier-grade performance at scale. 
+It dramatically reduces deployment times from weeks to minutes and lowers CAPEX through hardware efficiency. 
+Additionally, it enables true "Develop Once, Deploy Anywhere" portability.
 
 
 == Architecture overview and deployment
@@ -146,7 +148,7 @@ Metal3 treats physical servers as cloud resources, enabling declarative infrastr
 {stelco-provider} provides the {eib} (EIB), a tooling ecosystem that creates customized OS images containing:
 
 * Pre-installed packages (real-time kernel, DPDK, tuned profiles)
-* Embedded scripts for filesystem growth, performance tuning, SR-IOV automation
+* Embedded scripts for file system growth, performance tuning, SR-IOV automation
 * Network configurations and systemd units
 * Kubernetes manifests deployed at cluster bootstrap
 
@@ -164,7 +166,7 @@ Directed network provisioning: Automated cluster deployment with advanced networ
 === {ocudu}
 
 {ocudu} is a cloud-native implementation of 5G RAN components, providing deployment options for the gNB, CU, DU, CU-CP, and CU-UP. In this article, we focus on the gNB deployment variant, where all applications are combined into a single monolithic binary. 
-{ocudu} supports O-RAN {ocudu-splite} {ocudu-splite-version}, as well as {ocudu-splite} 6 and {ocudu-splite} 8. In this blog post, we use {ocudu-splite} {ocudu-splite-version}.
+{ocudu} supports O-RAN {ocudu-splite} {ocudu-splite-version}, and {ocudu-splite} 6 and {ocudu-splite} 8. In this blog post, we use {ocudu-splite} {ocudu-splite-version}.
 
 image::architecture.svg[title="O-RAN {ocudu-splite} {ocudu-splite-version}", O-RAN {ocudu-splite} {ocudu-splite-version}, align="center", scaledwidth=90%]
 
@@ -257,8 +259,8 @@ In this reference architecture, we use the {ocudu} RU emulator to fully exercise
 * Uplink: Single-layer in uplink.
 * TDD pattern: `DDDDDDDSUU` (7D1S2U).
 Test mode is enabled through the gNB configuration. 
-The relevant test mode options are set directly inside the {ocudu-gnb} config before the workload is started. 
-Once the gNB and RU emulator are running, monitor both logs and metrics to validate the deployment.
+The relevant test mode options are set directly inside the {ocudu-gnb} configuration before the workload is started. 
+When the gNB and RU emulator are running, monitor both logs and metrics to validate the deployment.
 
 Performance or configuration issues are usually visible in the application logs and telemetry. 
 For example, incorrect radio configuration, fronthaul configuration problems, timing issues, or resource bottlenecks should be investigated by checking the {ocudu} logs together with the exported metrics.
@@ -312,7 +314,7 @@ While PTP synchronization works on many NICs, the E810 has been validated for th
 For dual-node deployments, use the E810-XXVDA4T or an external PTP Grandmaster (PTP GM).
 
 * MAC address consistency: 
-The `du_mac_addr` in gNB config must match the VF MAC, and `ru_mac_addr` in RU config must match its VF MAC. Mismatches cause packet drops.
+The `du_mac_addr` in gNB configuration must match the VF MAC, and `ru_mac_addr` in RU configuration must match its VF MAC. Mismatches cause packet drops.
 ====
 
 **Scenario 2: Dual node deployment**
@@ -333,7 +335,7 @@ Alternatively you can use a PTP Grandmaster (GM) of PTP class C.
 Class C PTP hardware is required.
 
 * VLAN configuration: If using VLANs, configure them identically on both nodes. 
-Uncomment `vlan_tag_cp` and `vlan_tag_up` in the configs.
+Uncomment `vlan_tag_cp` and `vlan_tag_up` in the configurations.
 
 
 === Hardware specifications
@@ -399,7 +401,7 @@ image::management-cluster.svg[title="Management Cluster Architecture", Managemen
 Why this architecture?
 
 
-* Blast radius containment: Workload cluster failures don't affect management cluster stability.
+* Blast radius containment: Workload cluster failures do not affect management cluster stability.
 
 * Scalability: One management cluster can provision hundreds of edge clusters.
 
@@ -467,7 +469,7 @@ State transitions:
 
 * Provisioning: OS image is written to disk via BMC virtual media or HTTP boot.
 
-* Provisioned: OS is installed, Ignition configs applied, RKE2 cluster bootstrapped.
+* Provisioned: OS is installed, Ignition configurations applied, RKE2 cluster bootstrapped.
 
 [IMPORTANT]
 ====
@@ -1103,7 +1105,7 @@ WantedBy=multi-user.target
 [WARNING]
 ====
 * **Packet Filtering**: OFH uses Ethernet layer-2 addressing. The gNB sends packets to `ru_mac_addr` (00:11:22:33:00:01), and the RU sends to `du_mac_addr` (00:11:22:33:00:11).
-* **DPDK VFIO**: When VFs are bound to vfio-pci, the kernel network stack doesn't manage them. MAC addresses must be set via the PF before binding.
+* **DPDK VFIO**: When VFs are bound to vfio-pci, the kernel network stack does not manage them. MAC addresses must be set via the PF before binding.
 * **Failure Mode**: Mismatched MACs cause 100% packet drops. gNB logs show "Missed incoming User-Plane uplink messages" continuously.
 ====
 
