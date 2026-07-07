@@ -56,7 +56,8 @@
 :srancherprime: SUSE Rancher Prime
 :eib: Edge Image Builder
 :stelco-website: https://www.suse.com/products/edge-for-telco/
-:stelco-docs: https://documentation.suse.com/suse-edge/3.5/html/edge/
+:stelco-docs-kernal-args: https://documentation.suse.com/suse-edge/3.5/html/edge/
+:stelco-doc: https://documentation.suse.com/suse-telco/3.6/single-html/telco/index.html#kernel-args
 :stelco-contact: https://www.suse.com/contact/
 :suse-telco-url: https://www.suse.com/products/edge-for-telco/
 :suse-linux-micro-url: https://www.suse.com/products/micro/
@@ -69,6 +70,8 @@
 :amd-long: {amd-provider} EPYC {amd-version1} Series Processors
 :amd-epyc-website: https://www.amd.com/en/products/processors/server/epyc/9005-series.html
 :amd-turin-dual-soc: https://docs.google.com/document/d/1wwCkRf4oRomJBTJ3wCH8HdiRZTNXYpdOzLR-v9rkifA/edit?pli=1&tab=t.0#heading=h.5nk21n8hs3wk
+:amd-architecture-overview: https://docs.amd.com/v/u/en-US/58462_amd-epyc-9005-tg-architecture-overview
+:amd-tech-info-portal: https://docs.amd.com/v/u/en-US/5th-gen-amd-epyc-processor-architecture-white-paper
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
