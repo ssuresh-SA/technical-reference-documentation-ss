@@ -134,7 +134,7 @@ This carrier-grade foundation helps service providers accelerate innovation, low
 
 == Deployment and tuning for deterministic low latency
 
-(detailed deployment details are documented internally at {stelco-provider} {amd-turin-dual-soc}[here] and will be added in the full technical reference documentation)
+See the <<Testing setup and results>> for the Validation and performance testing using Cyclictest.
 
 The Validation and performance testing focused heavily on ensuring real-time consistency using `cyclictest` under heavy execution load. During evaluation, a rigorous set of low-latency best practices were applied to the platform:
 
