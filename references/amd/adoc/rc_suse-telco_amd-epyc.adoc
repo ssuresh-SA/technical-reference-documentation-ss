@@ -194,32 +194,35 @@ If you are currently evaluating next-generation telecom infrastructure, reach ou
 
 == Testing setup and results
 
-Once having configured BIOS and kernel to provide the best possible performance:
-* BIOS - having disabled SMT/Logical Processors
+For the testing setup, BIOS and kernel are configured as follows to provide the best possible performance:
 
-* BIOS - having disabled all the C-state and P-state (max. frequency requested) optimizations
+* BIOS
 
-* BIOS - Having disabled all the L1/L2 related Prefetchers
+** Disable SMT/Logical Processors
 
-* BIOS - looking for max. performance at the cost of energy savings
+** Disable all the C-state and P-state (maximum frequency requested) optimizations
 
-* Kernel - 120 isolated cores in total after setting the first 8 cores (for example, first CCD) as housekeeping cores (following {amd-provider} recommendations)
+** Disable all the L1/L2 related Prefetchers
 
-* Kernel - having removed unnecessary (kernel) threads and interrupts from isolated cores, see {stelco-docs-kernal-args}[{stelco-long} 3.6.0 documentation (section Kernel arguments for low latency and high performance)]
-
-We got **all Max latencies returned per each of the isolated cores below 20 usec** (target given by {amd-provider} experts).
-* Only in a single core in a single test case we got, after having optimized all the components (BIOS, Kernel, {stelco-long} components), a value higher than 20 usec.
+** Look for maximum performance at the cost of energy savings
 
 
+* Kernel
 
-We repeated the **test for all possible NUMA configurations without experiencing any significant difference** (we understand it is due to the way the workloads for the cyclictest based tests are architected).
+** 120 isolated cores in total after setting the first 8 cores (for example, first CCD) as housekeeping cores (following {amd-provider} recommendations)
+
+** Remove unnecessary (kernel) threads and interrupts from isolated cores (see {stelco-docs-kernel-args}[{stelco-long} documentation: Kernel arguments for low latency and high performance])
+
+
+Except for a single core in a single test case, **all maximum latencies per each isolated core returned below 20 µsec** (the target identified by {amd-provider} experts).
+Cyclictest testing was repeated **for all possible NUMA configurations without experiencing any significant difference**.
 
 
 === Dell PowerEdge R7725 - dual-socket {amd-provider} Turin (EPYC 9555 - 64 “Zen5” cores per socket)
 
 
 . {amd-provider} EPYC 5th Generation - Architecture Overview
-Source(s):
+Sources:
 
 * {amd-architecture-overview}[{amd-long} Architecture Overview (58462)]
 
@@ -229,7 +232,7 @@ image::image120.png[title="8 Zen5 cores per CCX", 8 Zen5 cores per CCX, align="c
 
 [NOTE]
 ====
-In the “{amd-provider} EPYC 9555 64-cores Zen5” processors used in this test it is 8 Zen5 cores per CCX
+This testing used {amd-provider} EPYC 9555 64-cores Zen5 processors with 8 Zen5 cores per CCX.
 ====
 
 
@@ -237,7 +240,7 @@ image::image30.png[title="8 CCDs per socket (eight Zen5 cores each with a 32MB s
 
 [NOTE]
 ====
-in the “{amd-provider} EPYC 9555 64-cores Zen5” processor used in this test it is 8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3) instead of the 12 CCDs per socket.
+The “{amd-provider} EPYC 9555 64-cores Zen5” processor used in this test, provides 8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3) instead of the 12 CCDs per socket.
 ====
 
 image::image100.png[title="", , align="center", scaledwidth=100%, role=half-view-width]
@@ -245,62 +248,54 @@ image::image90.png[title="", , align="center", scaledwidth=100%, role=half-view-
 
 [NOTE]
 ====
-In the dual-socket “{amd-provider} EPYC 9555 64-cores Zen5” processors based Dell PowerEdge R7725 server having been used in this test it is 8 CCDs per socket (16 CCDs in total as being a dual-socket server) what means 16 NUMA nodes in total when enabling the “L3 cache as NUMA domain” BIOS option.
+This testing was performed with a dual-socket Dell PowerEdge R7725 server using “{amd-provider} EPYC 9555 64-cores Zen5” processors, each with 8 CCDs per socket.
+This delivered 16 NUMA nodes in total when enabling the “L3 cache as NUMA domain” BIOS option.
 ====
-
 
 image::image20.png[title="2 CCDs per NUMA quadrant in a NPS=4 configuration", 2 CCDs per NUMA quadrant in a NPS=4 configuration, align="center", scaledwidth=100%, role=half-view-width]
 
 [NOTE]
 ====
-In the “{amd-provider} EPYC 9555 64-cores Zen5” processors used in this test it is 2 CCDs per NUMA quadrant in a NPS=4 configuration (8 CCDs per socket) instead of the 4 CCDs per quadrant (16 CCDs per socket) shown in this picture.
-
-In the “{amd-provider} EPYC 9555 64-cores Zen5” processors used in this test it is 8 CCDs per socket instead of the 12 CCDs (per socket) shown in this picture.
-
+The “{amd-provider} EPYC 9555 64-cores Zen5” processors used in this test provide 2 CCDs per NUMA quadrant in a NPS=4 configuration (8 CCDs per socket) instead of the 4 CCDs per quadrant (16 CCDs per socket) shown in this image.
 ====
 
 
-. BIOS settings
-+
---
-See the whole applied BIOS configuration in the <<Appendix - BIOS settings>> section.
---
+=== BIOS settings
 
-. General OS settings
-+
---
+You can find the applied BIOS configuration in <<Appendix - BIOS settings>>.
+
+
+=== General OS settings
 
 * House Keeping cores set to 0-7 as recommended from {amd-provider} (for example, all cores in the first CCX); resulting isolated cores: 8-127 (120 isolated cores in total)
 
-* having removed unnecessary (kernel) threads and interrupts from isolated cores; see {stelco-long} 3.6.0 documentation (section 35 - Kernel arguments for low latency and high performance)
+* Remove unnecessary (kernel) threads and interrupts from isolated cores; see {stelco-long} documentation: Kernel arguments for low latency and high performance.
 
 * numa=off (used during the early tests) has been removed from the set of kernel args.
 
 * RPMs related to Telco features in {stelco-long} 3.6.0 downstream nodes that are not required for the cyclictest based performance tests have not been installed (e.g., linuxptp)
 
---
 
-. General k8s/rke2 settings
-+
---
-As the k8s/rke2 layer is not required for cyclictest based performance tests, it has not been deployed in the target server.
---
+=== General Kubernetes/RKE2 settings
 
-. Results
-+
---
+As the Kubernetes/RKE2 layer is not required for cyclictest based performance tests, it has not been deployed in the target server.
+
+
+=== Results
+
 For each test configuration we have run the test several times, showing below the obtained “Max Latencies” (per isolated core: 120 isolated cores in total) for two of them, selected randomly.
 
-* BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=0 HK cores=0-7
+
+==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=0 HK cores=0-7
 
 image::image10.png[title="BIOS/NPS=0 Domain=disabled", BIOS/NPS=0 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 
 available: 1 nodes (0)
@@ -313,7 +308,7 @@ node     0
 
 ----
 
-[source, sh]
+[source, console]
 ----
 cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
@@ -321,7 +316,7 @@ cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 
 ----
 
-[source, sh]
+[listing]
 ----
 # Max Latencies: 00012 00002 00014 00003 00008 00003 00003 00013 00003 00003 00003 00002 00003 00011 00011 00016 00004 00004 00004 00003 00008 00003 00011 00016 00014 00014 00014 00008 00006 00013 00002 00014 00003 00003 00003 00002 00015 00009 00015 00003 00007 00007 00007 00002 00011 00011 00011 00002 00008 00008 00008 00002 00002 00009 00007 00002 00016 00002 00002 00002 00002 00002 00016 00015 00003 00003 00011 00002 00009 00005 00011 00011 00017 00017 00017 00012 00002 00003 00016 00007 00004 00004 00004 00004 00002 00008 00003 00008 00003 00003 00003 00003 00003 00018 00006 00002 00002 00014 00002 00002 00012 00002 00003 00002 00003 00003 00003 00002 00002 00002 00002 00002 00015 00015 00015 00002 00013 00004 00002 00002
 
@@ -329,16 +324,17 @@ cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 
 ----
 
-* BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=1 HK cores=0-7
+
+==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=1 HK cores=0-7
 
 image::image40.png[title="BIOS/NPS=1 Domain=disabled", BIOS/NPS=1 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 
 available: 4 nodes (0-3)
@@ -364,7 +360,7 @@ node     0    1    2    3
 
 ----
 
-[source, sh]
+[source, console]
 ----
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
@@ -372,7 +368,7 @@ node     0    1    2    3
 
 ----
 
-[source, sh]
+[listing]
 ----
 
 # Max Latencies: 00005 00002 00003 00002 00004 00002 00002 00014 00003 00003 00003 00002 00002 00003 00003 00003 00003 00003 00002 00003 00002 00014 00004 00003 00003 00003 00003 00003 00002 00002 00003 00002 00007 00007 00007 00004 00003 00005 00003 00003 00003 00003 00003 00003 00003 00003 00002 00016 00002 00002 00003 00003 00003 00002 00002 00013 00002 00002 00003 00003 00002 00003 00010 00009 00003 00002 00002 00013 00002 00002 00002 00014 00008 00008 00004 00004 00003 00002 00015 00017 00003 00002 00002 00002 00002 00002 00003 00003 00016 00016 00016 00016 00016 00015 00002 00009 00004 00004 00003 00003 00004 00015 00002 00002 00003 00003 00003 00002 00003 00015 00003 00004 00016 00011 00004 00003 00002 00003 00002 00016
@@ -381,16 +377,17 @@ node     0    1    2    3
 
 ----
 
-* BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=2 HK cores=0-7
+
+==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=2 HK cores=0-7
 
 image::image70.png[title="BIOS/NPS=2 Domain=disabled", BIOS/NPS=2 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 
 available: 4 nodes (0-3)
@@ -416,7 +413,7 @@ node     0    1    2    3
 ----
 
 
-[source, sh]
+[source, console]
 ----
 
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
@@ -424,23 +421,23 @@ node     0    1    2    3
 ./release-scenario-SV-rtapp95utilIsolate-cyclictestIsolated.sh
 ----
 
-[source, sh]
+[listing]
 ----
 # Max Latencies: 00005 00002 00003 00002 00004 00002 00002 00014 00003 00003 00003 00002 00002 00003 00003 00003 00003 00003 00002 00003 00002 00014 00004 00003 00003 00003 00003 00003 00002 00002 00003 00002 00007 00007 00007 00004 00003 00005 00003 00003 00003 00003 00003 00003 00003 00003 00002 00016 00002 00002 00003 00003 00003 00002 00002 00013 00002 00002 00003 00003 00002 00003 00010 00009 00003 00002 00002 00013 00002 00002 00002 00014 00008 00008 00004 00004 00003 00002 00015 00017 00003 00002 00002 00002 00002 00002 00003 00003 00016 00016 00016 00016 00016 00015 00002 00009 00004 00004 00003 00003 00004 00015 00002 00002 00003 00003 00003 00002 00003 00015 00003 00004 00016 00011 00004 00003 00002 00003 00002 00016
 
 # Max Latencies: 00016 00004 00012 00004 00003 00012 00005 00005 00004 00005 00013 00010 00005 00004 00004 00010 00014 00014 00009 00004 00015 00007 00007 00004 00004 00004 00004 00014 00006 00004 00012 00005 00005 00005 00004 00004 00004 00004 00016 00005 00004 00003 00006 00004 00012 00003 00004 00009 00011 00011 00011 00004 00004 00004 00009 00015 00015 00015 00017 00007 00009 00005 00006 00006 00010 00010 00010 00010 00005 00010 00006 00004 00009 00005 00003 00004 00004 00006 00004 00004 00013 00013 00013 00011 00004 00005 00004 00004 00009 00007 00004 00005 00004 00012 00005 00007 00013 00013 00013 00011 00013 00008 00004 00004 00007 00007 00004 00004 00004 00004 00004 00004 00009 00005 00005 00004 00003 00004 00004 00005
 ----
 
-* BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=4 HK cores=0-7
+==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=4 HK cores=0-7
 
 image::image130.png[title="BIOS/NPS=2 Domain=disabled", BIOS/NPS=2 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 available: 8 nodes (0-7)
 node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
@@ -481,7 +478,7 @@ node     0    1    2    3    4    5    6    7
 ----
 
 
-[source, sh]
+[source, console]
 ----
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
@@ -489,7 +486,7 @@ node     0    1    2    3    4    5    6    7
 
 ----
 
-[source, sh]
+[listing]
 ----
 
 # Max Latencies: 00004 00004 00012 00008 00017 00007 00003 00003 00009 00009 00009 00009 00003 00003 00003 00003 00004 00004 00004 00004 00003 00003 00003 00003 00015 00015 00015 00015 00008 00003 00003 00003 00005 00005 00004 00005 00003 00003 00005 00003 00012 00012 00012 00012 00009 00005 00015 00015 00013 00013 00013 00013 00007 00005 00006 00004 00004 00003 00004 00004 00004 00003 00003 00009 00004 00004 00004 00003 00003 00003 00003 00003 00005 00005 00014 00005 00005 00005 00005 00004 00012 00012 00012 00017 00006 00004 00013 00008 00013 00004 00003 00003 00004 00013 00007 00003 00004 00003 00011 00009 00003 00003 00014 00003 00006 00005 00005 00007 00004 00013 00003 00014 00007 00007 00016 00014 00009 00003 00005 00004
@@ -497,16 +494,17 @@ node     0    1    2    3    4    5    6    7
 # Max Latencies: 00005 00003 00012 00003 00003 00003 00003 00002 00013 00013 00013 00013 00015 00006 00002 00002 00006 00006 00017 00009 00002 00002 00002 00013 00002 00002 00001 00001 00001 00001 00001 00001 00002 00002 00002 00001 00001 00001 00001 00001 00011 00011 00011 00001 00002 00001 00001 00001 00002 00002 00002 00001 00008 00005 00003 00003 00010 00010 00010 00009 00017 00017 00016 00017 00016 00016 00016 00013 00008 00008 00002 00002 00003 00003 00003 00003 00002 00002 00002 00002 00003 00003 00003 00009 00002 00003 00002 00002 00018 00018 00018 00004 00002 00003 00002 00002 00004 00002 00002 00002 00002 00002 00002 00002 00017 00006 00015 00002 00007 00002 00002 00003 00004 00003 00009 00006 00002 00011 00007 00002
 ----
 
-* BIOS/L3 cache as NUMA Domain=enabled HK cores=0-7
+
+=== BIOS/L3 cache as NUMA Domain=enabled HK cores=0-7
 
 image::image110.png[title="BIOS/NPS=0 Domain=enabled", BIOS/NPS=0 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 available: 16 nodes (0-15)
 node 0 cpus: 0 1 2 3 4 5 6 7
@@ -578,7 +576,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[source, console]
 ----
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
@@ -586,7 +584,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[listing]
 ----
 # Max Latencies: 00017 00002 00002 00008 00015 00003 00014 00003 00005 00005 00005 00005 00005 00018 00017 00007 00012 00012 00005 00005 00002 00008 00003 00003 00009 00009 00009 00008 00005 00016 00002 00002 00007 00007 00007 00007 00007 00011 00009 00002 00003 00003 00003 00002 00002 00014 00005 00002 00009 00009 00009 00009 00006 00003 00010 00012 00019 00019 00018 00018 00010 00003 00002 00015 00004 00010 00003 00004 00015 00003 00003 00010 00017 00017 00015 00017 00017 00013 00012 00013 00002 00002 00002 00002 00002 00003 00016 00011 00003 00003 00003 00003 00002 00002 00010 00003 00002 00006 00006 00006 00006 00002 00005 00017 00007 00007 00007 00007 00015 00012 00003 00015 00003 00003 00003 00003 00003 00017 00003 00003
 
@@ -596,12 +594,12 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 image::image60.png[title="BIOS/NPS=1 Domain=enabled", BIOS/NPS=1 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 available: 16 nodes (0-15)
 node 0 cpus: 0 1 2 3 4 5 6 7
@@ -673,7 +671,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[source, console]
 ----
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
@@ -681,7 +679,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[listing]
 ----
 
 # Max Latencies: 00003 00014 00004 00003 00002 00002 00012 00002 00003 00003 00003 00003 00002 00003 00003 00002 00004 00004 00004 00002 00002 00007 00003 00003 00006 00006 00006 00018 00006 00003 00002 00003 00002 00002 00002 00002 00002 00002 00002 00005 00003 00003 00002 00005 00002 00002 00003 00047 00002 00002 00002 00002 00008 00002 00002 00003 00003 00003 00003 00014 00010 00018 00014 00003 00005 00009 00009 00003 00003 00005 00003 00006 00003 00003 00003 00002 00002 00012 00003 00002 00014 00002 00003 00003 00003 00004 00003 00003 00018 00018 00018 00018 00018 00006 00002 00002 00003 00003 00003 00003 00002 00002 00003 00003 00010 00010 00010 00010 00002 00004 00003 00003 00002 00002 00002 00005 00002 00002 00002 00003
@@ -694,12 +692,12 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 image::image50.png[title="BIOS/NPS=2 Domain=enabled", BIOS/NPS=2 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
 
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 
 available: 16 nodes (0-15)
@@ -772,14 +770,14 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[source, console]
 ----
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
 ./release-scenario-SV-rtapp95utilIsolate-cyclictestIsolated.sh
 ----
 
-[source, sh]
+[listing]
 ----
 
 # Max Latencies: 00006 00012 00004 00012 00014 00006 00005 00004 00007 00007 00007 00006 00012 00011 00004 00004 00006 00004 00009 00015 00005 00005 00004 00004 00018 00018 00018 00019 00014 00006 00012 00006 00017 00012 00017 00008 00006 00004 00005 00017 00004 00016 00006 00005 00005 00005 00004 00004 00004 00004 00011 00004 00004 00005 00004 00004 00013 00013 00013 00013 00012 00005 00007 00017 00010 00012 00012 00006 00006 00012 00006 00006 00006 00013 00007 00007 00007 00012 00013 00006 00017 00017 00017 00017 00017 00009 00007 00017 00012 00012 00012 00012 00010 00004 00008 00005 00006 00006 00006 00008 00006 00006 00007 00007 00016 00016 00006 00004 00004 00004 00004 00012 00005 00005 00012 00004 00004 00004 00004 00004
@@ -791,12 +789,12 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 image::image150.png[title="BIOS/NPS=4 Domain=enabled", BIOS/NPS=4 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
 
-[source, sh]
+[source, console]
 ----
 # numactl -H
 ----
 
-[source, sh]
+[listing]
 ----
 
 available: 16 nodes (0-15)
@@ -869,7 +867,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[source, console]
 ----
 # cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 ../Performance\ scripts/performance-settings.sh && \
@@ -877,7 +875,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-[source, sh]
+[listing]
 ----
 # Max Latencies: 00005 00009 00012 00006 00004 00005 00006 00004 00012 00012 00012 00008 00004 00013 00005 00011 00016 00010 00009 00009 00005 00005 00005 00006 00009 00009 00007 00010 00006 00005 00005 00004 00004 00004 00004 00003 00004 00014 00007 00005 00007 00007 00007 00006 00006 00007 00005 00004 00011 00005 00005 00006 00007 00004 00005 00006 00012 00007 00007 00008 00005 00009 00005 00006 00015 00015 00014 00006 00007 00012 00015 00008 00011 00012 00011 00015 00010 00004 00004 00005 00005 00008 00005 00013 00007 00017 00014 00008 00013 00013 00006 00006 00011 00004 00006 00006 00007 00017 00006 00005 00004 00011 00004 00007 00011 00018 00004 00009 00005 00008 00005 00006 00007 00007 00007 00007 00004 00008 00004 00007
 
@@ -885,11 +883,10 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
---
 
 === Appendix - BIOS settings
 
-[source, sh]
+[source, json]
 ----
 
 {
