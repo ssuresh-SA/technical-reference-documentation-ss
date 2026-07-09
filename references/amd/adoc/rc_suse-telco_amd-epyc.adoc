@@ -103,7 +103,7 @@ This architecture provides high core counts, substantial memory bandwidth via mu
 
 
 
-image::image3.png[title="{amd-provider} EPYC 9005 IOD",  {amd-provider} EPYC 9005 IOD, align="center", scaledwidth=80%, role=half-view-width]
+image::image3.png[title="{amd-provider} EPYC 9005 IOD",  {amd-provider} EPYC 9005 IOD, align="center", scaledwidth=80%, role=full-view-width]
 
 
 
@@ -124,7 +124,7 @@ The platform integrates tightly with {rancher-prime-url}[{srancherprime}] for co
 
 
 
-image::SUSE-telco-cloud-AMD-architecture.svg[title="{stelco-long} Architecture",  {stelco-long} Architecture, align="center", width=100%]
+image::SUSE-telco-cloud-AMD-architecture.svg[title="{stelco-long} Architecture",  {stelco-long} Architecture, align="center", scaledwidth=100%, role=full-view-width]
 
 Key telco-focused features include advanced observability tools, security hardening aligned with industry standards, and automated lifecycle management that simplifies patching and upgrades without disrupting live services. 
 {stelco-long} also provides optimized networking stacks with DPDK support, SR-IOV capabilities, and precise CPU isolation mechanisms that work hand-in-hand with the underlying hardware’s NUMA and cache architecture.
@@ -228,7 +228,7 @@ Sources:
 
 * {amd-tech-info-portal}[{amd-brand} Architecture (white paper)]
 
-image::image120.png[title="8 Zen5 cores per CCX", 8 Zen5 cores per CCX, align="center", scaledwidth=100%, role=half-view-width]
+image::image120.png[title="8 Zen5 cores per CCX", 8 Zen5 cores per CCX, align="center", scaledwidth=100%, role=full-view-width]
 
 [NOTE]
 ====
@@ -236,15 +236,15 @@ This testing used {amd-provider} EPYC 9555 64-cores Zen5 processors with 8 Zen5 
 ====
 
 
-image::image30.png[title="8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3)", 8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3), align="center", scaledwidth=100%, role=half-view-width]
+image::image30.png[title="8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3)", 8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3), align="center", scaledwidth=100%, role=full-view-width]
 
 [NOTE]
 ====
 The “{amd-provider} EPYC 9555 64-cores Zen5” processor used in this test, provides 8 CCDs per socket (eight Zen5 cores each with a 32MB shared L3) instead of the 12 CCDs per socket.
 ====
 
-image::image100.png[title="", , align="center", scaledwidth=100%, role=half-view-width]
-image::image90.png[title="", , align="center", scaledwidth=100%, role=half-view-width]
+image::image100.png[title="NUMA Topology", NUMA Topology, align="center", scaledwidth=100%, role=full-view-width]
+image::image90.png[title="NUMA Settings", NUMA Settings, align="center", scaledwidth=100%, role=full-view-width]
 
 [NOTE]
 ====
@@ -252,7 +252,7 @@ This testing was performed with a dual-socket Dell PowerEdge R7725 server using 
 This delivered 16 NUMA nodes in total when enabling the “L3 cache as NUMA domain” BIOS option.
 ====
 
-image::image20.png[title="2 CCDs per NUMA quadrant in a NPS=4 configuration", 2 CCDs per NUMA quadrant in a NPS=4 configuration, align="center", scaledwidth=100%, role=half-view-width]
+image::image20.png[title="2 CCDs per NUMA quadrant in a NPS=4 configuration", 2 CCDs per NUMA quadrant in a NPS=4 configuration, align="center", scaledwidth=100%, role=full-view-width]
 
 [NOTE]
 ====
@@ -288,7 +288,7 @@ For each test configuration we have run the test several times, showing below th
 
 ==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=0 HK cores=0-7
 
-image::image10.png[title="BIOS/NPS=0 Domain=disabled", BIOS/NPS=0 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image10.png[title="BIOS/NPS=0 Domain=disabled", BIOS/NPS=0 Domain=disabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
@@ -327,7 +327,7 @@ cd ~/telco-performance/Performance-settings/rt-low-latency-tools && \
 
 ==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=1 HK cores=0-7
 
-image::image40.png[title="BIOS/NPS=1 Domain=disabled", BIOS/NPS=1 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image40.png[title="BIOS/NPS=1 Domain=disabled", BIOS/NPS=1 Domain=disabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
@@ -380,7 +380,7 @@ node     0    1    2    3
 
 ==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=2 HK cores=0-7
 
-image::image70.png[title="BIOS/NPS=2 Domain=disabled", BIOS/NPS=2 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image70.png[title="BIOS/NPS=2 Domain=disabled", BIOS/NPS=2 Domain=disabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
@@ -430,7 +430,7 @@ node     0    1    2    3
 
 ==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=4 HK cores=0-7
 
-image::image130.png[title="BIOS/NPS=2 Domain=disabled", BIOS/NPS=2 Domain=disabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image130.png[title="BIOS/NPS=2 Domain=disabled", BIOS/NPS=2 Domain=disabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
@@ -497,7 +497,7 @@ node     0    1    2    3    4    5    6    7
 
 === BIOS/L3 cache as NUMA Domain=enabled HK cores=0-7
 
-image::image110.png[title="BIOS/NPS=0 Domain=enabled", BIOS/NPS=0 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image110.png[title="BIOS/NPS=0 Domain=enabled", BIOS/NPS=0 Domain=enabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
@@ -592,7 +592,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 # Max Latencies: 00009 00005 00007 00005 00010 00010 00004 00006 00012 00012 00008 00006 00015 00013 00007 00014 00011 00011 00011 00007 00009 00006 00013 00004 00006 00006 00006 00006 00005 00014 00013 00012 00005 00005 00017 00011 00005 00006 00015 00004 00008 00008 00006 00012 00005 00011 00008 00005 00017 00017 00017 00008 00011 00007 00017 00007 00015 00015 00015 00005 00008 00006 00004 00004 00008 00008 00008 00011 00004 00004 00004 00004 00005 00005 00005 00019 00006 00013 00015 00013 00012 00012 00012 00013 00007 00004 00004 00006 00008 00008 00008 00006 00011 00005 00014 00015 00017 00017 00017 00012 00005 00014 00014 00005 00013 00013 00013 00008 00006 00005 00007 00005 00007 00008 00007 00005 00005 00004 00006 0000
 ----
 
-image::image60.png[title="BIOS/NPS=1 Domain=enabled", BIOS/NPS=1 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image60.png[title="BIOS/NPS=1 Domain=enabled", BIOS/NPS=1 Domain=enabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
@@ -689,7 +689,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 
 ----
 
-image::image50.png[title="BIOS/NPS=2 Domain=enabled", BIOS/NPS=2 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image50.png[title="BIOS/NPS=2 Domain=enabled", BIOS/NPS=2 Domain=enabled, align="center", scaledwidth=100%, role=full-view-width]
 
 
 [source, console]
@@ -787,7 +787,7 @@ node     0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 ----
 
 
-image::image150.png[title="BIOS/NPS=4 Domain=enabled", BIOS/NPS=4 Domain=enabled, align="center", scaledwidth=100%, role=half-view-width]
+image::image150.png[title="BIOS/NPS=4 Domain=enabled", BIOS/NPS=4 Domain=enabled, align="center", scaledwidth=100%, role=full-view-width]
 
 [source, console]
 ----
