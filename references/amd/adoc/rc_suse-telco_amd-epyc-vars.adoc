@@ -20,7 +20,7 @@
 //   Typically, you can use the root file name of your main content file.
 //   For example:
 //     "rc_suse-rancher_everpure-portworx_tna-topology"
-:article-id: rc_suse-telco_amd-epyc
+:article-id: rc-suse-telco-amd-epyc
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
