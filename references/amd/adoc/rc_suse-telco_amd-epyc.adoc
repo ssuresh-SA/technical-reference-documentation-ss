@@ -273,7 +273,7 @@ You can find the applied BIOS configuration in <<Appendix - BIOS settings>>.
 
 * numa=off (used during the early tests) has been removed from the set of kernel args.
 
-* RPMs related to Telco features in {stelco-long} 3.6.0 downstream nodes that are not required for the cyclictest based performance tests have not been installed (e.g., linuxptp)
+* RPMs related to Telco features in {stelco-long} downstream nodes that are not required for the cyclictest based performance tests have not been installed (for example, linuxptp).
 
 
 === General Kubernetes/RKE2 settings
@@ -283,7 +283,7 @@ As the Kubernetes/RKE2 layer is not required for cyclictest based performance te
 
 === Results
 
-For each test configuration we have run the test several times, showing below the obtained “Max Latencies” (per isolated core: 120 isolated cores in total) for two of them, selected randomly.
+For each test configuration we have run the test several times, showing below the obtained “Max Latencies” (per isolated core with 120 isolated cores in total) for two of them, selected randomly.
 
 
 ==== BIOS/L3 cache as NUMA Domain=disabled - BIOS/NPS=0 HK cores=0-7
