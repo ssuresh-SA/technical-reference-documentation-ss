@@ -77,7 +77,9 @@ To address these needs, this reference architecture presents a validated integra
 This software-defined blueprint combines the high core density and memory throughput of the {amd-provider} Turin architecture with {stelco-provider}’s robust cloud-native management. 
 The result is a future-proof, x86-based foundation for vRAN, 5G Core, and AI-augmented network functions, providing the deterministic performance and extreme density required for next-generation intelligent networks.
 
-
+++++
+<?pdfpagebreak?>
+++++
 
 
 == The solution
@@ -197,6 +199,10 @@ Platforms that combine raw processing capability with operational simplicity and
 {stelco-provider} and {amd-provider} deliver precisely that foundation.
 
 If you are currently evaluating next-generation telecom infrastructure, reach out to the {stelco-provider} and {amd-provider} account teams to initiate a technical proof of concept tailored to your specific deployment environment.
+
+++++
+<?pdfpagebreak?>
+++++
 
 == Testing setup and results
 
