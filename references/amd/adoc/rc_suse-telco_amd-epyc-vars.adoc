@@ -90,7 +90,7 @@
 
 :description-social: {stelco-long} and {amd-long} for Open RAN
 
-:executive-summary: Telecom operators today face intensifying demands driven by 5G-Advanced and Open RAN deployments. These include stricter latency and jitter requirements, severe power and space constraints at the edge, and the growing need to integrate AI into network operations. {stelco-brand} running on {amd-brand} (code-named Turin) provides a robust, CPU-centric solution that addresses these challenges through high core density, strong memory performance, and flexible resource tuning capabilities. 
+:executive-summary: Telecom operators today face intensifying demands driven by 5G-Advanced and Open RAN deployments. These include stricter latency and jitter requirements, severe power and space constraints at the edge, and the growing need to integrate AI into network operations. {stelco-brand} running on {amd-brand} (code-named Turin) provides a robust, CPU-centric solution that addresses these challenges through high core density, strong memory performance, and flexible resource tuning capabilities. \ 
 This reference architecture shows how the combination enables efficient workload consolidation for vRAN, 5G Core, and AI-augmented functions. It delivers the determinism, power efficiency, and operational simplicity operators need to scale intelligently and reduce complexity in their networks.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
