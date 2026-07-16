@@ -28,10 +28,15 @@ include::./rc_suse-telco_amd-epyc-vars.adoc[]
 
 == Introduction
 
-Telecom operators today face intensifying demands driven by 5G-Advanced and Open RAN deployments, including stricter latency and jitter requirements, severe power and space constraints at the edge, and the growing need to integrate AI into network operations. 
-{stelco-brand} running on {amd-brand} (code-named Turin) provides a robust, CPU-centric solution that addresses these challenges through high core density, strong memory performance, and flexible resource tuning capabilities.
+Telecom operators today face intensifying demands driven by 5G-Advanced and Open RAN deployments. 
+These include stricter latency and jitter requirements, severe power and space constraints at the edge, 
+and the growing need to integrate AI into network operations. 
+{stelco-brand} running on {amd-brand} (code-named Turin) provides a robust, CPU-centric solution that addresses these challenges 
+through high core density, strong memory performance, and flexible resource tuning capabilities.
 
-This reference architecture shows how the combination enables efficient workload consolidation for vRAN, 5G Core, and AI-augmented functions while delivering the determinism, power efficiency, and operational simplicity operators need to scale intelligently and reduce complexity in their networks.
+This reference architecture shows how the combination enables efficient workload consolidation for vRAN, 5G Core, 
+and AI-augmented functions. It delivers the determinism, power efficiency, and operational simplicity operators 
+need to scale intelligently and reduce complexity in their networks.
 
 
 === Acknowledgments
@@ -113,7 +118,8 @@ Features such as flexible NUMA Nodes Per Socket (NPS) settings and the option to
 This helps minimize cross-NUMA traffic that can introduce unwanted latency variation in packet processing or timing-critical functions.
 
 
-For telco operators, these capabilities translate into better workload consolidation, improved power efficiency per core, and the ability to run both high-throughput data plane tasks and latency-sensitive control plane operations on the same general-purpose hardware. 
+For telecom operators, these capabilities translate into better workload consolidation and improved power efficiency per core. 
+They also enable running both high-throughput data plane tasks and latency-sensitive control plane operations on the same general-purpose hardware. 
 The architecture supports the industry shift toward CPU-centric designs that reduce dependency on specialized accelerators while still meeting strict performance service level objectives.
 
 === Software architecture: {stelco-long}
@@ -142,7 +148,7 @@ The Validation and performance testing focused heavily on ensuring real-time con
 
 * **Core and thread topology:** Simultaneous Multithreading (SMT) was disabled, and housekeeping operating system cores were isolated exclusively to the first CCX (cores 0–7).
 
-* **Kernel optimization:** A real-time kernel was deployed utilizing standard `isolcpus`, `nohz_full`, and `rcu_nocbs` boot parameters.
+* **Kernel optimization:** A real-time kernel was deployed using standard `isolcpus`, `nohz_full`, and `rcu_nocbs` boot parameters.
 
 * **NUMA configuration:** Testing ran explicitly without forcing `numa=off`, allowing the underlying hardware NUMA capabilities to operate optimally.
 
@@ -252,11 +258,11 @@ This testing was performed with a dual-socket Dell PowerEdge R7725 server using 
 This delivered 16 NUMA nodes in total when enabling the “L3 cache as NUMA domain” BIOS option.
 ====
 
-image::image20.png[title="2 CCDs per NUMA quadrant in a NPS=4 configuration", 2 CCDs per NUMA quadrant in a NPS=4 configuration, align="center", scaledwidth=100%, role=full-view-width]
+image::image20.png[title="2 CCDs per NUMA quadrant in an NPS=4 configuration", 2 CCDs per NUMA quadrant in an NPS=4 configuration, align="center", scaledwidth=100%, role=full-view-width]
 
 [NOTE]
 ====
-The “{amd-provider} EPYC 9555 64-cores Zen5” processors used in this test provide 2 CCDs per NUMA quadrant in a NPS=4 configuration (8 CCDs per socket) instead of the 4 CCDs per quadrant (16 CCDs per socket) shown in this image.
+The “{amd-provider} EPYC 9555 64-cores Zen5” processors used in this test provide 2 CCDs per NUMA quadrant in an NPS=4 configuration (8 CCDs per socket) instead of the 4 CCDs per quadrant (16 CCDs per socket) shown in this image.
 ====
 
 
