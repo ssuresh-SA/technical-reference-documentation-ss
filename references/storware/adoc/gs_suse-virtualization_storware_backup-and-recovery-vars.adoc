@@ -88,21 +88,40 @@
 //            own variables wherever they occur, including:
 //            in the Vars file, the Docinfo file, and your Main content file.
 // -
-:comp1-provider: provider
-:comp1: short name
-:comp1-long: full product name
-:comp1-brand: branded product name
-:comp1-version1: first relevant version
-:comp1-website: product website URL
-:comp1-docs: product documentation URL
+:svirt-provider: SUSE
+:svirt-brand: {svirt-provider}® Virtualization
+:svirt-long: {svirt-provider} Virtualization
+:svirt: {svirt-long}
+:svirt-version1: v1.8.0
+:svirt-website: https://www.suse.com/products/rancher/virtualization/
+:svirt-docs: https://documentation.suse.com/cloudnative/virtualization/
+:svirt-docs-intro: {svirt-docs}introduction/overview.html
+:svirt-docs-reqs: {svirt-docs}installation-setup/requirements.html
+:svirt-docs-create-vm: {svirt-docs}virtual-machines/create-vm.html
 
-:comp2-provider: provider
-:comp2: short name
-:comp2-long: full product name
-:comp2-brand: branded product name
-:comp2-version1: first relevant version
-:comp2-website: product website URL
-:comp2-docs: product documentation URL
+:storware-provider: Storware
+:storware: Backup and Recovery
+:storware-long: Storware Backup and Recovery
+:storware-brand: Storware Backup and Recovery
+:storware-version1: 7.5.0
+:storware-website: https://storware.eu/
+:storware-docs: https://docs.storware.eu/
+:storware-docs-install: https://docs.storware.eu/deployment/installation
+:storware-docs-initial-config: https://docs.storware.eu/deployment/initial-configuration
+:storware-docs-backup-destinations: https://docs.storware.eu/deployment/backup-destinations
+
+:velero: Velero
+:velero-docs: https://velero.io/docs/
+
+:longhorn: Longhorn
+:longhorn-docs: https://longhorn.io/docs/
+
+:srancher-provider: SUSE
+:srancher-brand: SUSE® Rancher Prime
+:srancher-long: SUSE Rancher Prime
+:srancher: SUSE Rancher
+// :srancher-website: https://www.suse.com/products/rancher/
+// :srancher-docs-root: {scn-docs-root}rancher-manager/latest/en/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -137,17 +156,17 @@
 //        will appear as:
 //          "Integrating SUSE Virtualization with Hitachi VSP Storage"
 // -
-:doctitle: (<75 characters) Your Guide Title
+:doctitle: Protect SUSE Virtualization Workloads with Storware Backup and Recovery
 
-:docsubtitle: (<75 characters) Your Guide Subtitle
+:docsubtitle: Extend Data Protection Across Virtual Machines and Containers
 
-:usecase: (<55 characters) use case
+:usecase: Backup and recovery for virtual workloads
 
-:description: (<150 characters) description
+:description: Storware Backup and Recovery provides backup, restore, and ransomware protection for virtual machine and container workloads on SUSE Virtualization.This guide provides basic instructions for deploying Storware Backup and Recovery to begin protecting virtual machine workloads in your cloud-native SUSE Virtualization environment.
 
-:description-social: (<55 characters) social media description
+:description-social: Storware Backup and Recovery with SUSE Virtualization
 
-:executive-summary: (<300 characters) brief summary
+:executive-summary: This guide describes the deployment and configuration of Storware Backup and Recovery to extend policy-driven data protection for virtual machine and container workloads managed by SUSE Virtualization.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -197,10 +216,27 @@
 //         To list additional authors or contributors on the cover page,
 //         you must add the variables here AND edit the Docinfo file.
 // -
-:author1-firstname: first (given) name
-:author1-surname: surname
-:author1-jobtitle: job title
-:author1-orgname: organization affiliation
+
+:author1-firstname: Suresh
+:author1-surname: S
+:author1-jobtitle: Partner Solution Architect
+:author1-orgname: SUSE
+:author2-firstname: Gopala
+:author2-surname: Krishnan
+:author2-jobtitle: Partner Solution Architect
+:author2-orgname: SUSE
+:author3-firstname: Terry
+:author3-surname: Smith
+:author3-jobtitle: Partner Solution Innovation Director
+:author3-orgname: SUSE
+// :author4-firstname: Bhumitra
+// :author4-surname: Nager
+// :author4-jobtitle: Member of Technical Staff
+// :author4-orgname: {pxe-provider}
+// :author5-firstname: James
+// :author5-surname: McShane
+// :author5-jobtitle: Consulting Cloud Native Architect
+// :author5-orgname: {pxe-provider}
 //:author2-firstname: first (given) name
 //:contrib1-firstname: first (given) name
 //:editor1-firstname: first (given) name

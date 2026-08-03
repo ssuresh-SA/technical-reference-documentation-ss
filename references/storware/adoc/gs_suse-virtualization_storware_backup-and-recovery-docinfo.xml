@@ -64,15 +64,15 @@
      - Use the pattern below to specify the core components.
      - Update to match the variables you defined in your Vars file.
      - Use the long (full) name of each component.
-     - Delete the version reference (e.g., '{comp1-version1}') unless needed.
+     - Delete the version reference (e.g., '{svirt-long}') unless needed.
        NOTE: Most TRDs do not reference versions here.
      - Multiple versions of the same component can be provided in a
        comma-separated list.
      - This list is NOT visible in the rendered document.
 -->
 <meta name="productname">
-  <productname version="{comp1-version1}">{comp1-long}</productname>
-  <productname version="{comp2-version1}">{comp2-long}</productname>
+  <productname version="{svirt-version1}">{svirt-long}</productname>
+  <productname version="{storware-version1}">{storware-long}</productname>
 </meta>
 
 
@@ -82,7 +82,7 @@
        versions, unless needed.
      - This list appears above the title in the rendered document.
 -->
-<productname>{comp1} {comp1-version1}, {comp2} {comp2-version1}</productname>
+<productname>{svirt-long}, {storware-long}</productname>
 
 
 
@@ -91,15 +91,15 @@
      - However, in the meantime, mirror the component content
        of the productname metadata above.
 -->
-<meta name="platform">{comp1-long} {comp1-version1}</meta>
-<meta name="platform">{comp2-long} {comp2-version1}</meta>
+<meta name="platform">{svirt-long}</meta>
+<meta name="platform">{storware-long}</meta>
 
 
 <!-- Partner metadata
      Identify ONLY ONE SUSE partner (business or organization name)
      supplying a core component of the solution.
 -->
-<meta name="techpartner">{comp2-provider}</meta>
+<meta name="techpartner">{storware-long}</meta>
 
 
 <!-- author metadata
@@ -120,7 +120,27 @@
       <orgname>{author1-orgname}</orgname>
     </affiliation>
   </author>
-</authorgroup>
+  <author>
+    <personname>
+      <firstname>{author2-firstname}</firstname>
+      <surname>{author2-surname}</surname>
+    </personname>
+    <affiliation>
+      <jobtitle>{author2-jobtitle}</jobtitle>
+      <orgname>{author2-orgname}</orgname>
+    </affiliation>
+  </author>
+  <author>
+    <personname>
+      <firstname>{author3-firstname}</firstname>
+      <surname>{author3-surname}</surname>
+    </personname>
+    <affiliation>
+      <jobtitle>{author3-jobtitle}</jobtitle>
+      <orgname>{author3-orgname}</orgname>
+    </affiliation>
+  </author>
+  </authorgroup>
 
 
 <!-- cover logo images
