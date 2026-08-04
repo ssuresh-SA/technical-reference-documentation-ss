@@ -89,8 +89,9 @@ Before following this guide, you should have the following knowledge and experie
 // NOTE: If there are none, comment out this section.
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Any acknowledgments you would like to make
+The authors wish to acknowledge the contributions of the following individuals to the creation of this document:
 
+ * {editor1-firstname} {editor1-surname}, {editor1-jobtitle}, {editor1-orgname}
 
 
 == Architecture

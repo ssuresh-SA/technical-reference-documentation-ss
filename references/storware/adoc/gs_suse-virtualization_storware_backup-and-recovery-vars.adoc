@@ -229,6 +229,12 @@
 :author3-surname: Smith
 :author3-jobtitle: Partner Solution Innovation Director
 :author3-orgname: SUSE
+
+
+:editor1-firstname: Artur
+:editor1-surname: Wojcik
+:editor1-jobtitle: Senior IT Infrastructure Architect
+:editor1-orgname: Storware
 // :author4-firstname: Bhumitra
 // :author4-surname: Nager
 // :author4-jobtitle: Member of Technical Staff
