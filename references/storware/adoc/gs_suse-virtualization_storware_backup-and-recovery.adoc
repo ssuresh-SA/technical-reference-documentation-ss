@@ -111,6 +111,7 @@ The focus is to describe a high-level design that delivers reliable backup and r
 
 The integrated solution combines {svirt-long} with {storware-long} to provide centralized data protection, policy-driven backup operations, and rapid recovery for enterprise workloads.
 
+image::suse-virtualization-storware-architecture.png[title="Architecture Diagram: {svirt-long} with {storware-long}", Architecture Diagram: {svirt-long} with {storware-long}, scaledwidth="90%", align="center"]
 
 === {svirt-long}
 
@@ -124,7 +125,7 @@ This integration equips the architecture with centralized authentication, access
 
 === {storware-long}
 
-{storware-long} v7.5.0 and later provides centralized, policy-driven backup and recovery capabilities for virtualized and cloud-native environments.
+{storware-website}[{storware-long}] v7.5.0 and later provides centralized, policy-driven backup and recovery capabilities for virtualized and cloud-native environments.
 
 Integrated with {svirt-long} through Kubernetes APIs and leveraging Velero as the Kubernetes-native framework for orchestrating backup and restore operations, Storware protects virtual machine metadata and persistent volumes while enabling automated backup scheduling and recovery.
 
@@ -162,7 +163,7 @@ This section describes how to deploy and configure {svirt-long} and {storware-lo
 
 Deploy a {svirt-long} cluster before installing {storware-long}.
 
-* Install {svirt-long} 1.8 or later by following the {svirt-long} documentation.
+* Install {svirt-long} 1.8 or later by following the {svirt-website}[{svirt-long} documentation].
 * Verify that the cluster is healthy and accessible.
 * Ensure that `kubectl` is configured with cluster administrator privileges.
 * Confirm that virtual machines can be created successfully.
@@ -171,27 +172,25 @@ Deploy a {svirt-long} cluster before installing {storware-long}.
 
 Deploy the {storware-long} server and configure the backup destination.
 
-* Download the {storware-long} installation image and create a virtual machine for the SBR server by following the Storware installation guide.
-+
-{storware-docs-install}[Storware installation guide]
+* Download the {storware-long} installation image and create a virtual machine for the SBR server by following the {storware-docs-install}[Storware installation guide].
 
-* Configure the SBR Node and perform the initial configuration, including applying the license, by following the Storware initial configuration guide.
-+
-{storware-docs-initial-config}[Storware initial configuration guide]
+* Configure the SBR Node and perform the initial configuration, including applying the license, by following the {storware-docs-initial-config}[Storware initial configuration guide].
 
-* Configure a backup destination according to the Storware backup destination documentation.
-+
-{storware-docs-backup-destinations}[Storware backup destination documentation]
+* Configure a backup destination according to the {storware-docs-backup-destinations}[Storware backup destination documentation].
 
 * Verify that the {storware-long} services are running and that the web interface is accessible.
 
+
 == Preparation
 
-Log in to a {svirt-long} node using SSH and obtain root privileges. The remaining procedures in this section are performed from the cluster node.
+Log in to a {svirt-long} node using SSH and obtain root privileges.
+The remaining procedures in this section are performed from the cluster node.
 
 === Enable the snapshot feature gate
 
-[source,bash]
+Enable the Snapshot feature gate by running the following command.
+
+[source, console]
 ----
 kubectl patch kubevirt kubevirt -n harvester-system --type merge \
 -p '{"spec":{"configuration":{"developerConfiguration":{"featureGates":["Snapshot"]}}}}'
@@ -202,9 +201,8 @@ kubectl patch kubevirt kubevirt -n harvester-system --type merge \
 Configure Longhorn snapshots as the default CSI snapshot class.
 
 . Configure `longhorn-snapshot` as the default `VolumeSnapshotClass`.
-
 +
-[source,bash]
+[source, console]
 ----
 kubectl annotate volumesnapshotclass longhorn-snapshot \
 snapshot.storage.kubernetes.io/is-default-class="true" \
@@ -212,9 +210,8 @@ snapshot.storage.kubernetes.io/is-default-class="true" \
 ----
 
 . Verify the configuration.
-
 +
-[source,bash]
+[source, console]
 ----
 kubectl get volumesnapshotclass
 ----
@@ -224,9 +221,8 @@ kubectl get volumesnapshotclass
 Install Velero on the {svirt-long} Kubernetes cluster to enable Kubernetes-native backup and restore orchestration for virtual machines and persistent volumes.
 
 . Create the `velero.yml` configuration file.
-
 +
-[source,yaml]
+[source, yaml]
 ----
 snapshotsEnabled: false
 
@@ -258,18 +254,16 @@ configuration:
 ----
 
 . Add the Helm repository.
-
 +
-[source,bash]
+[source, console]
 ----
 helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
 helm repo update
 ----
 
 . Install Velero.
-
 +
-[source,bash]
+[source, console]
 ----
 helm install velero vmware-tanzu/velero \
   --namespace velero \
@@ -278,9 +272,8 @@ helm install velero vmware-tanzu/velero \
 ----
 
 . Verify that the Velero pods are running.
-
 +
-[source,bash]
+[source, console]
 ----
 kubectl get pods -n velero
 ----
@@ -290,17 +283,15 @@ kubectl get pods -n velero
 Generate credentials that allow {storware-long} to access the cluster.
 
 . Create a service account.
-
 +
-[source,bash]
+[source, console]
 ----
 kubectl create serviceaccount storware -n default
 ----
 
 . Create a cluster role binding.
-
 +
-[source,bash]
+[source, console]
 ----
 kubectl create clusterrolebinding storware-admin \
 --clusterrole=cluster-admin \
@@ -308,128 +299,212 @@ kubectl create clusterrolebinding storware-admin \
 ----
 
 . Generate an access token.
-
 +
-[source,bash]
+[source, console]
 ----
 kubectl create token storware -n default --duration=87600h
 ----
 
 . Save the generated token for use during cluster registration.
 
+
 === Configuring {svirt-long}
 
 Register the cluster in {storware-long}.
 
 . Log in to the {storware-long} web interface.
-. Navigate to __Virtual Environments__ > __Virtualization Providers__.
-. Click __Create__.
-. Select __Kubernetes__ as the virtualization provider.
-. Enter the cluster URL, for example:
 
+. Navigate to __Virtual Environments__ > __Virtualization Providers__.
+
+. Click __Create__.
+
+. Select __Kubernetes__ as the virtualization provider.
+
+. Enter the cluster URL, for example:
 +
+[listing]
 ----
-https://harvester.local
+https://harvester.local:6443
 ----
++
+[NOTE]
+====
+Replace `https://harvester.local:6443` with the URL or IP address of your SUSE Virtualization cluster.
+====
 
 . Enable __Use token__.
+
 . Enable __Trust certificates__ if required.
+
 . Paste the access token generated previously into the __Access key__ field.
+
 . Click __Save__.
++
+image::storware-sbr_add-provider.png[title="Registering the SUSE Virtualization cluster in Storware Backup and Recovery", Registering the SUSE Virtualization cluster in Storware Backup and Recovery, scaledwidth="90%", align="center"]
 
-image
-
-. Click __Yes, continue__ when asked to confirm inventory synchronization.
-
-image
+. Click __Yes, Continue__ when asked to confirm inventory synchronization.
++
+image::storware-sbr_confirm-sync.png[title="Confirm inventory synchronization dialog", Confirm inventory synchronization dialog, scaledwidth="90%", align="center"]
 
 . Wait for the synchronization job to complete successfully in the __Workflow Executions__ console.
 
 . Navigate to __Virtual Environments__ > __Instances__ and verify that the {svirt-long} virtual machines and pods are discovered and listed successfully.
-
-image
++
+image::storware-sbr_discovered-instances.png[title="Discovered virtual environment instances", Discovered virtual environment instances, scaledwidth="90%", align="center"]
 
 == Validating the solution
 
 This section validates the integration.
 
-NOTE: Log in to the {storware-long} web interface to perform the remaining procedures.
+[NOTE]
+====
+Log in to the {storware-long} web interface to perform the remaining procedures.
+====
 
 === Create backup policy
 
 . Go to __Virtual Environments__ > __Backup Policies__.
+
 . Click __Create__.
+
 . Configure the policy settings.
 +
+--
 * On the __General__ tab, enter a name in the __Name__ field.
+
 * On the __Project visibility__ tab, limit visibility if needed, or leave the default __Visibility for all projects__.
-* On the __Auto-assignment__ tab, choose __Assign only__ or __Assign and remove__. Enter a regex rule in __Create regex based rule__, for example `.*`.
-image
+
+* On the __Auto-assignment__ tab, choose __Assign only__ or __Assign and remove__.
+Enter a regex rule in __Create Regex based rule__, for example `.*`.
+
+image::storware-sbr_policy-assignment.png[title="Create policy auto-assignment settings", Create policy auto-assignment settings, scaledwidth="90%", align="center"]
 
 * On the __Virtual Environments__ tab, select existing virtual machines manually.
+--
 
 . Configure the backup schedule.
 +
+--
 * Go to the __Rules__ tab.
-* Change the __Default name__ if needed.
-* Select the backup destination created during the initial setup, or leave the default destination if only one is configured.
-* Click __Create schedule__ and configure the schedules.
 
-image
+* Change the __Default name__ if needed.
+
+* Select the backup destination created during the initial setup, or leave the default destination if only one is configured.
+
+* Click __Create Schedule__ and configure the schedules.
+
+image::storware-sbr_policy-rules.png[title="Create policy rules and schedules settings", Create policy rules and schedules settings, scaledwidth="90%", align="center"]
+--
 
 . Click __Save__.
+
 . Verify that __VM Count__ includes the selected virtual machines.
 
 === Back up a virtual machine
 
 . Go to __Virtual Environments__ > __Instances__.
-. Select a virtual machine and click the __Backup__ icon in the __Actions__ column.
 
-image
+. Select a virtual machine and click the __Backup__ icon in the __Action__ column.
++
+image::storware-sbr_instances-backup.png[title="Starting a manual virtual machine backup", Starting a manual virtual machine backup, scaledwidth="90%", align="center"]
 
 . In the __Backup__ window, select the backup type:
 +
-* __Full__ or
-* __Incremental__
-. Click __Backup__ to start the operation.
-. Monitor the progress in the __Workflow Executions__ console.
+--
+* __Full__
 
-image
+* __Incremental__
+--
+
+. Click __Backup__ to start the operation.
+
+. Monitor the progress in the __Workflow Executions__ console.
++
+image::storware-sbr_backup-progress.png[title="Monitoring the backup task in the Workflow Executions console", Monitoring the backup task in the Workflow Executions console, scaledwidth="90%", align="center"]
+
+// === Restore a virtual machine
+//
+// . Go to __Virtual Environments__ > __Instances__.
+// . Select a virtual machine and click the __Restore__ icon in the __Actions__ column.
+// . Select __Restore to virtualization provider__ to restore the virtual machine.
+//
+// image
+//
+// . In the __Restore to virtualization provider__ wizard, configure the restore settings.
+// +
+// * On the __General__ tab, select the backup version from the __Select backup location__ field.
+// * Optionally enable __Change name of the restored virtual environment__.
+// * Leave the __Storage__ and __Networking__ tabs with the default settings.
+// . On the __Advanced__ tab:
+// +
+// * Enable __Delete original virtual environment if it exists__ if required.
+// * Enable __Power on virtual machine after restore__ if desired.
+// . Click __Summary__ and review the configuration.
+// . Click __Restore__ to start the operation.
+//
+// image
+//
+// . Monitor the progress in the __Workflow Executions__ console.
+// . Verify that the restore completes and the virtual machine is operational in __Virtual Environments__ > __Instances__.
+//
+// === Verify the restored virtual machine
+//
+// . Log in to the {svirt-long} web interface.
+// . Navigate to __Virtual Machines__.
+// . Verify that the restored virtual machine is present in the list.
+// . Confirm that the restored virtual machine is in the __Running__ state.
+//
+// image
 
 === Restore a virtual machine
 
 . Go to __Virtual Environments__ > __Instances__.
-. Select a virtual machine and click the __Restore__ icon in the __Actions__ column.
-. Select __Restore to virtualization provider__ to restore the virtual machine.
 
-image
+. Select a virtual machine and click the __Restore__ icon in the __Action__ column.
++
+image::storware-sbr_instances-restore.png[title="Restore action icon in the Instances list", Restore action icon in the Instances list, scaledwidth="90%", align="center"]
+
+. Select __Restore to virtualization provider__ to restore the virtual machine.
 
 . In the __Restore to virtualization provider__ wizard, configure the restore settings.
 +
-* On the __General__ tab, select the backup version from the __Select backup location__ field.
+--
+* On the __General__ tab, select the backup version from the __Backup location__ field.
+
 * Optionally enable __Change name of the restored virtual environment__.
+
 * Leave the __Storage__ and __Networking__ tabs with the default settings.
+--
+
 . On the __Advanced__ tab:
 +
+--
 * Enable __Delete original virtual environment if it exists__ if required.
-* Enable __Power on virtual machine after restore__ if desired.
-. Click __Summary__ and review the configuration.
-. Click __Restore__ to start the operation.
 
-image
+* Enable __Power on virtual machine after restore__ if desired.
+--
+
+. Click __Summary__ and review the configuration.
+
+. Click __Restore__ to start the operation.
++
+image::storware-sbr_restore-summary.png[title="Reviewing the restore configuration summary", Reviewing the restore configuration summary, scaledwidth="90%", align="center"]
 
 . Monitor the progress in the __Workflow Executions__ console.
+
 . Verify that the restore completes and the virtual machine is operational in __Virtual Environments__ > __Instances__.
 
 === Verify the restored virtual machine
 
 . Log in to the {svirt-long} web interface.
+
 . Navigate to __Virtual Machines__.
+
 . Verify that the restored virtual machine is present in the list.
+
 . Confirm that the restored virtual machine is in the __Running__ state.
-
-image
-
++
+image::storware-sbr_harvester-vms.png[title="Restored virtual machine running in the SUSE Virtualization console", Restored virtual machine running in the SUSE Virtualization console, scaledwidth="90%", align="center"]
 
 
 == Summary
@@ -497,9 +572,8 @@ When immutability is enabled, backup data cannot be modified or deleted during t
 
 Additionally, storing backup data in an isolated network segment separate from the production {svirt-long} cluster reduces the risk that a ransomware event affecting the cluster can propagate to the backup repository.
 
-For configuration details, refer to the Storware ransomware protection documentation.
+For configuration details, refer to the {storware-ransomware-docs}[Storware ransomware protection documentation].
 --
-
 
 
 

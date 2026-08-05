@@ -109,6 +109,8 @@
 :storware-docs-install: https://docs.storware.eu/deployment/installation
 :storware-docs-initial-config: https://docs.storware.eu/deployment/initial-configuration
 :storware-docs-backup-destinations: https://docs.storware.eu/deployment/backup-destinations
+:storware-website: https://storware.eu/storware-backup-recovery/
+:storware-ransomware-docs: https://docs.storware.eu/
 
 :velero: Velero
 :velero-docs: https://velero.io/docs/
