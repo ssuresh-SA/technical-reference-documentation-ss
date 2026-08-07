@@ -19,7 +19,7 @@
 //   This is typically a series of words (often from the document title)
 //   separated by hyphens (-).
 //   (e.g., "rancher-kubflow-deployment")
-:article-id: unique-article-id
+:article-id: gs_suse-virtualization_storware_backup-and-recovery
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -198,7 +198,9 @@
 //    :metatask2: Installation
 //    :metatask3: Deployment
 // -
-:metatask1: task
+:metatask1: Configuration
+:metatask2: Installation
+:metatask3: Backup &amp; Recovery
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -233,21 +235,11 @@
 :author3-orgname: SUSE
 
 
-:editor1-firstname: Artur
-:editor1-surname: Wojcik
-:editor1-jobtitle: Senior IT Infrastructure Architect
-:editor1-orgname: Storware
-// :author4-firstname: Bhumitra
-// :author4-surname: Nager
-// :author4-jobtitle: Member of Technical Staff
-// :author4-orgname: {pxe-provider}
-// :author5-firstname: James
-// :author5-surname: McShane
-// :author5-jobtitle: Consulting Cloud Native Architect
-// :author5-orgname: {pxe-provider}
-//:author2-firstname: first (given) name
-//:contrib1-firstname: first (given) name
-//:editor1-firstname: first (given) name
+:contrib1-firstname: Artur
+:contrib1-surname: Wojcik
+:contrib1-jobtitle: Senior IT Infrastructure Architect
+:contrib1-orgname: Storware
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 

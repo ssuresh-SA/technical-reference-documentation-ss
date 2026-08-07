@@ -56,6 +56,8 @@
 -->
 <meta name="task">
     <phrase>{metatask1}</phrase>
+    <phrase>{metatask2}</phrase>
+    <phrase>{metatask3}</phrase>
 </meta>
 
 
@@ -71,8 +73,8 @@
      - This list is NOT visible in the rendered document.
 -->
 <meta name="productname">
-  <productname version="{svirt-version1}">{svirt-long}</productname>
-  <productname version="{storware-version1}">{storware-long}</productname>
+  <productname>{svirt-long}</productname>
+  <productname>{storware-long}</productname>
 </meta>
 
 

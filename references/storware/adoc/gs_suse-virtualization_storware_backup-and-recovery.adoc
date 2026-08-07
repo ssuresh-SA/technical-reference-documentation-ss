@@ -28,30 +28,16 @@ include::./gs_suse-virtualization_storware_backup-and-recovery-vars.adoc[]
 
 == Introduction
 
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Provide a motivation for the document in 2-4 sentences to identify:
-//   - what the document is about
-//   - why it may be of interest to the reader
-//   - what products are being highlighted
-// Include an approved SUSE | Partner logo lock-up if possible
-// Include any additional, relevant details
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
 Organizations rely on diverse software that cannot be effectively managed in silos.
 IT environments must bridge the gap between VM workloads and containerized applications.
-{svirt-long} is the Kubernetes-native platform that manages VMs and containers side by side. This unifies operations and infrastructure, reducing IT costs.
-{storware-long} complements {svirt-long} with an agentless, policy-driven data protection solution. It can back up and snapshot VMs, containers, and core cloud applications.
+**{svirt-long}** is the Kubernetes-native platform that manages VMs and containers side by side. This unifies operations and infrastructure, reducing IT costs.
+**{storware-long}** complements {svirt-long} with an agentless, policy-driven data protection solution. It can back up and snapshot VMs, containers, and core cloud applications.
 This delivers a layer of data resiliency that reduces downtime, streamlines recovery, and improves cybersecurity.
 Integrating {storware-long} with {svirt-long} helps organizations support mixed workloads, improve resilience, and reduce costs.
 
 
 
 === Scope
-
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Specify what this guide covers in no more than 2 sentences.
-//   E.g., "You will learn how to ..."
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 This guide describes how to deploy and configure {storware-long} to protect virtual machine workloads running on {svirt-long}.
 
@@ -60,13 +46,6 @@ It provides step-by-step instructions for integrating {storware-long} with {svir
 
 === Audience
 
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Identify for whom this document is intended, perhaps with:
-//   - topics of interests (e.g., machine learning, security, etc.)
-//   - job roles (e.g., developer, administrator, platform architect, etc.)
-//   - required skills
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
 This guide is intended for virtualization administrators, systems administrators, infrastructure architects, platform engineers, and backup administrators responsible for protecting workloads running on {svirt-long}.
 
 Before following this guide, you should have the following knowledge and experience:
@@ -74,37 +53,19 @@ Before following this guide, you should have the following knowledge and experie
 * Basic Linux administration skills
 * Familiarity with Kubernetes and `kubectl`
 * Experience managing virtual machines and storage
-* Basic understanding of {svirt-long}and backup concepts
+* Basic understanding of {svirt-long} and backup concepts
 
 
 === Acknowledgements
 
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Acknowledge contributors not listed as authors.
-// Something like:
-//   The authors wish to acknowledge the contributions of the following
-//   individuals:
-//   * {contrib1-firstname} {contrib1-surname}, {contrib1-jobtitle}, {contrib1-orgname}
-//   * {contrib2-firstname} {contrib2-surname}, {contrib2-jobtitle}, {contrib2-orgname}
-// NOTE: If there are none, comment out this section.
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
 The authors wish to acknowledge the contributions of the following individuals to the creation of this document:
 
- * {editor1-firstname} {editor1-surname}, {editor1-jobtitle}, {editor1-orgname}
+ * {contrib1-firstname} {contrib1-surname}, {contrib1-jobtitle}, {contrib1-orgname}
 
 
 == Architecture
 
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Identify minimum requirements (prerequisites) the reader
-// would need in order to follow the steps of this guide.
-// - Use an unordered list.
-// - Use proper product names.
-// - Identify product versions.
-// - Link to existing resources whenever possible.
-// - Keep this section brief but elaborate as needed.
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 This section provides a planning and architecture overview for deploying {storware-long} with {svirt-long}.
 
 The focus is to describe a high-level design that delivers reliable backup and recovery capabilities for virtual machine workloads running on a cloud-native virtualization platform.
@@ -115,7 +76,7 @@ image::suse-virtualization-storware-architecture.png[title="Architecture Diagram
 
 === {svirt-long}
 
-{svirt-docs}[SUSE Virtualization] v1.8 and later is a lightweight, hyperconverged infrastructure solution, enabling the management of virtual machines and containers side-by-side on a unified, cloud-native platform.
+{svirt-website}[SUSE Virtualization] is a lightweight, hyperconverged infrastructure solution, enabling the management of virtual machines and containers side-by-side on a unified, cloud-native platform.
 
 To ensure a secure and optimized base, {svirt-long} is deployed on SUSE Linux Micro, an immutable, enterprise-grade operating system purpose-built for containerized and virtual workloads.
 
@@ -123,9 +84,11 @@ Furthermore, the platform integrates natively with {srancher-long}.
 
 This integration equips the architecture with centralized authentication, access control, observability, and built-in security, empowering operators to manage diverse workloads across data center and edge environments using a consistent operational model.
 
+{svirt-long} {svirt-version1} was used in the development of this guide.
+
 === {storware-long}
 
-{storware-website}[{storware-long}] v7.5.0 and later provides centralized, policy-driven backup and recovery capabilities for virtualized and cloud-native environments.
+{storware-website}[{storware-long}] provides centralized, policy-driven backup and recovery capabilities for virtualized and cloud-native environments.
 
 Integrated with {svirt-long} through Kubernetes APIs and leveraging Velero as the Kubernetes-native framework for orchestrating backup and restore operations, Storware protects virtual machine metadata and persistent volumes while enabling automated backup scheduling and recovery.
 
@@ -133,29 +96,9 @@ Running within the {svirt-long} cluster, Velero interacts with Kubernetes resour
 
 The solution supports S3-compatible repositories for backup storage and helps organizations improve business continuity and cyber resilience through secure and reliable data protection.
 
+{storware-long} {storware-version1} was used in the development of this guide.
+
 == Deployment
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Detail the steps of the installation procedure.
-// Replace 'Procedure' with one or more appropriate sections, such as:
-// - 'Setting up the environment'
-// - 'Installing the components'
-// - 'Configuring and tuning'
-// - 'Validating the deployment'
-// You may find it useful to organize complex procedures into
-// subsections.
-//
-// - As appropriate, make use of:
-//   - Ordered lists for steps
-//   - Code blocks for source code and console commands
-//     Readers should be able to use copy and paste to leverage
-//     commands and code in their environments
-//   - Listing blocks for output
-//   - Screenshots and diagrams
-//   - Admonitions (notes, tips, warnings, etc.)
-//
-// NOTE: Always include some validation or verification in your guide.
-//
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 This section describes how to deploy and configure {svirt-long} and {storware-long} to protect virtual machine workloads.
 
@@ -163,22 +106,22 @@ This section describes how to deploy and configure {svirt-long} and {storware-lo
 
 Deploy a {svirt-long} cluster before installing {storware-long}.
 
-* Install {svirt-long} 1.8 or later by following the {svirt-website}[{svirt-long} documentation].
-* Verify that the cluster is healthy and accessible.
-* Ensure that `kubectl` is configured with cluster administrator privileges.
-* Confirm that virtual machines can be created successfully.
+. Install {svirt-long} by following the {svirt-website}[{svirt-long} documentation].
+. Verify that the cluster is healthy and accessible.
+. Ensure that `kubectl` is configured with cluster administrator privileges.
+. Confirm that virtual machines can be created successfully.
 
 === Installing {storware-long}
 
 Deploy the {storware-long} server and configure the backup destination.
 
-* Download the {storware-long} installation image and create a virtual machine for the SBR server by following the {storware-docs-install}[Storware installation guide].
+. Download the {storware-long} installation image and create a virtual machine for the SBR server by following the {storware-docs-install}[Storware installation guide].
 
-* Configure the SBR Node and perform the initial configuration, including applying the license, by following the {storware-docs-initial-config}[Storware initial configuration guide].
+. Configure the SBR Node and perform the initial configuration, including applying the license, by following the {storware-docs-initial-config}[Storware initial configuration guide].
 
-* Configure a backup destination according to the {storware-docs-backup-destinations}[Storware backup destination documentation].
+. Configure a backup destination according to the {storware-docs-backup-destinations}[Storware backup destination documentation].
 
-* Verify that the {storware-long} services are running and that the web interface is accessible.
+. Verify that the {storware-long} services are running and that the web interface is accessible.
 
 
 == Preparation
@@ -188,12 +131,12 @@ The remaining procedures in this section are performed from the cluster node.
 
 === Enable the snapshot feature gate
 
-Enable the Snapshot feature gate by running the following command.
+Enable the Snapshot feature gate by running the following command:
 
 [source, console]
 ----
-kubectl patch kubevirt kubevirt -n harvester-system --type merge \
--p '{"spec":{"configuration":{"developerConfiguration":{"featureGates":["Snapshot"]}}}}'
+kubectl -n harvester-system patch kubevirt kubevirt --type=json -p='[{"op":"add","path":"/spec/configuration/developerConfiguration/featureGates/-",
+"value":"Snapshot"}]'
 ----
 
 === Configure the default VolumeSnapshotClass
@@ -312,7 +255,7 @@ kubectl create token storware -n default --duration=87600h
 
 Register the cluster in {storware-long}.
 
-. Log in to the {storware-long} web interface.
+. Log in to the {storware-long} Web interface.
 
 . Navigate to __Virtual Environments__ > __Virtualization Providers__.
 
@@ -329,7 +272,7 @@ https://harvester.local:6443
 +
 [NOTE]
 ====
-Replace `https://harvester.local:6443` with the URL or IP address of your SUSE Virtualization cluster.
+Be sure to use the URL or IP address of your SUSE Virtualization cluster.
 ====
 
 . Enable __Use token__.
@@ -358,7 +301,7 @@ This section validates the integration.
 
 [NOTE]
 ====
-Log in to the {storware-long} web interface to perform the remaining procedures.
+Log in to the {storware-long} Web interface to perform the remaining procedures.
 ====
 
 === Create backup policy
@@ -408,13 +351,7 @@ image::storware-sbr_policy-rules.png[title="Create policy rules and schedules se
 +
 image::storware-sbr_instances-backup.png[title="Starting a manual virtual machine backup", Starting a manual virtual machine backup, scaledwidth="90%", align="center"]
 
-. In the __Backup__ window, select the backup type:
-+
---
-* __Full__
-
-* __Incremental__
---
+. In the __Backup__ window, select __Full__ or __Incremental__ for the backup type
 
 . Click __Backup__ to start the operation.
 
@@ -422,39 +359,6 @@ image::storware-sbr_instances-backup.png[title="Starting a manual virtual machin
 +
 image::storware-sbr_backup-progress.png[title="Monitoring the backup task in the Workflow Executions console", Monitoring the backup task in the Workflow Executions console, scaledwidth="90%", align="center"]
 
-// === Restore a virtual machine
-//
-// . Go to __Virtual Environments__ > __Instances__.
-// . Select a virtual machine and click the __Restore__ icon in the __Actions__ column.
-// . Select __Restore to virtualization provider__ to restore the virtual machine.
-//
-// image
-//
-// . In the __Restore to virtualization provider__ wizard, configure the restore settings.
-// +
-// * On the __General__ tab, select the backup version from the __Select backup location__ field.
-// * Optionally enable __Change name of the restored virtual environment__.
-// * Leave the __Storage__ and __Networking__ tabs with the default settings.
-// . On the __Advanced__ tab:
-// +
-// * Enable __Delete original virtual environment if it exists__ if required.
-// * Enable __Power on virtual machine after restore__ if desired.
-// . Click __Summary__ and review the configuration.
-// . Click __Restore__ to start the operation.
-//
-// image
-//
-// . Monitor the progress in the __Workflow Executions__ console.
-// . Verify that the restore completes and the virtual machine is operational in __Virtual Environments__ > __Instances__.
-//
-// === Verify the restored virtual machine
-//
-// . Log in to the {svirt-long} web interface.
-// . Navigate to __Virtual Machines__.
-// . Verify that the restored virtual machine is present in the list.
-// . Confirm that the restored virtual machine is in the __Running__ state.
-//
-// image
 
 === Restore a virtual machine
 
@@ -467,22 +371,19 @@ image::storware-sbr_instances-restore.png[title="Restore action icon in the Inst
 . Select __Restore to virtualization provider__ to restore the virtual machine.
 
 . In the __Restore to virtualization provider__ wizard, configure the restore settings.
-+
---
-* On the __General__ tab, select the backup version from the __Backup location__ field.
 
-* Optionally enable __Change name of the restored virtual environment__.
+. On the __General__ tab, select the backup version from the __Backup location__ field.
 
-* Leave the __Storage__ and __Networking__ tabs with the default settings.
---
+. Optionally enable __Change name of the restored virtual environment__.
+
+. Leave the __Storage__ and __Networking__ tabs with the default settings.
 
 . On the __Advanced__ tab:
-+
---
-* Enable __Delete original virtual environment if it exists__ if required.
 
-* Enable __Power on virtual machine after restore__ if desired.
---
+. Enable __Delete original virtual environment if it exists__ if required.
+
+. Enable __Power on virtual machine after restore__ if desired.
+
 
 . Click __Summary__ and review the configuration.
 
@@ -496,7 +397,7 @@ image::storware-sbr_restore-summary.png[title="Reviewing the restore configurati
 
 === Verify the restored virtual machine
 
-. Log in to the {svirt-long} web interface.
+. Log in to the {svirt-long} Web interface.
 
 . Navigate to __Virtual Machines__.
 
@@ -508,14 +409,6 @@ image::storware-sbr_harvester-vms.png[title="Restored virtual machine running in
 
 
 == Summary
-
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-// Summarize:
-// - Solution description
-// - Motivation for the guide
-// - What was done
-// - Suggested next steps for the learning journey
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
 This guide describes the deployment and configuration of {storware-long} to extend policy-driven data protection for virtual machine and container workloads managed by {svirt-long}.
@@ -529,7 +422,7 @@ This guide describes the deployment and configuration of {storware-long} to exte
 
 Any storage class that supports CSI with a corresponding `VolumeSnapshotClass` is compatible with snapshot-based backups.
 
-This guide uses Longhorn (`longhorn-snapshot`), which is the default storage class for {svirt-long}. If additional CSI storage classes are configured, ensure that the required CSI classes are annotated as default where applicable.
+The default storage class for {svirt-long} is {longhorn}. {svirt-long} supports a broad ecosystem of storage providers through the Container Storage Interface (CSI), which you can designate for the default storage class.
 --
 
 . *Can {storware-long} protect virtual machines with multiple disks?*
