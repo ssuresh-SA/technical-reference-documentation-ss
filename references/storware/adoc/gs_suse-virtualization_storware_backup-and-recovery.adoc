@@ -56,11 +56,12 @@ Before following this guide, you should have the following knowledge and experie
 * Basic understanding of {svirt-long} and backup concepts
 
 
-=== Acknowledgements
+=== Acknowledgments
 
 The authors wish to acknowledge the contributions of the following individuals to the creation of this document:
 
- * {contrib1-firstname} {contrib1-surname}, {contrib1-jobtitle}, {contrib1-orgname}
+* {contrib1-firstname} {contrib1-surname}, {contrib1-jobtitle}, {contrib1-orgname}
+* {contrib2-firstname} {contrib2-surname}, {contrib2-jobtitle}, {contrib2-orgname}
 
 
 == Architecture
@@ -106,7 +107,7 @@ This section describes how to deploy and configure {svirt-long} and {storware-lo
 
 Deploy a {svirt-long} cluster before installing {storware-long}.
 
-. Install {svirt-long} by following the {svirt-website}[{svirt-long} documentation].
+. Install {svirt-long} by following the {svirt-docs}[{svirt-long} documentation].
 . Verify that the cluster is healthy and accessible.
 . Ensure that `kubectl` is configured with cluster administrator privileges.
 . Confirm that virtual machines can be created successfully.
@@ -310,34 +311,33 @@ Log in to the {storware-long} Web interface to perform the remaining procedures.
 
 . Click __Create__.
 
+
 . Configure the policy settings.
-+
---
-* On the __General__ tab, enter a name in the __Name__ field.
 
-* On the __Project visibility__ tab, limit visibility if needed, or leave the default __Visibility for all projects__.
+.. On the __General__ tab, enter a name in the __Name__ field.
 
-* On the __Auto-assignment__ tab, choose __Assign only__ or __Assign and remove__.
+.. On the __Project visibility__ tab, limit visibility if needed, or leave the default __Visibility for all projects__.
+
+.. On the __Auto-assignment__ tab, choose __Assign only__ or __Assign and remove__.
 Enter a regex rule in __Create Regex based rule__, for example `.*`.
-
++
 image::storware-sbr_policy-assignment.png[title="Create policy auto-assignment settings", Create policy auto-assignment settings, scaledwidth="90%", align="center"]
 
-* On the __Virtual Environments__ tab, select existing virtual machines manually.
---
+.. On the __Virtual Environments__ tab, select existing virtual machines manually.
+
 
 . Configure the backup schedule.
+
+.. Go to the __Rules__ tab.
+
+.. Change the __Default name__ if needed.
+
+.. Select the backup destination created during the initial setup, or leave the default destination if only one is configured.
+
+.. Click __Create Schedule__ and configure the schedules.
 +
---
-* Go to the __Rules__ tab.
-
-* Change the __Default name__ if needed.
-
-* Select the backup destination created during the initial setup, or leave the default destination if only one is configured.
-
-* Click __Create Schedule__ and configure the schedules.
-
 image::storware-sbr_policy-rules.png[title="Create policy rules and schedules settings", Create policy rules and schedules settings, scaledwidth="90%", align="center"]
---
+
 
 . Click __Save__.
 
@@ -380,9 +380,9 @@ image::storware-sbr_instances-restore.png[title="Restore action icon in the Inst
 
 . On the __Advanced__ tab:
 
-. Enable __Delete original virtual environment if it exists__ if required.
+.. Enable __Delete original virtual environment if it exists__ if required.
 
-. Enable __Power on virtual machine after restore__ if desired.
+.. Enable __Power on virtual machine after restore__ if desired.
 
 
 . Click __Summary__ and review the configuration.
@@ -394,6 +394,7 @@ image::storware-sbr_restore-summary.png[title="Reviewing the restore configurati
 . Monitor the progress in the __Workflow Executions__ console.
 
 . Verify that the restore completes and the virtual machine is operational in __Virtual Environments__ > __Instances__.
+
 
 === Verify the restored virtual machine
 
@@ -415,7 +416,7 @@ This guide describes the deployment and configuration of {storware-long} to exte
 
 == Frequently Asked Questions (FAQ)
 
-. *Which {svirt-long} storage classes are supported for snapshot-based backups?*
+. **Which {svirt-long} storage classes are supported for snapshot-based backups?**
 +
 --
 {storware-long} uses Velero with the Container Storage Interface (CSI) framework for backup and restore operations.
@@ -425,7 +426,7 @@ Any storage class that supports CSI with a corresponding `VolumeSnapshotClass` i
 The default storage class for {svirt-long} is {longhorn}. {svirt-long} supports a broad ecosystem of storage providers through the Container Storage Interface (CSI), which you can designate for the default storage class.
 --
 
-. *Can {storware-long} protect virtual machines with multiple disks?*
+. **Can {storware-long} protect virtual machines with multiple disks?**
 +
 --
 Yes. {storware-long} captures all persistent volumes attached to a virtual machine during the backup operation.
@@ -433,7 +434,7 @@ Yes. {storware-long} captures all persistent volumes attached to a virtual machi
 During the restore process, the persistent volumes are recreated and automatically reattached to the virtual machine, restoring the complete virtual machine configuration and associated storage.
 --
 
-. *What are the sizing recommendations for the {storware-long} server?*
+. **What are the sizing recommendations for the {storware-long} server?**
 +
 --
 The recommended sizing for the {storware-long} server depends on the number of protected virtual machines and the backup frequency.
@@ -448,7 +449,7 @@ For a small environment with up to 25 virtual machines and daily backups, the fo
 For larger environments, consult Storware sizing guidance or your SUSE representative for environment-specific recommendations.
 --
 
-. *Is Velero required for protecting {svirt-long} workloads?*
+. **Is Velero required for protecting {svirt-long} workloads?**
 +
 --
 Yes. {storware-long} leverages Velero to orchestrate Kubernetes-native backup and restore operations.
@@ -456,7 +457,7 @@ Yes. {storware-long} leverages Velero to orchestrate Kubernetes-native backup an
 Velero integrates with the CSI snapshot framework to protect virtual machine metadata and persistent volumes, ensuring that both virtual machine configuration and associated storage are included during backup and restore operations.
 --
 
-. *How does the solution protect against ransomware?*
+. **How does the solution protect against ransomware?**
 +
 --
 {storware-long} supports immutable backup repositories when used with object storage platforms that provide object lock capabilities, such as S3 Object Lock.

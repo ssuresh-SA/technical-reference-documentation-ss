@@ -236,10 +236,13 @@
 
 
 :contrib1-firstname: Artur
-:contrib1-surname: Wojcik
+:contrib1-surname: Wójcik
 :contrib1-jobtitle: Senior IT Infrastructure Architect
 :contrib1-orgname: Storware
-
+:contrib2-firstname: Jacek
+:contrib2-surname: Kochan
+:contrib2-jobtitle: Senior Infrastructure Specialist
+:contrib2-orgname: Storware
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
