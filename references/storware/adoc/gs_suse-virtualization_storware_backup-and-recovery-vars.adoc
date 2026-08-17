@@ -19,7 +19,7 @@
 //   This is typically a series of words (often from the document title)
 //   separated by hyphens (-).
 //   (e.g., "rancher-kubflow-deployment")
-:article-id: gs_suse-virtualization_storware_backup-and-recovery
+:article-id: gs-suse-virtualization-storware-backup-and-recovery
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
