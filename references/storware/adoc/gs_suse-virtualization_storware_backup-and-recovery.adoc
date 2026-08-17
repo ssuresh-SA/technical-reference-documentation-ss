@@ -122,7 +122,7 @@ Deploy the {storware-long} server and configure the backup destination.
 
 . Configure a backup destination according to the {storware-docs-backup-destinations}[Storware backup destination documentation].
 
-. Verify that the {storware-long} services are running and that the web interface is accessible.
+. Verify that the {storware-long} services are running and that the Web interface is accessible.
 
 
 == Preparation
