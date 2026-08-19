@@ -11,36 +11,37 @@ include::./gs_suse-virtualization_catalogicsoftware-cloudcasa_self-hosted-vars.a
 As organizations increasingly adopt Kubernetes-based virtualization platforms, protecting virtual machines, persistent volumes, and application data has become a critical operational requirement.
 A reliable backup and recovery solution helps ensure business continuity, simplifies disaster recovery, and safeguards critical workloads running in production environments.
 
-This guide demonstrates how to deploy {ccasa-brand} on {sles-brand} ({sles}) with {rke2-long} to provide a centralized backup and recovery platform for {svirt-brand} clusters.
-The deployment uses a single-node {rke2-long} cluster to host the CloudCasa server, providing a dedicated platform for protecting {svirt-brand} workloads.
+This guide demonstrates how to deploy **{ccasa-brand}** on **{sles-long}** with **{rke2-long}** to provide a centralized backup and recovery platform for {svirt-long} clusters.
+The deployment uses a single-node {rke2-long} cluster to host the CloudCasa server, providing a dedicated platform for protecting {svirt-long} workloads.
 
-By following this guide, you will deploy a functional proof-of-concept environment, install {ccasa-brand} using Helm, and validate that the platform is ready to protect {svirt-brand} virtual machines and persistent workloads.
-This reference implementation provides a foundation for evaluating CloudCasa as a backup and recovery solution for {svirt-brand} environments.
+By following this guide, you will deploy a functional proof-of-concept environment, install {ccasa-brand} using Helm, and validate that the platform is ready to protect {svirt-long} virtual machines and persistent workloads.
+This reference implementation provides a foundation for evaluating CloudCasa as a backup and recovery solution for {svirt-long} environments.
 
 === Scope
 
-This guide covers the deployment of {ccasa-brand} on {sles-long} with {rke2} for protecting {svirt-brand} workloads.
+This guide covers the deployment of {ccasa-brand} on {sles-long} with {rke2} for protecting {svirt-long} workloads.
 It includes installing and configuring the operating system, deploying the {rke2} Kubernetes cluster, installing {ccasa-brand}, and validating that the deployment is operational and accessible.
 
 === Audience
 
-This guide is intended for IT administrators, Kubernetes administrators, virtualization administrators, backup administrators, and solution architects responsible for deploying and managing {ccasa-brand} to protect {svirt-brand} workloads.
+This guide is intended for **IT administrators,** **Kubernetes administrators,** **virtualization administrators,** **backup administrators,** and **solution architects** responsible for deploying and managing {ccasa-brand} to protect {svirt-long} workloads.
 
 === Acknowledgements
 
-The authors of this guide would like to recognize the contributions of the SUSE and CloudCasa engineering teams for their support in validating this architecture.
+The authors of this guide would like to recognize the contributions of the SUSE and {ccasa} engineering teams for their support in validating this architecture.
+//need to update
 
 == Architecture
 
-This architecture utilizes a single {sles} virtual machine running {rke2} to host the CloudCasa backup server.
+This architecture utilizes a single {sles} virtual machine running {rke2} to host the {ccasa} backup server.
 
 //image::suse-virtualization_cloudcasa_architecture.png[title="Architecture Overview", Architecture Overview, scaledwidth="75%", align="center"]
 
 The technical components of the solution include:
 
-* *{sles-brand} {sles-version}*: The foundational operating system providing a secure and stable platform.
-* *{rke2-brand}*: A secure, single-node Kubernetes distribution running the CloudCasa services natively as a systemd service without Docker dependencies.
-* *{svirt-brand}*: The target hyperconverged infrastructure platform containing the workloads to be backed up (v1.8 and later).
+* *{sles-long} {sles-version}*: The foundational operating system providing a secure and stable platform.
+* *{rke2-brand}*: A secure, single-node Kubernetes distribution running the {ccasa} services natively as a systemd service without Docker dependencies.
+* *{svirt-long}*: The target hyperconverged infrastructure platform containing the workloads to be backed up (v1.8 and later).
 * *CloudCasa Self-Hosted*: The backup and recovery application pulling container images securely from Azure Container Registry.
 
 === Sizing and configuration guidance
@@ -50,30 +51,30 @@ Deploy a virtual machine with the following minimum specifications:
 * *vCPU*: 4 minimum
 * *RAM*: 8GB minimum, 16GB recommended
 * *OS disk*: 100 GB
-* *Network*: NAT or Bridged; a static IP is recommended, and it must reach the {svirt-brand} management network.
+* *Network*: NAT or Bridged; a static IP is recommended, and it must reach the {svirt-long} management network.
 
 == Preparing your environment
 
-Before you begin the deployment, ensure that the required infrastructure, software access, and credentials are available. This guide assumes that a {svirt-brand} environment is available as the target platform for backup and restore validation.
+Before you begin the deployment, ensure that the required infrastructure, software access, and credentials are available. This guide assumes that a {svirt-long} environment is available as the target platform for backup and restore validation.
 
-Deploy and configure the {svirt-brand} environment according to your infrastructure requirements. Ensure that:
+Deploy and configure the {svirt-long} environment according to your infrastructure requirements. Ensure that:
 
-* The {svirt-brand} cluster is installed and operational.
+* The {svirt-long} cluster is installed and operational.
 * The management interface is accessible.
 * Virtual machine workloads and persistent storage resources are available for backup testing.
-* Network connectivity is available between the CloudCasa Self-Hosted environment and the {svirt-brand} management network.
+* Network connectivity is available between the {ccasa-brand} environment and the {svirt-long} management network.
 
 For detailed installation and configuration steps, refer to the {svirt-docs}[{svirt} Documentation].
 
-=== Prepare CloudCasa access and credentials
+=== Prepare {ccasa} access and credentials
 
-Before installing CloudCasa Self-Hosted, ensure that you have the required credentials and license information. Complete the following steps:
+Before installing {ccasa-brand}, ensure that you have the required credentials and license information. Complete the following steps:
 
-. Obtain access to the CloudCasa Support Portal using your email address and one-time login code.
-. Download the CloudCasa license file from the Support Portal.
-. Obtain the following credentials from the CloudCasa team:
+. Obtain access to the {ccasa} Support Portal using your email address and one-time login code.
+. Download the {ccasa} license file from the Support Portal.
+. Obtain the following credentials from the {ccasa} team:
 ** Helm repository credentials.
-** Azure Container Registry (ACR) credentials required to pull CloudCasa container images.
+** Azure Container Registry (ACR) credentials required to pull {ccasa} container images.
 
 [IMPORTANT]
 ====
@@ -82,7 +83,7 @@ Treat Helm repository and container registry credentials as sensitive informatio
 
 == Installing {sles-brand} and {rke2}
 
-This section describes how to prepare the operating system and deploy a single-node {rke2} cluster that will host the CloudCasa Self-Hosted services.
+This section describes how to prepare the operating system and deploy a single-node {rke2} cluster that will host the {ccasa-brand} services.
 
 For additional product information, refer to the following documentation:
 
@@ -132,9 +133,9 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ----
 
-== Installing CloudCasa
+== Installing {ccasa}
 
-This section describes how to deploy CloudCasa Self-Hosted on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the CloudCasa server, and configuring ingress to access the CloudCasa web interface.
+This section describes how to deploy {ccasa-brand} on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the {ccasa} server, and configuring ingress to access the {ccasa} Web interface.
 
 For detailed product information and the latest deployment guidance, refer to the following documentation:
 
@@ -166,7 +167,7 @@ spec:
 EOF
 ----
 
-. Create the image pull secret to access the CloudCasa registry (password is omitted for security):
+. Create the image pull secret to access the {ccasa} registry (password is omitted for security):
 +
 [source, console]
 ----
@@ -177,7 +178,7 @@ kubectl create secret docker-registry myregistrykey \
    --namespace=cloudcasa-server
 ----
 
-. Add the CloudCasa Helm repository:
+. Add the {ccasa} Helm repository:
 +
 [source, console]
 ----
@@ -218,7 +219,7 @@ amdsEnvoyUrl: local.cloudcasa.io
 amdsEnvoyPort: 443
 ----
 
-. Install the CloudCasa server using Helm:
+. Install the {ccasa} server using Helm:
 +
 [source, console]
 ----
@@ -240,38 +241,46 @@ kubectl -n cloudcasa-server delete secret amds-envoy.tls
 kubectl -n cloudcasa-server rollout restart deployments/amds-envoy
 ----
 
-== Configure SUSE Virtualization
+== Configure {svirt-long}
 
-After deploying CloudCasa Self-Hosted, configure the {svirt-brand} environment as the protected environment. CloudCasa Self-Hosted runs independently on the {rke2} cluster and connects to {svirt-brand} to discover and protect workloads.
+After deploying {ccasa-brand}, configure the {svirt-long} environment as the protected environment. {ccasa-brand} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
 
-. Log in to the CloudCasa UI.
+. Log in to the {ccasa} UI.
 . Open the Add Cluster Wizard.
 . From the Dashboard, locate the __Shortcuts__ section on the right.
 . Click __Add Cluster__.
 +
-//image
+image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
 
-=== Register the SUSE Virtualization Cluster
+[NOTE]
+====
+Alternatively, navigate to __Clusters__ from the top navigation bar and select __Add Cluster__.
+====
+
+=== Register the {svirt-long} Cluster
 
 . In the __Add Cluster__ dialog, enter the following information:
-* *Name*: Enter the name of your {svirt-brand} cluster (for example, `SUSE Virt`).
+* *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
 * *Description (Optional)*: Provide a description for the cluster.
 * *Tags (Optional)*: Add tags in the format `key:value` if required.
 * *Enable CloudCasa DR (Optional)*: Turn on the toggle if Disaster Recovery is required.
 . Expand __Advanced options__ only if additional configuration is needed.
 . Click __Register__ to register the cluster with CloudCasa.
 
-=== Install the CloudCasa Agent
+=== Install the {ccasa} Agent
 
 After clicking __Register__, the __Install Agent__ dialog appears.
 
 . Ensure the __Manual (kubectl)__ tab is selected.
 . Click the __Copy__ icon to copy the generated `kubectl apply` command.
-. Log in to the {svirt-brand} CLI (or a management host) that has:
+. Log in to the {svirt-long} CLI (or a management host) that has:
 ** `kubectl` installed.
-** Access to the {svirt-brand} Kubernetes cluster.
+** Access to the {svirt-long} Kubernetes cluster.
 ** The `kubeconfig` configured for the target cluster.
-. Verify that the current `kubectl` context points to the target {svirt-brand} cluster.
+. Verify that the current `kubectl` context points to the target {svirt-long} cluster.
++
+image::cloudcasa_agent_installation.png[title="CloudCasa Agent Installation Command", alt="CloudCasa Agent Installation Command", scaledwidth="75%", align="center"]
+
 . Paste and execute the copied command in the terminal.
 +
 --
@@ -283,44 +292,58 @@ kubectl apply -f https://<cloudcasa-server>/api/kubeclusteragents/<agent-id>.yam
 
 [NOTE]
 ====
-For self-hosted CloudCasa deployments using a self-signed certificate, enable the __CloudCasa service is installed with self-signed certificate__ option before copying the command, if applicable.
+For {ccasa-brand} deployments using a self-signed certificate, enable the __CloudCasa service is installed with self-signed certificate__ option before copying the command, if applicable.
 ====
 --
 
 === Verify Agent Installation
 
 . Wait a few minutes for the agent to start.
-. Verify that the CloudCasa agent pods are running:
+. Verify that the {ccasa} agent pods are running:
 +
 [source, console]
 ----
 kubectl get pods -n cloudcasa-io
 ----
-. You should see the CloudCasa agent pods in the `Running` state.
+. You should see the {ccasa} agent pods in the `Running` state.
 
 === Confirm the Cluster is Active
 
-. Return to the CloudCasa UI.
+. Return to the {ccasa} UI.
 . Click __Close__ on the __Install Agent__ dialog.
 . Click __Done__ in the __Add Cluster__ pane.
 . Navigate to __Clusters__ > __Overview__.
 . Wait for the cluster status to change from `REGISTERED` to `ACTIVE`.
++
+image::cloudcasa_cluster_active.png[title="SUSE Virtualization Cluster Active in CloudCasa", alt="SUSE Virtualization Cluster Active in CloudCasa", scaledwidth="75%", align="center"]
 
 Only after the cluster becomes `ACTIVE` can you perform backup, restore, replication, or migration operations.
 
 == Validating the solution
 
-This section demonstrates that CloudCasa Self-Hosted correctly protects and recovers {svirt-brand} workloads. The validation follows a complete cycle, defining and running a backup, simulating data loss by deleting the virtual machine, restoring it from the backup, and confirming the data survived the round trip.
+This section demonstrates that {ccasa-brand} correctly protects and recovers {svirt-long} workloads. The validation follows a complete cycle, defining and running a backup, simulating data loss by deleting the virtual machine, restoring it from the backup, and confirming the data survived the round trip.
 
-=== Define and run a backup
+=== Part 1: Define and run a backup
 
-. Log in to the CloudCasa UI. From the top menu, navigate to __Clusters__.
+. Log in to the {ccasa} UI. From the top menu, navigate to __Clusters__.
 . Select the __Backups__ tab, then click __Define Backup+__.
 . In the __Define Cluster Backup__ wizard, select the target cluster and click __Next__.
++
+image::cloudcasa_backup_select_cluster.png[title="Select Cluster in Backup Wizard", alt="Select Cluster in Backup Wizard", scaledwidth="75%", align="center"]
+
 . On the __VMs/PVCs__ tab, enable __Copy to backup storage__ to ensure persistent volumes are copied, then click __Select resources__.
 . In the __Browse cluster resources__ window, select the namespace and virtual machine to protect. Click __Confirm__, then __Next__.
++
+image::cloudcasa_backup_browse_resources.png[title="Browse Cluster Resources to Protect", alt="Browse Cluster Resources to Protect", scaledwidth="75%", align="center"]
+
 . On the __Summary__ screen, provide a name for the backup job, set the retention period (for example, `7` days), enable __Run now__, and click __Create__.
++
+image::cloudcasa_backup_summary.png[title="Define Cluster Backup Summary", alt="Define Cluster Backup Summary", scaledwidth="75%", align="center"]
+
 . Monitor the job from the Backups list. Open the __Activity details__ to track progress. The job type displays as `K8S COPY`, and the __PV Details__ tab shows persistent volumes as they are copied, mounted, and snapshotted.
++
+image::cloudcasa_backup_activity_details.png[title="Backup Job Activity Details", alt="Backup Job Activity Details", scaledwidth="75%", align="center"]
+
 . Wait until the job status changes to `COMPLETED` before proceeding.
 +
 [IMPORTANT]
@@ -330,29 +353,44 @@ Do not proceed to the next step until the backup status shows `COMPLETED`. Resto
 
 === Part 2: Simulate data loss
 
-. Switch to the {svirt-brand} (Harvester) UI.
+. Switch to the {svirt-long} (Harvester) UI.
 . Locate the virtual machine backed up in Part 1.
 . Select the virtual machine and delete it, acknowledging the warning that associated snapshots and volumes are also removed.
++
+image::harvester_delete_vm_confirmation.png[title="Confirm VM Deletion in Harvester", alt="Confirm VM Deletion in Harvester", scaledwidth="75%", align="center"]
 
 This step confirms that the virtual machine and its underlying volumes no longer exist in the cluster, establishing a genuine loss scenario for the restore to recover from.
 
 === Part 3: Restore the virtual machine
 
-. Return to the CloudCasa UI and navigate to __Clusters__ > __Restores__.
+. Return to the {ccasa} UI and navigate to __Clusters__ > __Restores__.
 . Click __Define Restore+__.
 . Select the source cluster and click __Next__.
 . On the __Recovery Point__ screen, select the backup job created in Part 1 from the list of available snapshots and copies.
 . Click __Select resources__. In the __Recovery Point Browser__, expand __Virtual Machines__ and select the virtual machine to restore. Click __Confirm__.
++
+image::cloudcasa_restore_select_vm.png[title="Select VM in Recovery Point Browser", alt="Select VM in Recovery Point Browser", scaledwidth="75%", align="center"]
+
 . For __Destination__, select __Use existing cluster__ and choose the original source cluster. Review the __Restore Transforms__ options and click __Next__.
++
+image::cloudcasa_restore_destination.png[title="Select Restore Destination Cluster", alt="Select Restore Destination Cluster", scaledwidth="75%", align="center"]
+
 . On the __Summary__ page, provide a name for the restore job and click __Save & Restore__ to start the process.
 . Monitor the restore job until it completes successfully.
++
+image::cloudcasa_restore_activity_details.png[title="Restore Job Activity Details", alt="Restore Job Activity Details", scaledwidth="75%", align="center"]
 
 === Part 4: Validate the restoration
 
-. Return to the {svirt-brand} UI and navigate to __Virtual Machines__.
+. Return to the {svirt-long} UI and navigate to __Virtual Machines__.
 . Confirm that the restored virtual machine appears in its original namespace. It starts in an `Off` state.
++
+image::harvester_restored_vm_starting.png[title="Restored VM in Harvester UI", alt="Restored VM in Harvester UI", scaledwidth="75%", align="center"]
+
 . Power on the virtual machine and open the console.
 . Log in and verify that data created before the backup is still present (for example, read back a test file written prior to Step 1).
++
+image::harvester_vm_console_data_validation.png[title="VM Console Showing Restored Data Verification", alt="VM Console Showing Restored Data Verification", scaledwidth="75%", align="center"]
 
 A successful validation confirms that the file content matches what existed before deletion, demonstrating that CloudCasa restored both the virtual machine definition and its persistent data correctly.
 
@@ -367,17 +405,29 @@ This guide described the steps required to deploy a CloudCasa Self-Hosted proof-
 
 == Frequently Asked Questions
 
-What is CloudCasa Self-Hosted?::
-CloudCasa Self-Hosted is a deployment model in which the CloudCasa management server runs in your own Kubernetes environment instead of the CloudCasa SaaS platform. This approach allows you to manage the backup infrastructure within your organization while protecting Kubernetes and {svirt-brand} workloads.
+. **What is {ccasa-brand}?**
++
+--
+{ccasa-brand} is a deployment model in which the {ccasa} management server runs in your own Kubernetes environment instead of the {ccasa} SaaS platform. This approach allows you to manage the backup infrastructure within your organization while protecting Kubernetes and {svirt-long} workloads.
+--
 
-Can I use an external identity provider like LDAP or OIDC?::
-While CloudCasa supports LDAP and OIDC integrations, a local authentication provider is strictly recommended for this proof-of-concept. This keeps the focus squarely on validating backup and restore functionality without adding unnecessary authentication complexity.
+. **Can I use an external identity provider like LDAP or OIDC?**
++
+--
+While {ccasa} supports LDAP and OIDC integrations, a local authentication provider is strictly recommended for this proof-of-concept. This keeps the focus squarely on validating backup and restore functionality without adding unnecessary authentication complexity.
+--
 
-Does CloudCasa require Docker?::
-No, CloudCasa is runtime-agnostic. This architecture uses {rke2}, which utilizes containerd natively, and it has no impact on CloudCasa operations.
+. **Does {ccasa} require Docker?**
++
+--
+No, {ccasa} is runtime-agnostic. This architecture uses {rke2}, which utilizes containerd natively, and it has no impact on {ccasa} operations.
+--
 
-Do I need a valid CloudCasa license to deploy this proof-of-concept?::
-Yes. A valid CloudCasa Self-Hosted license is required to deploy and evaluate the proof-of-concept described in this guide. Before you begin, obtain a license file and the required deployment credentials (such as the Helm repository and container registry credentials) from the CloudCasa Support Team. If you do not have access, contact CloudCasa Support to request the necessary evaluation resources.
+. **Do I need a valid {ccasa} license to deploy this proof-of-concept?**
++
+--
+Yes. A valid {ccasa-brand} license is required to deploy and evaluate the proof-of-concept described in this guide. Before you begin, obtain a license file and the required deployment credentials (such as the Helm repository and container registry credentials) from the {ccasa} Support Team. If you do not have access, contact {ccasa-provider} Support to request the necessary evaluation resources.
+--
 
 ++++
 <?pdfpagebreak?>

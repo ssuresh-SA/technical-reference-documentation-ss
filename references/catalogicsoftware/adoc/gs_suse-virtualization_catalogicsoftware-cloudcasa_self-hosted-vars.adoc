@@ -110,7 +110,7 @@
 :sles-docs: https://documentation.suse.com/sles/
 
 // RKE2 Variables
-:rke2-provider: SUSE
+//:rke2-provider: SUSE
 :rke2-brand: RKE2
 :rke2-long: RKE2
 :rke2: RKE2
@@ -129,11 +129,11 @@
 // CloudCasa Variables
 :ccasa-provider: Catalogic Software
 :ccasa-brand: CloudCasa Self-Hosted
-:ccasa-long: CloudCasa Self-Hosted
 :ccasa: CloudCasa
 :ccasa-website: https://docs.cloudcasa.io/help/self-hosted/
 :ccasa-docs: https://docs.cloudcasa.io/help/self-hosted/
 :ccasa-support: https://support.cloudcasa.io/
+:ccasa-version1: 1.6.7
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
