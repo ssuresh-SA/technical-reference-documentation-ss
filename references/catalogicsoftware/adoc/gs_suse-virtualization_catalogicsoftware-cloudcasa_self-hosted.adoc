@@ -35,7 +35,7 @@ The authors of this guide would like to recognize the contributions of the SUSE 
 
 This architecture utilizes a single {sles} virtual machine running {rke2} to host the {ccasa} backup server.
 
-//image::suse-virtualization_cloudcasa_architecture.png[title="Architecture Overview", Architecture Overview, scaledwidth="75%", align="center"]
+image::suse-virtualization_cloudcasa_architecture.png[title="Architecture Overview", Architecture Overview, scaledwidth="75%", align="center"]
 
 The technical components of the solution include:
 
