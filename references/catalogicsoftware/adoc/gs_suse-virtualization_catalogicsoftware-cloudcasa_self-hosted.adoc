@@ -6,6 +6,17 @@ include::./gs_suse-virtualization_catalogicsoftware-cloudcasa_self-hosted-vars.a
 
 = {doctitle}: {docsubtitle}
 
+
+== Key takeaways
+
+* Takeaway 1
+
+* Takeaway 2
+
+* Takeaway 3
+
+
+
 == Introduction
 
 As organizations increasingly adopt Kubernetes-based virtualization platforms, protecting virtual machines, persistent volumes, and application data has become a critical operational requirement.
@@ -35,7 +46,7 @@ The authors of this guide would like to recognize the contributions of the SUSE 
 
 This architecture utilizes a single {sles} virtual machine running {rke2} to host the {ccasa} backup server.
 
-image::suse-virtualization_cloudcasa_architecture.png[title="Architecture Overview", Architecture Overview, scaledwidth="75%", align="center"]
+image::arch-svirt-cloudcasa-selfhosted.png[title="Architecture Overview", Architecture Overview, scaledwidth="75%", align="center"]
 
 The technical components of the solution include:
 
