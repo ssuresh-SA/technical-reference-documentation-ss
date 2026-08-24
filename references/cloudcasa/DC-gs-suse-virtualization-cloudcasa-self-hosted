@@ -13,7 +13,7 @@ ROLE="trd"
 ##
 
 # Main Document 
-MAIN="gs_suse-virtualization_catalogicsoftware-cloudcasa_self-hosted.adoc"
+MAIN="gs-suse-virtualization-cloudcasa-self-hosted.adoc"
 
 # Format Type
 ADOC_TYPE="article"
