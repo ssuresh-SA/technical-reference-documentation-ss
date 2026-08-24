@@ -9,11 +9,11 @@ include::./gs-suse-virtualization-cloudcasa-self-hosted-vars.adoc[]
 
 == Key takeaways
 
-* Takeaway 1
+* Deploy **{ccasa-brand}** on **{sles-long}** with **{rke2-long}** to provide a centralized backup and recovery platform for {svirt-long} workloads.
 
-* Takeaway 2
+* Configure **{ccasa-brand}** to protect {svirt-long} virtual machines and persistent volumes by registering the cluster and deploying the CloudCasa agent.
 
-* Takeaway 3
+* Validate end-to-end backup and restore functionality by backing up a virtual machine, simulating data loss, restoring the workload, and verifying the recovered data.
 
 
 
@@ -39,8 +39,9 @@ This guide is intended for **IT administrators,** **Kubernetes administrators,**
 
 === Acknowledgements
 
-The authors of this guide would like to recognize the contributions of the SUSE and {ccasa} engineering teams for their support in validating this architecture.
-//need to update
+The authors wish to acknowledge the contributions of the following individuals to the creation of this document:
+
+* {contrib1-firstname} {contrib1-surname}, {contrib1-jobtitle}, {contrib1-orgname}
 
 == Architecture
 
@@ -50,10 +51,10 @@ image::arch-svirt-cloudcasa-selfhosted.png[title="Architecture Overview", Archit
 
 The technical components of the solution include:
 
-* *{sles-long} {sles-version}*: The foundational operating system providing a secure and stable platform.
-* *{rke2-brand}*: A secure, single-node Kubernetes distribution running the {ccasa} services natively as a systemd service without Docker dependencies.
-* *{svirt-long}*: The target hyperconverged infrastructure platform containing the workloads to be backed up (v1.8 and later).
 * *CloudCasa Self-Hosted*: The backup and recovery application pulling container images securely from Azure Container Registry.
+* *{svirt-long}*: The target hyperconverged infrastructure platform containing the workloads to be backed up (v1.8 and later).
+* *{rke2-brand}*: A secure, single-node Kubernetes distribution running the {ccasa} services natively as a systemd service without Docker dependencies.
+* *{sles-long}*: The foundational operating system providing a secure and stable platform (v15 SP7 and later).
 
 === Sizing and configuration guidance
 
@@ -70,10 +71,10 @@ Before you begin the deployment, ensure that the required infrastructure, softwa
 
 Deploy and configure the {svirt-long} environment according to your infrastructure requirements. Ensure that:
 
-* The {svirt-long} cluster is installed and operational.
-* The management interface is accessible.
-* Virtual machine workloads and persistent storage resources are available for backup testing.
-* Network connectivity is available between the {ccasa-brand} environment and the {svirt-long} management network.
+. The {svirt-long} cluster is installed and operational.
+. The management interface is accessible.
+. Virtual machine workloads and persistent storage resources are available for backup testing.
+. Network connectivity is available between the {ccasa-brand} environment and the {svirt-long} management network.
 
 For detailed installation and configuration steps, refer to the {svirt-docs}[{svirt} Documentation].
 
@@ -125,7 +126,7 @@ sudo systemctl enable rke2-server.service
 sudo systemctl start rke2-server.service
 ----
 
-. Configure kubectl access for your environment and confirm the node is ready (must be version >= v1.23):
+. Configure kubectl (v1.23 or later) access for your environment and confirm the node is ready:
 +
 [source, console]
 ----
@@ -160,7 +161,7 @@ For detailed product information and the latest deployment guidance, refer to th
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ----
 
-. Install cert-manager version v1.12.4 and create a self-signed issuer for the proof-of-concept:
+. Install cert-manager v1.12.4 or later and create a self-signed issuer for the proof-of-concept:
 +
 [source, console]
 ----
@@ -268,7 +269,7 @@ image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Clus
 Alternatively, navigate to __Clusters__ from the top navigation bar and select __Add Cluster__.
 ====
 
-=== Register the {svirt-long} Cluster
+=== Register the {svirt-long} cluster
 
 . In the __Add Cluster__ dialog, enter the following information:
 * *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
@@ -278,7 +279,7 @@ Alternatively, navigate to __Clusters__ from the top navigation bar and select _
 . Expand __Advanced options__ only if additional configuration is needed.
 . Click __Register__ to register the cluster with CloudCasa.
 
-=== Install the {ccasa} Agent
+=== Install the {ccasa} agent
 
 After clicking __Register__, the __Install Agent__ dialog appears.
 
@@ -307,7 +308,7 @@ For {ccasa-brand} deployments using a self-signed certificate, enable the __Clou
 ====
 --
 
-=== Verify Agent Installation
+=== Verify Agent installation
 
 . Wait a few minutes for the agent to start.
 . Verify that the {ccasa} agent pods are running:
@@ -318,7 +319,7 @@ kubectl get pods -n cloudcasa-io
 ----
 . You should see the {ccasa} agent pods in the `Running` state.
 
-=== Confirm the Cluster is Active
+=== Confirm the cluster is active
 
 . Return to the {ccasa} UI.
 . Click __Close__ on the __Install Agent__ dialog.
@@ -334,7 +335,7 @@ Only after the cluster becomes `ACTIVE` can you perform backup, restore, replica
 
 This section demonstrates that {ccasa-brand} correctly protects and recovers {svirt-long} workloads. The validation follows a complete cycle, defining and running a backup, simulating data loss by deleting the virtual machine, restoring it from the backup, and confirming the data survived the round trip.
 
-=== Part 1: Define and run a backup
+=== Define and run a backup
 
 . Log in to the {ccasa} UI. From the top menu, navigate to __Clusters__.
 . Select the __Backups__ tab, then click __Define Backup+__.
@@ -362,22 +363,22 @@ image::cloudcasa_backup_activity_details.png[title="Backup Job Activity Details"
 Do not proceed to the next step until the backup status shows `COMPLETED`. Restoring from an in-progress backup produces inconsistent results.
 ====
 
-=== Part 2: Simulate data loss
+=== Simulate data loss
 
 . Switch to the {svirt-long} (Harvester) UI.
-. Locate the virtual machine backed up in Part 1.
+. Locate the virtual machine backed up in the previous procedure.
 . Select the virtual machine and delete it, acknowledging the warning that associated snapshots and volumes are also removed.
 +
 image::harvester_delete_vm_confirmation.png[title="Confirm VM Deletion in Harvester", alt="Confirm VM Deletion in Harvester", scaledwidth="75%", align="center"]
 
 This step confirms that the virtual machine and its underlying volumes no longer exist in the cluster, establishing a genuine loss scenario for the restore to recover from.
 
-=== Part 3: Restore the virtual machine
+=== Restore the virtual machine
 
 . Return to the {ccasa} UI and navigate to __Clusters__ > __Restores__.
 . Click __Define Restore+__.
 . Select the source cluster and click __Next__.
-. On the __Recovery Point__ screen, select the backup job created in Part 1 from the list of available snapshots and copies.
+. On the __Recovery Point__ screen, select the backup job created in the previous procedure from the list of available snapshots and copies.
 . Click __Select resources__. In the __Recovery Point Browser__, expand __Virtual Machines__ and select the virtual machine to restore. Click __Confirm__.
 +
 image::cloudcasa_restore_select_vm.png[title="Select VM in Recovery Point Browser", alt="Select VM in Recovery Point Browser", scaledwidth="75%", align="center"]
@@ -391,7 +392,7 @@ image::cloudcasa_restore_destination.png[title="Select Restore Destination Clust
 +
 image::cloudcasa_restore_activity_details.png[title="Restore Job Activity Details", alt="Restore Job Activity Details", scaledwidth="75%", align="center"]
 
-=== Part 4: Validate the restoration
+=== Validate the restoration
 
 . Return to the {svirt-long} UI and navigate to __Virtual Machines__.
 . Confirm that the restored virtual machine appears in its original namespace. It starts in an `Off` state.
@@ -399,7 +400,7 @@ image::cloudcasa_restore_activity_details.png[title="Restore Job Activity Detail
 image::harvester_restored_vm_starting.png[title="Restored VM in Harvester UI", alt="Restored VM in Harvester UI", scaledwidth="75%", align="center"]
 
 . Power on the virtual machine and open the console.
-. Log in and verify that data created before the backup is still present (for example, read back a test file written prior to Step 1).
+. Log in and verify that data created before the backup is still present (for example, read back a test file written before the backup procedure).
 +
 image::harvester_vm_console_data_validation.png[title="VM Console Showing Restored Data Verification", alt="VM Console Showing Restored Data Verification", scaledwidth="75%", align="center"]
 
@@ -409,7 +410,6 @@ A successful validation confirms that the file content matches what existed befo
 ====
 This validation confirms basic backup and restore functionality on a single cluster. It does not validate Longhorn DR replication or the CloudCasa DR plan workflow.
 ====
-
 == Summary
 
 This guide described the steps required to deploy a CloudCasa Self-Hosted proof-of-concept environment on {sles-long} and {rke2}. You prepared the operating system, deployed and configured a single-node {rke2} cluster, configured local storage, installed CloudCasa Self-Hosted using Helm, and validated that the deployment is operational.

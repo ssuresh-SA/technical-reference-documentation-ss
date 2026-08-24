@@ -240,10 +240,15 @@
 :author2-jobtitle: Partner Solution Architect
 :author2-orgname: SUSE
 
-:author3-firstname: Terry
-:author3-surname: Smith
-:author3-jobtitle: Partner Ecosystem Solution Innovations Director
-:author3-orgname: SUSE
+// :author3-firstname: Terry
+// :author3-surname: Smith
+// :author3-jobtitle: Partner Ecosystem Solution Innovations Director
+// :author3-orgname: SUSE
+
+:contrib1-firstname: Terry
+:contrib1-surname: Smith
+:contrib1-jobtitle: Partner Ecosystem Solution Innovations Director
+:contrib1-orgname: SUSE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
