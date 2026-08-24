@@ -19,7 +19,7 @@
 //   This is typically a series of words (often from the document title)
 //   separated by hyphens (-).
 //   (e.g., "rancher-kubflow-deployment")
-:article-id: gs-suse-virtualization-catalogicsoftware-cloudcasa-self-hosted
+:article-id: gs-suse-virtualization-cloudcasa-self-hosted
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ARTICLE IDENTIFIER

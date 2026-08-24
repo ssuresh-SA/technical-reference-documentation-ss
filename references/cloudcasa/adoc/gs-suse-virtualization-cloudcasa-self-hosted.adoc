@@ -1,6 +1,6 @@
 :docinfo:
 include::./common_docinfo_vars.adoc[]
-include::./gs_suse-virtualization_catalogicsoftware-cloudcasa_self-hosted-vars.adoc[]
+include::./gs-suse-virtualization-cloudcasa-self-hosted-vars.adoc[]
 [#art-{article-id}]
 
 
