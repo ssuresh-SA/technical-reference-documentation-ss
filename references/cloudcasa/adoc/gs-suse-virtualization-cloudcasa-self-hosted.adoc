@@ -9,9 +9,9 @@ include::./gs-suse-virtualization-cloudcasa-self-hosted-vars.adoc[]
 
 == Key takeaways
 
-* Deploy **{ccasa-brand}** on **{sles-long}** with **{rke2-long}** to provide a centralized backup and recovery platform for {svirt-long} workloads.
+* Deploy **{ccasa-long}** on **{sles-long}** with **{rke2-long}** to provide a centralized backup and recovery platform for {svirt-long} workloads.
 
-* Configure **{ccasa-brand}** to protect {svirt-long} virtual machines and persistent volumes by registering the cluster and deploying the CloudCasa agent.
+* Configure **{ccasa-long}** to protect {svirt-long} virtual machines and persistent volumes by registering the cluster and deploying the CloudCasa agent.
 
 * Validate end-to-end backup and restore functionality by backing up a virtual machine, simulating data loss, restoring the workload, and verifying the recovered data.
 
@@ -25,17 +25,17 @@ A reliable backup and recovery solution helps ensure business continuity, simpli
 This guide demonstrates how to deploy **{ccasa-brand}** on **{sles-long}** with **{rke2-long}** to provide a centralized backup and recovery platform for {svirt-long} clusters.
 The deployment uses a single-node {rke2-long} cluster to host the CloudCasa server, providing a dedicated platform for protecting {svirt-long} workloads.
 
-By following this guide, you will deploy a functional proof-of-concept environment, install {ccasa-brand} using Helm, and validate that the platform is ready to protect {svirt-long} virtual machines and persistent workloads.
+By following this guide, you will deploy a functional proof-of-concept environment, install {ccasa-long} using Helm, and validate that the platform is ready to protect {svirt-long} virtual machines and persistent workloads.
 This reference implementation provides a foundation for evaluating CloudCasa as a backup and recovery solution for {svirt-long} environments.
 
 === Scope
 
-This guide covers the deployment of {ccasa-brand} on {sles-long} with {rke2} for protecting {svirt-long} workloads.
-It includes installing and configuring the operating system, deploying the {rke2} Kubernetes cluster, installing {ccasa-brand}, and validating that the deployment is operational and accessible.
+This guide covers the deployment of {ccasa-long} on {sles-long} with {rke2} for protecting {svirt-long} workloads.
+It includes installing and configuring the operating system, deploying the {rke2} Kubernetes cluster, installing {ccasa-long}, and validating that the deployment is operational and accessible.
 
 === Audience
 
-This guide is intended for **IT administrators,** **Kubernetes administrators,** **virtualization administrators,** **backup administrators,** and **solution architects** responsible for deploying and managing {ccasa-brand} to protect {svirt-long} workloads.
+This guide is intended for **IT administrators,** **Kubernetes administrators,** **virtualization administrators,** **backup administrators,** and **solution architects** responsible for deploying and managing {ccasa-long} to protect {svirt-long} workloads.
 
 === Acknowledgements
 
@@ -74,13 +74,13 @@ Deploy and configure the {svirt-long} environment according to your infrastructu
 . The {svirt-long} cluster is installed and operational.
 . The management interface is accessible.
 . Virtual machine workloads and persistent storage resources are available for backup testing.
-. Network connectivity is available between the {ccasa-brand} environment and the {svirt-long} management network.
+. Network connectivity is available between the {ccasa-long} environment and the {svirt-long} management network.
 
 For detailed installation and configuration steps, refer to the {svirt-docs}[{svirt} Documentation].
 
 === Prepare {ccasa} access and credentials
 
-Before installing {ccasa-brand}, ensure that you have the required credentials and license information. Complete the following steps:
+Before installing {ccasa-long}, ensure that you have the required credentials and license information. Complete the following steps:
 
 . Obtain access to the {ccasa} Support Portal using your email address and one-time login code.
 . Download the {ccasa} license file from the Support Portal.
@@ -95,7 +95,7 @@ Treat Helm repository and container registry credentials as sensitive informatio
 
 == Installing {sles-brand} and {rke2}
 
-This section describes how to prepare the operating system and deploy a single-node {rke2} cluster that will host the {ccasa-brand} services.
+This section describes how to prepare the operating system and deploy a single-node {rke2} cluster that will host the {ccasa-long} services.
 
 For additional product information, refer to the following documentation:
 
@@ -147,7 +147,7 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
 
 == Installing {ccasa}
 
-This section describes how to deploy {ccasa-brand} on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the {ccasa} server, and configuring ingress to access the {ccasa} Web interface.
+This section describes how to deploy {ccasa-long} on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the {ccasa} server, and configuring ingress to access the {ccasa} Web interface.
 
 For detailed product information and the latest deployment guidance, refer to the following documentation:
 
@@ -255,7 +255,7 @@ kubectl -n cloudcasa-server rollout restart deployments/amds-envoy
 
 == Configure {svirt-long}
 
-After deploying {ccasa-brand}, configure the {svirt-long} environment as the protected environment. {ccasa-brand} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
+After deploying {ccasa-long}, configure the {svirt-long} environment as the protected environment. {ccasa-long} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
 
 . Log in to the {ccasa} UI.
 . Open the Add Cluster Wizard.
@@ -304,7 +304,7 @@ kubectl apply -f https://<cloudcasa-server>/api/kubeclusteragents/<agent-id>.yam
 
 [NOTE]
 ====
-For {ccasa-brand} deployments using a self-signed certificate, enable the __CloudCasa service is installed with self-signed certificate__ option before copying the command, if applicable.
+For {ccasa-long} deployments using a self-signed certificate, enable the __CloudCasa service is installed with self-signed certificate__ option before copying the command, if applicable.
 ====
 --
 
@@ -333,7 +333,7 @@ Only after the cluster becomes `ACTIVE` can you perform backup, restore, replica
 
 == Validating the solution
 
-This section demonstrates that {ccasa-brand} correctly protects and recovers {svirt-long} workloads. The validation follows a complete cycle, defining and running a backup, simulating data loss by deleting the virtual machine, restoring it from the backup, and confirming the data survived the round trip.
+This section demonstrates that {ccasa-long} correctly protects and recovers {svirt-long} workloads. The validation follows a complete cycle, defining and running a backup, simulating data loss by deleting the virtual machine, restoring it from the backup, and confirming the data survived the round trip.
 
 === Define and run a backup
 
@@ -416,10 +416,10 @@ This guide described the steps required to deploy a CloudCasa Self-Hosted proof-
 
 == Frequently Asked Questions
 
-. **What is {ccasa-brand}?**
+. **What is {ccasa-long}?**
 +
 --
-{ccasa-brand} is a deployment model in which the {ccasa} management server runs in your own Kubernetes environment instead of the {ccasa} SaaS platform. This approach allows you to manage the backup infrastructure within your organization while protecting Kubernetes and {svirt-long} workloads.
+{ccasa-long} is a deployment model in which the {ccasa} management server runs in your own Kubernetes environment instead of the {ccasa} SaaS platform. This approach allows you to manage the backup infrastructure within your organization while protecting Kubernetes and {svirt-long} workloads.
 --
 
 . **Can I use an external identity provider like LDAP or OIDC?**
@@ -437,7 +437,7 @@ No, {ccasa} is runtime-agnostic. This architecture uses {rke2}, which utilizes c
 . **Do I need a valid {ccasa} license to deploy this proof-of-concept?**
 +
 --
-Yes. A valid {ccasa-brand} license is required to deploy and evaluate the proof-of-concept described in this guide. Before you begin, obtain a license file and the required deployment credentials (such as the Helm repository and container registry credentials) from the {ccasa} Support Team. If you do not have access, contact {ccasa-provider} Support to request the necessary evaluation resources.
+Yes. A valid {ccasa-long} license is required to deploy and evaluate the proof-of-concept described in this guide. Before you begin, obtain a license file and the required deployment credentials (such as the Helm repository and container registry credentials) from the {ccasa} Support Team. If you do not have access, contact {ccasa-provider} Support to request the necessary evaluation resources.
 --
 
 ++++

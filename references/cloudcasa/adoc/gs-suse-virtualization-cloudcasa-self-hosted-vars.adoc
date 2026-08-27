@@ -111,11 +111,11 @@
 
 // RKE2 Variables
 //:rke2-provider: SUSE
-:rke2-brand: RKE2
-:rke2-long: RKE2
+:rke2-brand: SUSE® Rancher Kubernetes Engine (RKE2)
+:rke2-long: SUSE Rancher Kubernetes Engine (RKE2)
 :rke2: RKE2
-:rke2-website: https://docs.rke2.io/
-:rke2-docs: https://docs.rke2.io/
+:rke2-website: https://documentation.suse.com/cloudnative/rke2/latest/en/introduction.html
+:rke2-docs: https://documentation.suse.com/cloudnative/rke2/
 
 // SUSE Virtualization Variables
 :svirt-provider: SUSE
@@ -128,7 +128,8 @@
 
 // CloudCasa Variables
 :ccasa-provider: Catalogic Software
-:ccasa-brand: CloudCasa Self-Hosted
+:ccasa-brand: CloudCasa™ Self-Hosted
+:ccasa-long: CloudCasa Self-Hosted
 :ccasa: CloudCasa
 :ccasa-website: https://docs.cloudcasa.io/help/self-hosted/
 :ccasa-docs: https://docs.cloudcasa.io/help/self-hosted/
@@ -168,17 +169,17 @@
 //        will appear as:
 //          "Integrating SUSE Virtualization with Hitachi VSP Storage"
 // -
-:doctitle: Getting Started with CloudCasa Self-Hosted on SUSE
+:doctitle: {ccasa-long} with {svirt-long}
 
-:docsubtitle: Building a Backup and Restore Solution for SUSE Virtualization
+:docsubtitle: A versatile and cost-effective data protection solution
 
-:usecase: Backup and restore solution for SUSE Virtualization
+:usecase: data protection, backup, disaster recovery, migration, and replication
 
-:description: A guide to building a CloudCasa self-hosted server on SLES 15 SP7 and RKE2 for evaluating SUSE Virtualization cluster backup and restore capabilities.
+:description: Learn how to use {ccasa-long} to protect your air-gapped {svirt-long} environment with cloud native backup, disaster recovery, migration, and replication.
 
-:description-social: CloudCasa Backup with SUSE Linux Enterprise
+:description-social: Air-gapped deployment of {ccasa-long} with {svirt}
 
-:executive-summary: This guide provides step-by-step instructions for deploying a CloudCasa self-hosted proof-of-concept environment on SUSE Linux Enterprise Server and RKE2, enabling backup and restore validation for SUSE Virtualization clusters.
+:executive-summary: This guide provides step-by-step instructions for deploying {ccasa-brand} to protect your air-gapped {svirt-brand} environment with cloud native backup, disaster recovery, migration, and replication.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
