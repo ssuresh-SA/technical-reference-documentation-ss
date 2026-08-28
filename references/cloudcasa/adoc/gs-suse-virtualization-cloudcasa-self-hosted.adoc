@@ -9,11 +9,15 @@ include::./gs-suse-virtualization-cloudcasa-self-hosted-vars.adoc[]
 
 == Key takeaways
 
-* Deploy **{ccasa-long}** on **{sles-long}** with **{rke2-long}** to provide a centralized backup and recovery platform for {svirt-long} workloads.
+{svirt-long} with CloudCasa Self-Hosted provides:
 
-* Configure **{ccasa-long}** to protect {svirt-long} virtual machines and persistent volumes by registering the cluster and deploying the CloudCasa agent.
+* Full control for regulated or air-gapped environments via self-hosting.
 
-* Validate end-to-end backup and restore functionality by backing up a virtual machine, simulating data loss, restoring the workload, and verifying the recovered data.
+* Business continuity for container and Kubernetes-native virtual machine workloads.
+
+* Centralized backup and recovery for virtual machines and persistent volumes.
+
+* Validated end-to-end backup and recovery workflows.
 
 
 
@@ -51,10 +55,10 @@ image::arch-svirt-cloudcasa-selfhosted.png[title="Architecture Overview", Archit
 
 The technical components of the solution include:
 
-* *CloudCasa Self-Hosted*: The backup and recovery application pulling container images securely from Azure Container Registry.
-* *{svirt-long}*: The target hyperconverged infrastructure platform containing the workloads to be backed up (v1.8 and later).
-* *{rke2-brand}*: A secure, single-node Kubernetes distribution running the {ccasa} services natively as a systemd service without Docker dependencies.
-* *{sles-long}*: The foundational operating system providing a secure and stable platform (v15 SP7 and later).
+* {ccasa-website}[CloudCasa Self-Hosted]: The backup and recovery application pulling container images securely from Azure Container Registry.
+* {svirt-website}[{svirt-long}]: The target hyperconverged infrastructure platform containing the workloads to be backed up (v1.8 and later).
+* {rke2-website}[{rke2-long}]: A secure, single-node Kubernetes distribution running the {ccasa} services natively as a systemd service without Docker dependencies.
+* {sles-website}[{sles-long}]: The foundational operating system providing a secure and stable platform (v15 SP7 and later).
 
 === Sizing and configuration guidance
 
