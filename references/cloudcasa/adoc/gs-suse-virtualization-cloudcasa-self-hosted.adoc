@@ -153,7 +153,7 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
 
 This section describes how to deploy {ccasa-long} on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the {ccasa} server, and configuring ingress to access the {ccasa} Web interface.
 
-For detailed product information and the latest deployment guidance, refer to the following documentation:
+For detailed product information and the latest deployment guidance, refer to the following resources:
 
 * {ccasa-docs}[CloudCasa Self-Hosted Documentation]
 * {ccasa-support}[CloudCasa Support Portal]
@@ -171,7 +171,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ----
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.4 --set installCRDs=true
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version <CERT-MANAGER-VERSION> --set installCRDs=true
 kubectl create ns cloudcasa-server
 kubectl -n cloudcasa-server apply -f - <<EOF
 apiVersion: cert-manager.io/v1
@@ -264,22 +264,22 @@ After deploying {ccasa-long}, configure the {svirt-long} environment as the prot
 . Log in to the {ccasa} UI.
 . Open the Add Cluster Wizard.
 . From the Dashboard, locate the __Shortcuts__ section on the right.
-. Click __Add Cluster__.
+. Click __Add cluster__.
 +
 image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
 
 [NOTE]
 ====
-Alternatively, navigate to __Clusters__ from the top navigation bar and select __Add Cluster__.
+Alternatively, navigate to __Clusters__ from the top navigation bar and select __Add cluster__.
 ====
 
 === Register the {svirt-long} cluster
 
-. In the __Add Cluster__ dialog, enter the following information:
+. In the __Add cluster__ dialog, enter the following information:
 * *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
 * *Description (Optional)*: Provide a description for the cluster.
 * *Tags (Optional)*: Add tags in the format `key:value` if required.
-* *Enable CloudCasa DR (Optional)*: Turn on the toggle if Disaster Recovery is required.
+* *Enable CloudCasa DR (Optional)*: Toggle if Disaster Recovery is required.
 . Expand __Advanced options__ only if additional configuration is needed.
 . Click __Register__ to register the cluster with CloudCasa.
 
@@ -292,7 +292,7 @@ After clicking __Register__, the __Install Agent__ dialog appears.
 . Log in to the {svirt-long} CLI (or a management host) that has:
 ** `kubectl` installed.
 ** Access to the {svirt-long} Kubernetes cluster.
-** The `kubeconfig` configured for the target cluster.
+** The `kubeconfig` for the target cluster.
 . Verify that the current `kubectl` context points to the target {svirt-long} cluster.
 +
 image::cloudcasa_agent_installation.png[title="CloudCasa Agent Installation Command", alt="CloudCasa Agent Installation Command", scaledwidth="75%", align="center"]
