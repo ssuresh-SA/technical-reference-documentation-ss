@@ -97,7 +97,7 @@ Before installing {ccasa-long}, ensure that you have the required credentials an
 Treat Helm repository and container registry credentials as sensitive information. Follow your organization's security practices and rotate credentials after completing the proof-of-concept evaluation.
 ====
 
-== Installing {sles-brand} and {rke2}
+== Installing {sles-long} and {rke2}
 
 This section describes how to prepare the operating system and deploy a single-node {rke2} cluster that will host the {ccasa-long} services.
 
@@ -149,6 +149,8 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ----
 
+*IMPORTANT*: The local-path provisioner is used here for simplicity. For production environments, it is best practice *not* to use local-path storage, as data may be lost if the pod is rescheduled.
+
 == Installing {ccasa}
 
 This section describes how to deploy {ccasa-long} on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the {ccasa} server, and configuring ingress to access the {ccasa} Web interface.
@@ -189,7 +191,7 @@ EOF
 ----
 kubectl create secret docker-registry myregistrykey \
    --docker-server=https://cloudcasa.azurecr.io \
-   --docker-username=suse-gopala \
+   --docker-username='<your_ACR_username>' \
    --docker-password='<your_ACR_password>' \
    --namespace=cloudcasa-server
 ----
@@ -199,7 +201,7 @@ kubectl create secret docker-registry myregistrykey \
 [source, console]
 ----
 helm repo add cloudcasa https://helm.cloudcasa.io \
-   --username suse-gopala --password '<your_Helm_password>'
+   --username '<your_CloudCasa_username>' --password '<your_Helm_password>'
 helm repo update
 ----
 
@@ -213,9 +215,9 @@ auth:
   local:
     enabled: true
     users:
-      - email: "<xxx@xxx.com>"
-        username: "xxxx"
-        password: "changeme123"
+      - email: "<your_email_address>"
+        username: "<your_username>"
+        password: "create_password"
   ldap:
     enabled: false
   oidc:
@@ -226,8 +228,8 @@ auth:
     enabled: false
   google:
     enabled: false
-  allowedUsers: xxx@xxx.com
-  siteadminUsers: xxx@xxx.com
+  allowedUsers: "<your_email_address>"
+  siteadminUsers: "<your_email_address>"
 
 serviceType: NodePort
 
@@ -263,7 +265,6 @@ After deploying {ccasa-long}, configure the {svirt-long} environment as the prot
 
 . Log in to the {ccasa} UI.
 . Open the Add Cluster Wizard.
-. From the Dashboard, locate the __Shortcuts__ section on the right.
 . Click __Add cluster__.
 +
 image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
@@ -288,15 +289,13 @@ Alternatively, navigate to __Clusters__ from the top navigation bar and select _
 After clicking __Register__, the __Install Agent__ dialog appears.
 
 . Ensure the __Manual (kubectl)__ tab is selected.
++
+image::cloudcasa_agent_installation.png[title="CloudCasa Agent Installation Command", alt="CloudCasa Agent Installation Command", scaledwidth="75%", align="center"]
 . Click the __Copy__ icon to copy the generated `kubectl apply` command.
 . Log in to the {svirt-long} CLI (or a management host) that has:
 ** `kubectl` installed.
 ** Access to the {svirt-long} Kubernetes cluster.
 ** The `kubeconfig` for the target cluster.
-. Verify that the current `kubectl` context points to the target {svirt-long} cluster.
-+
-image::cloudcasa_agent_installation.png[title="CloudCasa Agent Installation Command", alt="CloudCasa Agent Installation Command", scaledwidth="75%", align="center"]
-
 . Paste and execute the copied command in the terminal.
 +
 --
