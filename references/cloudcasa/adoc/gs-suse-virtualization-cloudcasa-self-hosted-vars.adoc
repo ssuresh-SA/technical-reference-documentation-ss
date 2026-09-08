@@ -135,6 +135,7 @@
 :ccasa-docs: https://docs.cloudcasa.io/help/self-hosted/
 :ccasa-support: https://support.cloudcasa.io/
 :ccasa-version1: 1.6.7
+:ccasa-catalog-url: https://docs.cloudcasa.io/self-hosted-admin-guide/catalog.html
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 

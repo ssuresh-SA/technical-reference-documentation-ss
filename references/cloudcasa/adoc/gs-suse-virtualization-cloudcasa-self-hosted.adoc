@@ -259,6 +259,11 @@ kubectl -n cloudcasa-server delete secret amds-envoy.tls
 kubectl -n cloudcasa-server rollout restart deployments/amds-envoy
 ----
 
+[NOTE]
+====
+It is best practice for production environments to configure a {ccasa-catalog-url}[catalog backup] to ensure metadata protection.
+====
+
 == Configure {svirt-long}
 
 After deploying {ccasa-long}, configure the {svirt-long} environment as the protected environment. {ccasa-long} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
