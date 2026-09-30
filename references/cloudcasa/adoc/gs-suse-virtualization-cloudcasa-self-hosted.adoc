@@ -97,15 +97,13 @@ Deploy a virtual machine with the following minimum specifications:
 
 Before you begin the deployment, ensure that the required infrastructure, software access, and credentials are available. This guide assumes that a {svirt-long} environment is available as the target platform for backup and restore validation.
 
+
 === Ensuring network access
 
-Make sure your {ccasa} instance (whether you use a physical host or a virtual machine) will be able to communication with the {svirt} cluster nodes on port 443/tcp.
+. Defining a local DNS A record to for the VM that will host the {ccasa} backup server, such as 'local.cloudcasa.io'.
 
+. Make sure your firewall is configured to allow communication between the {ccasa} backup server and the {svirt} cluster nodes on port 443/tcp.
 
-[TIP]
-====
-It may be helpful to create a DNS A record to define 'local.cloudcasa.io' to be the IP address of the VM where you will host {ccasa}.
-====
 
 
 === Setting up the SUSE Virtualization environment
