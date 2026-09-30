@@ -47,7 +47,7 @@
 // Set docdate to the most recent revision.
 // NOTE: You must also edit your docinfo file to include additional revisions.
 //-
-:rev1-date: 2026-07-15
+:rev1-date: 2026-09-15
 :rev1-description: Initial release
 :docdate: {rev1-date}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,7 +104,7 @@
 :sles-provider: SUSE
 :sles-brand: {sles-provider}® Linux Enterprise Server
 :sles-long: {sles-provider} Linux Enterprise Server
-:sles: SLES
+:sles: {sles-long}
 :sles-version: 15 SP7
 :sles-website: https://www.suse.com/products/server/
 :sles-docs: https://documentation.suse.com/sles/
@@ -114,6 +114,7 @@
 :rke2-brand: SUSE® Rancher Kubernetes Engine (RKE2)
 :rke2-long: SUSE Rancher Kubernetes Engine (RKE2)
 :rke2: RKE2
+:rke2-version: 1.34
 :rke2-website: https://documentation.suse.com/cloudnative/rke2/latest/en/introduction.html
 :rke2-docs: https://documentation.suse.com/cloudnative/rke2/
 
@@ -122,7 +123,7 @@
 :svirt-brand: {svirt-provider}® Virtualization
 :svirt-long: {svirt-provider} Virtualization
 :svirt: SUSE Virtualization
-:svirt-version1: 1.8.0
+:svirt-version: 1.8
 :svirt-website: https://www.suse.com/products/rancher/virtualization/
 :svirt-docs: https://documentation.suse.com/cloudnative/virtualization/
 
@@ -131,10 +132,10 @@
 :ccasa-brand: CloudCasa™ Self-Hosted
 :ccasa-long: CloudCasa Self-Hosted
 :ccasa: CloudCasa
-:ccasa-website: https://docs.cloudcasa.io/help/self-hosted/
+:ccasa-website: https://cloudcasa.io/resources/cloudcasa-selfhosted-datasheet/
 :ccasa-docs: https://docs.cloudcasa.io/help/self-hosted/
 :ccasa-support: https://support.cloudcasa.io/
-:ccasa-version1: 1.6.7
+:ccasa-version: 1.6.7
 :ccasa-catalog-url: https://docs.cloudcasa.io/self-hosted-admin-guide/catalog.html
 :ccasa-ui-url: https://local.cloudcasa.io
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,7 +174,7 @@
 // -
 :doctitle: {ccasa-long} with {svirt-long}
 
-:docsubtitle: A versatile and cost-effective data protection solution
+:docsubtitle: Data protection for isolated virtual machine environments
 
 :usecase: data protection, backup, disaster recovery, migration, and replication
 
@@ -243,15 +244,11 @@
 :author2-jobtitle: Partner Solution Architect
 :author2-orgname: SUSE
 
-// :author3-firstname: Terry
-// :author3-surname: Smith
-// :author3-jobtitle: Partner Ecosystem Solution Innovations Director
-// :author3-orgname: SUSE
+:author3-firstname: Terry
+:author3-surname: Smith
+:author3-jobtitle: Partner Ecosystem Solution Innovations Director
+:author3-orgname: SUSE
 
-:contrib1-firstname: Terry
-:contrib1-surname: Smith
-:contrib1-jobtitle: Partner Ecosystem Solution Innovations Director
-:contrib1-orgname: SUSE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 

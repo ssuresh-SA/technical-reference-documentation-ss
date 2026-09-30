@@ -65,15 +65,11 @@
      - Use the pattern below to specify the core components.
      - Update to match the variables you defined in your Vars file.
      - Use the long (full) name of each component.
-     - Delete the version reference (e.g., '{svirt-version1}') unless needed.
-       NOTE: Most TRDs do not reference versions here.
-     - Multiple versions of the same component can be provided in a
-       comma-separated list.
      - This list is NOT visible in the rendered document.
 -->
 <meta name="productname">
   <productname>{svirt-long}</productname>
-  <productname>{ccasa}</productname>
+  <productname>{ccasa-long}</productname>
 </meta>
 
 
@@ -84,7 +80,7 @@
        versions, unless needed.
      - This list appears above the title in the rendered document.
 -->
-<productname>{svirt-long}, {ccasa}</productname>
+<productname>{svirt-long}, {ccasa-long}</productname>
 
 
 
@@ -94,7 +90,7 @@
        of the productname metadata above.
 -->
 <meta name="platform">{svirt-long}</meta>
-<meta name="platform">{ccasa}</meta>
+<meta name="platform">{ccasa-long}</meta>
 
 
 <!-- Partner metadata
@@ -130,6 +126,16 @@
     <affiliation>
       <jobtitle>{author2-jobtitle}</jobtitle>
       <orgname>{author2-orgname}</orgname>
+    </affiliation>
+  </author>
+  <author>
+    <personname>
+      <firstname>{author3-firstname}</firstname>
+      <surname>{author3-surname}</surname>
+    </personname>
+    <affiliation>
+      <jobtitle>{author3-jobtitle}</jobtitle>
+      <orgname>{author3-orgname}</orgname>
     </affiliation>
   </author>
   </authorgroup>
