@@ -73,12 +73,17 @@ Deploy a virtual machine with the following minimum specifications:
 
 Before you begin the deployment, ensure that the required infrastructure, software access, and credentials are available. This guide assumes that a {svirt-long} environment is available as the target platform for backup and restore validation.
 
+=== Setting up the SUSE Virtualization environment
+
 Deploy and configure the {svirt-long} environment according to your infrastructure requirements. Ensure that:
 
 . The {svirt-long} cluster is installed and operational.
 . The management interface is accessible.
 . Virtual machine workloads and persistent storage resources are available for backup testing.
 . Network connectivity is available between the {ccasa-long} environment and the {svirt-long} management network.
+. DNS A record: local.cloudcasa.io → <SLES-VM-IP> (configure in internal DNS before proceeding)
+. Port 443 open between the CloudCasa VM and the SUSE Virtualization cluster nodes
+
 
 For detailed installation and configuration steps, refer to the {svirt-docs}[{svirt} Documentation].
 
@@ -86,7 +91,7 @@ For detailed installation and configuration steps, refer to the {svirt-docs}[{sv
 
 Before installing {ccasa-long}, ensure that you have the required credentials and license information. Complete the following steps:
 
-. Obtain access to the {ccasa} Support Portal using your email address and one-time login code.
+. Obtain access to the {ccasa-support}[{ccasa} Support Portal] using your email address and one-time login code.
 . Download the {ccasa} license file from the Support Portal.
 . Obtain the following credentials from the {ccasa} team:
 ** Helm repository credentials.
@@ -155,10 +160,7 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
 
 This section describes how to deploy {ccasa-long} on the {rke2} cluster using Helm. The deployment includes configuring the required Kubernetes resources, creating the image pull secret, deploying the {ccasa} server, and configuring ingress to access the {ccasa} Web interface.
 
-For detailed product information and the latest deployment guidance, refer to the following resources:
-
-* {ccasa-docs}[CloudCasa Self-Hosted Documentation]
-* {ccasa-support}[CloudCasa Support Portal]
+For detailed product information and the latest deployment guidance, refer {ccasa-docs}[CloudCasa Self-Hosted Documentation]
 
 . Install Helm 3 to manage Kubernetes packages:
 +
@@ -167,13 +169,13 @@ For detailed product information and the latest deployment guidance, refer to th
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ----
 
-. Install cert-manager v1.12.4 or later and create a self-signed issuer for the proof-of-concept:
+. Install cert-manager and create a self-signed issuer for the proof-of-concept:
 +
 [source, console]
 ----
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version <CERT-MANAGER-VERSION> --set installCRDs=true
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version <CERT-MANAGER-VERSION>(v1.12.4 or later) --set installCRDs=true
 kubectl create ns cloudcasa-server
 kubectl -n cloudcasa-server apply -f - <<EOF
 apiVersion: cert-manager.io/v1
@@ -185,7 +187,7 @@ spec:
 EOF
 ----
 
-. Create the image pull secret to access the {ccasa} registry (password is omitted for security):
+. Create the image pull secret using the ACR credentials provided by the {ccasa} team  (These allow Kubernetes to pull container images from cloudcasa.azurecr.io)
 +
 [source, console]
 ----
@@ -196,7 +198,7 @@ kubectl create secret docker-registry myregistrykey \
    --namespace=cloudcasa-server
 ----
 
-. Add the {ccasa} Helm repository:
+. Add the {ccasa} Helm repository using the Helm credentials provided by the {ccasa} team (these are separate from the ACR credentials above, and are used only to download the Helm chart)
 +
 [source, console]
 ----
@@ -205,7 +207,7 @@ helm repo add cloudcasa https://helm.cloudcasa.io \
 helm repo update
 ----
 
-. Create your `cloudcasa-values.yaml` file with your specific license key and authentication details:
+. Create `cloudcasa-values.yaml` with your configuration. The credentials under auth.local.users are new credentials you define yourself for logging into the CloudCasa UI and they are not related to the ACR or Helm credentials above
 +
 [source, yaml]
 ----
@@ -215,9 +217,9 @@ auth:
   local:
     enabled: true
     users:
-      - email: "<your_email_address>"
+      - email: "<your_email>"
         username: "<your_username>"
-        password: "create_password"
+        password:    "<your_chosen_password>"
   ldap:
     enabled: false
   oidc:
@@ -228,8 +230,8 @@ auth:
     enabled: false
   google:
     enabled: false
-  allowedUsers: "<your_email_address>"
-  siteadminUsers: "<your_email_address>"
+  allowedUsers: "<your_email>"
+  siteadminUsers: "<your_email>"
 
 serviceType: NodePort
 
@@ -264,28 +266,27 @@ kubectl -n cloudcasa-server rollout restart deployments/amds-envoy
 It is best practice for production environments to configure a {ccasa-catalog-url}[catalog backup] to ensure metadata protection.
 ====
 
-== Configure {svirt-long}
+== Configuring {svirt-long}
 
 After deploying {ccasa-long}, configure the {svirt-long} environment as the protected environment. {ccasa-long} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
 
-. Log in to the {ccasa} UI.
-. Open the Add Cluster Wizard.
-. Click __Add cluster__.
-+
+. Ensure local.cloudcasa.io is resolvable by adding an A record in your internal DNS server pointing to <SLES-VM-IP>.
+. Log in to the {ccasa} UI at {ccasa-ui-url}
+. Open the Add cluster Wizard.
+. From the Dashboard, navigate to Clusters from the top navigation bar and select Add cluster.
+
 image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
 
 [NOTE]
 ====
-Alternatively, navigate to __Clusters__ from the top navigation bar and select __Add cluster__.
+A browser certificate warning is expected if using a self-signed certificate.For production, replace the self-signed certificate with one issued by your internal CA.
 ====
-
-=== Register the {svirt-long} cluster
 
 . In the __Add cluster__ dialog, enter the following information:
 * *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
 * *Description (Optional)*: Provide a description for the cluster.
 * *Tags (Optional)*: Add tags in the format `key:value` if required.
-* *Enable CloudCasa DR (Optional)*: Toggle if Disaster Recovery is required.
+* *Enable CloudCasa DR (Optional)*: Toggle if disaster recovery is required.
 . Expand __Advanced options__ only if additional configuration is needed.
 . Click __Register__ to register the cluster with CloudCasa.
 
@@ -420,7 +421,7 @@ This validation confirms basic backup and restore functionality on a single clus
 ====
 == Summary
 
-This guide described the steps required to deploy a CloudCasa Self-Hosted proof-of-concept environment on {sles-long} and {rke2}. You prepared the operating system, deployed and configured a single-node {rke2} cluster, configured local storage, installed CloudCasa Self-Hosted using Helm, and validated that the deployment is operational.
+This guide described the steps required to deploy a {ccasa} proof-of-concept environment on {sles-long} and {rke2}. You prepared the operating system, deployed and configured a single-node {rke2} cluster, configured local storage, installed {ccasa-long} using Helm, and installed the {ccasa} agent on the {svirt-long} cluster to enable workload discovery and protection. You then validated that the deployment is operational and the cluster appears as `Active` in the {ccasa} UI.
 
 == Frequently Asked Questions
 
@@ -433,13 +434,12 @@ This guide described the steps required to deploy a CloudCasa Self-Hosted proof-
 . **Can I use an external identity provider like LDAP or OIDC?**
 +
 --
-While {ccasa} supports LDAP and OIDC integrations, a local authentication provider is strictly recommended for this proof-of-concept. This keeps the focus squarely on validating backup and restore functionality without adding unnecessary authentication complexity.
---
+Yes, {ccasa} supports LDAP and OIDC integration.
 
 . **Does {ccasa} require Docker?**
 +
 --
-No, {ccasa} is runtime-agnostic. This architecture uses {rke2}, which utilizes containerd natively, and it has no impact on {ccasa} operations.
+No, {ccasa} is runtime-agnostic. This architecture uses {rke2}, which uses the industry-standard container runtime, containerd.
 --
 
 . **Do I need a valid {ccasa} license to deploy this proof-of-concept?**
