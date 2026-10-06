@@ -244,15 +244,15 @@
 :author2-jobtitle: Partner Solution Architect
 :author2-orgname: SUSE
 
-:author3-firstname: Terry
-:author3-surname: Smith
-:author3-jobtitle: Partner Ecosystem Solution Innovations Director
-:author3-orgname: SUSE
+:editor1-firstname: Terry
+:editor1-surname: Smith
+:editor1-jobtitle: Partner Ecosystem Solution Innovations Director
+:editor1-orgname: SUSE
 
-:editor1-firstname: Jonathan
-:editor1-surname: Garner
-:editor1-jobtitle: Senior Platform Engineer
-:editor1-orgname: Catalogic Software
+:contrib1-firstname: Jonathan
+:contrib1-surname: Garner
+:contrib1-jobtitle: Senior Platform Engineer
+:contrib1-orgname: Catalogic Software
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

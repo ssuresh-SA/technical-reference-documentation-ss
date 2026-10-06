@@ -45,12 +45,15 @@ After installation, the guide provides a simple validation by backing up and res
 
 This guide is intended for IT administrators, Kubernetes administrators, virtualization administrators, backup administrators, and solution architects responsible for deploying and managing {ccasa-long} to protect {svirt-long} workloads.
 
+
 === Acknowledgments
 
 The authors wish to acknowledge the contributions of the following individuals to the creation
 of this document:
 
- * {editor1-firstname} {editor1-surname}, {editor1-jobtitle}, {editor1-orgname}
+* {contrib1-firstname} {contrib1-surname}, {contrib1-jobtitle}, {contrib1-orgname}
+* {editor1-firstname} {editor1-surname}, {editor1-jobtitle}, {editor1-orgname}
+
 
 == Architecture
 
@@ -108,13 +111,13 @@ Before you begin the deployment, ensure that the required infrastructure, softwa
 The DNS record for local.cloudcasa.io must resolve to the SLES VM IP address across all client machines accessing the CloudCasa UI and any target Kubernetes cluster nodes. The local Envoy ingress server handles internal routing and TLS termination for CloudCasa traffic.
 ====
 
+
 === Setting up the SUSE Virtualization environment
 
 Deploy and configure a {svirt-long} cluster (if you do not already have one).
 For detailed installation and configuration steps, refer to the {svirt-docs}[{svirt} Documentation].
 
 After deployment, verify that the {svirt-long} cluster is operational and that you can access its management interface.
-
 
 
 === Preparing {ccasa} access and credentials
@@ -139,6 +142,7 @@ Do this by completing the following steps:
 Treat the Helm repository and container registry credentials as sensitive information. Follow your organization's security practices and rotate credentials after completing the proof-of-concept evaluation.
 ====
 
+
 === Air-gapped environment considerations
 
 For deployments in strict air-gapped or restricted network environments where direct access to
@@ -158,6 +162,8 @@ hosts.
 registry (e.g., Harbor or an internal OCI registry) and host the Helm chart in an internal
 repository. Update your `cloudcasa-values.yaml` configuration file to reference the internal
 registry mirrors and credentials.
+
+
 
 == Installing {sles-long} and {rke2}
 
@@ -211,7 +217,7 @@ echo 'export PATH=$PATH:/var/lib/rancher/rke2/bin' >> ~/.bashrc
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.30/deploy/local-path-storage.yaml
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ----
-
++
 [IMPORTANT]
 ====
 The local-path provisioner is used here for simplicity. For production environments, it is best practice *not* to use local-path storage, as data may be lost if the pod is rescheduled.
@@ -427,6 +433,7 @@ image::cloudcasa_cluster_active.png[title="SUSE Virtualization Cluster Active in
 Only after the cluster becomes `ACTIVE` can you perform backup, restore, replication, or migration operations.
 
 
+
 == Validating the solution
 
 To demonstrate that {ccasa} correctly protects and recovers a VM in your {svirt} cluster:
@@ -438,7 +445,6 @@ To demonstrate that {ccasa} correctly protects and recovers a VM in your {svirt}
 . Restore the VM from backup.
 
 . Verify VM data has survived.
-
 
 
 === Defining and running a backup
@@ -542,7 +548,7 @@ This guide provides a reference design and guidance for a proof-of-concept deplo
 Contact {svirt-provider} or {ccasa-provider} to explore production options to meet your unique business and technical requirements.
 
 
-== Frequently Asked Questions
+== Frequently asked questions
 
 . **What is {ccasa-long}?**
 +
