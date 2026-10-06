@@ -235,7 +235,7 @@
 //         you must add the variables here AND edit the Docinfo file.
 // -
 :author1-firstname: Gopala
-:author1-surname: Krishnan
+:author1-surname: Krishnan A
 :author1-jobtitle: Partner Solution Architect
 :author1-orgname: SUSE
 
@@ -248,6 +248,11 @@
 :author3-surname: Smith
 :author3-jobtitle: Partner Ecosystem Solution Innovations Director
 :author3-orgname: SUSE
+
+:editor1-firstname: Jonathan
+:editor1-surname: Garner
+:editor1-jobtitle: Senior Platform Engineer
+:editor1-orgname: Catalogic Software
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

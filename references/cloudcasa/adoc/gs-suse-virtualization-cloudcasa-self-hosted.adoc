@@ -45,6 +45,12 @@ After installation, the guide provides a simple validation by backing up and res
 
 This guide is intended for IT administrators, Kubernetes administrators, virtualization administrators, backup administrators, and solution architects responsible for deploying and managing {ccasa-long} to protect {svirt-long} workloads.
 
+=== Acknowledgments
+
+The authors wish to acknowledge the contributions of the following individuals to the creation
+of this document:
+
+ * {editor1-firstname} {editor1-surname}, {editor1-jobtitle}, {editor1-orgname}
 
 == Architecture
 
