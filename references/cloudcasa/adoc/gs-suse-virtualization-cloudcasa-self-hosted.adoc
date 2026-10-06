@@ -46,13 +46,6 @@ After installation, the guide provides a simple validation by backing up and res
 This guide is intended for IT administrators, Kubernetes administrators, virtualization administrators, backup administrators, and solution architects responsible for deploying and managing {ccasa-long} to protect {svirt-long} workloads.
 
 
-=== Acknowledgments
-
-The authors wish to acknowledge the contributions of the following individuals to the creation of this document:
-
-* //Add additional contributor here, if appropriate, or delete this section//
-
-
 == Architecture
 
 {ccasa-long} is cloud native and is deployed onto a Kubernetes cluster.
@@ -100,11 +93,14 @@ Before you begin the deployment, ensure that the required infrastructure, softwa
 
 === Ensuring network access
 
-. Defining a local DNS A record to for the VM that will host the {ccasa} backup server, such as 'local.cloudcasa.io'.
-
 . Make sure your firewall is configured to allow communication between the {ccasa} backup server and the {svirt} cluster nodes on port 443/tcp.
 
+. Defining a local A DNS record to for the VM that will host the {ccasa} backup server, such as 'local.cloudcasa.io'.
 
+[NOTE]
+====
+The DNS record for local.cloudcasa.io must resolve to the SLES VM IP address across all client machines accessing the CloudCasa UI and any target Kubernetes cluster nodes. The local Envoy ingress server handles internal routing and TLS termination for CloudCasa traffic.
+====
 
 === Setting up the SUSE Virtualization environment
 
@@ -137,6 +133,25 @@ Do this by completing the following steps:
 Treat the Helm repository and container registry credentials as sensitive information. Follow your organization's security practices and rotate credentials after completing the proof-of-concept evaluation.
 ====
 
+=== Air-gapped environment considerations
+
+For deployments in strict air-gapped or restricted network environments where direct access to
+external repositories (such as Helm and Azure Container Registry) is not permitted, perform the
+following preparation steps on an internet-connected host prior to installation:
+
+. *Download Helm charts and images*: Pre-pull the CloudCasa Helm chart and required container
+images from cloudcasa.azurecr.io on an internet-connected system using tools such as helm pull
+and docker pull or crane.
+
+. *Transfer assets to the air-gapped environment*: Export container images to archive files
+using docker save or bundle them with crane export, then transfer the archives and chart
+packages into the isolated network environment using approved media or secure transfer jump
+hosts.
+
+. *Populate local registry and mirror*: Import the container images into an internal container
+registry (e.g., Harbor or an internal OCI registry) and host the Helm chart in an internal
+repository. Update your `cloudcasa-values.yaml` configuration file to reference the internal
+registry mirrors and credentials.
 
 == Installing {sles-long} and {rke2}
 
