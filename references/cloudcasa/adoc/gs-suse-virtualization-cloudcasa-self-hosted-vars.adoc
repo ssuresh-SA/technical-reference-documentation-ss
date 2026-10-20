@@ -138,6 +138,7 @@
 :ccasa-version: 1.6.7
 :ccasa-catalog-url: https://docs.cloudcasa.io/self-hosted-admin-guide/catalog.html
 :ccasa-ui-url: https://local.cloudcasa.io
+:ccasa-admin-guide: https://docs.cloudcasa.io/self-hosted-admin-guide/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -178,7 +179,7 @@
 
 :usecase: data protection, backup, disaster recovery, migration, and replication
 
-:description: Learn how to use {ccasa-long} to protect your air-gapped {svirt-long} environment with cloud native backup, disaster recovery, migration, and replication.
+:description: Guide for deploying {ccasa-long} for cloud-native backups in air-gapped, {svirt-long} environments
 
 :description-social: Air-gapped deployment of {ccasa-long} with {svirt}
 

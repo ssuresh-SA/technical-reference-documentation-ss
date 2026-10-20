@@ -164,7 +164,6 @@ repository. Update your `cloudcasa-values.yaml` configuration file to reference 
 registry mirrors and credentials.
 
 
-
 == Installing {sles-long} and {rke2}
 
 This section describes how to prepare the operating system and deploy a single-node {rke2} cluster that will host the {ccasa-long} services.
@@ -175,16 +174,30 @@ For additional product information, refer to the following documentation:
 
 * {rke2-docs}[{rke2-long} Documentation]
 
+. Register the SLES system using SUSEConnect and enable the required modules.
++
+[source,console]
+----
+SUSEConnect -r <REGISTRATION_CODE> -e <EMAIL_ADDRESS>
+SUSEConnect -p sle-module-basesystem/15.7/x86_64
+SUSEConnect -p sle-module-server-applications/15.7/x86_64
+----
++
+[NOTE]
+====
+The module names above are for SLES 15 SP7. If you are using a later SLES version, adjust the version in the module names to match (for example, `<VERSION>` in `sle-module-basesystem/<VERSION>/x86_64`).
+====
+
 . Install the required base packages.
 +
-[source, console]
+[source,console]
 ----
 sudo zypper install -y curl wget tar nfs-client jq
 ----
 
 . Install and enable the iSCSI daemon for CSI/PV support.
 +
-[source, console]
+[source,console]
 ----
 sudo zypper install -y open-iscsi
 sudo systemctl enable --now iscsid
@@ -192,16 +205,21 @@ sudo systemctl enable --now iscsid
 
 . Install and start the {rke2} Kubernetes cluster.
 +
-[source, console]
+[source,console]
 ----
-curl -sfL https://get.rke2.io | sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION="v1.34.2+rke2r1" sh -
 sudo systemctl enable rke2-server.service
 sudo systemctl start rke2-server.service
 ----
-
-. Configure kubectl (v1.23 or later) access for your environment and confirm the node is ready.
 +
-[source, console]
+[NOTE]
+====
+Replace `<RKE2-VERSION>` with the appropriate value, such as `v1.34.2+rke2r1`.
+====
+
+. Configure kubectl access for your environment, matching the installed Kubernetes version, and confirm the node is ready.
++
+[source,console]
 ----
 mkdir -p ~/.kube
 sudo ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
@@ -212,7 +230,7 @@ echo 'export PATH=$PATH:/var/lib/rancher/rke2/bin' >> ~/.bashrc
 
 . Deploy the local-path-provisioner as the default storage class.
 +
-[source, console]
+[source,console]
 ----
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.30/deploy/local-path-storage.yaml
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
@@ -223,7 +241,6 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
 The local-path provisioner is used here for simplicity. For production environments, it is best practice *not* to use local-path storage, as data may be lost if the pod is rescheduled.
 ====
 
-
 == Installing {ccasa}
 
 This section describes how to deploy {ccasa-long} on the {rke2} cluster using Helm.
@@ -233,18 +250,23 @@ For detailed product information and the latest deployment guidance, refer {ccas
 
 . Install Helm 3 to manage Kubernetes packages.
 +
-[source, console]
+[source,console]
 ----
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="v3.12.3" bash
 ----
++
+[NOTE]
+====
+Replace <HELM-VERSION> with the appropriate value, such as v3.12.3 or later.
+====
 
 . Install cert-manager and create a self-signed issuer for the proof-of-concept.
 +
-[source, console]
+[source,console]
 ----
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version <CERT-MANAGER-VERSION>(v1.12.4 or later) --set installCRDs=true
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version <CERT-MANAGER-VERSION> --set installCRDs=true
 kubectl create ns cloudcasa-server
 kubectl -n cloudcasa-server apply -f - <<EOF
 apiVersion: cert-manager.io/v1
@@ -255,11 +277,16 @@ spec:
    selfSigned: {}
 EOF
 ----
++
+[NOTE]
+====
+Be sure to replace <CERT-MANAGER-VERSION> with the desired version (v1.12.4 or later).
+====
 
 . Create the image pull secret using the ACR credentials provided by the {ccasa} team.
 These allow Kubernetes to pull container images from cloudcasa.azurecr.io.
 +
-[source, console]
+[source,console]
 ----
 kubectl create secret docker-registry myregistrykey \
    --docker-server=https://cloudcasa.azurecr.io \
@@ -271,7 +298,7 @@ kubectl create secret docker-registry myregistrykey \
 . Add the {ccasa} Helm repository using the Helm credentials provided by the {ccasa} team.
 These are separate from the ACR credentials above and are used only to download the Helm chart.
 +
-[source, console]
+[source,console]
 ----
 helm repo add cloudcasa https://helm.cloudcasa.io \
    --username '<your_CloudCasa_username>' --password '<your_Helm_password>'
@@ -281,7 +308,7 @@ helm repo update
 . Create `cloudcasa-values.yaml` with your configuration.
 The credentials under `auth.local.users` are new credentials you define yourself for logging into the CloudCasa UI and are not related to the ACR or Helm credentials above.
 +
-[source, yaml]
+[source,yaml]
 ----
 storageClassName: local-path
 licenseKey: <insert_your_downloaded_license_key_here>
@@ -313,7 +340,7 @@ amdsEnvoyPort: 443
 
 . Install the {ccasa} server using Helm.
 +
-[source, console]
+[source,console]
 ----
 helm install cloudcasa-server cloudcasa/cloudcasa-server --create-namespace \
    --namespace cloudcasa-server --wait --timeout 15m0s \
@@ -322,22 +349,79 @@ helm install cloudcasa-server cloudcasa/cloudcasa-server --create-namespace \
 
 . Set the external URL, upgrade the deployment, and restart the Envoy TLS services.
 +
-[source, console]
+[source,console]
 ----
-echo "amdsEnvoyUrl: $(hostname -I | awk '{print $1}')" >> cloudcasa-values.yaml
-
 helm upgrade cloudcasa-server cloudcasa/cloudcasa-server --wait \
-   --namespace cloudcasa-server --values cloudcasa-values.yaml
-
+  --namespace cloudcasa-server --values cloudcasa-values.yaml
 kubectl -n cloudcasa-server delete secret amds-envoy.tls
 kubectl -n cloudcasa-server rollout restart deployments/amds-envoy
 ----
 
+. Create and apply the Ingress manifest to expose the Envoy gRPC/HTTP API service externally on port 443.
++
+[source,yaml]
+----
+kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: amds-envoy-grpcapi
+  namespace: cloudcasa-server
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  labels:
+    amds-app: envoy
+    amds.component: envoy
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: local.cloudcasa.io
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: amds-envoy-grpcapi
+            port:
+              number: 443
+EOF
+----
++
 [NOTE]
 ====
 It is best practice for production environments to configure a {ccasa-catalog-url}[catalog backup] to ensure metadata protection.
 ====
 
+// == Configuring {svirt-long}
+//
+// After deploying {ccasa-long}, configure the {svirt-long} environment as the protected environment.
+// {ccasa-long} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
+//
+// . Ensure local.cloudcasa.io is resolvable by adding an A record in your internal DNS server pointing to the IP address of your {ccasa} host.
+//
+// . Log in to the {ccasa} UI at {ccasa-ui-url}
+//
+// . Open the Add cluster Wizard.
+//
+// . From the Dashboard, navigate to Clusters from the top navigation bar and select Add cluster.
+//
+// image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
+//
+// [NOTE]
+// ====
+// A browser certificate warning is expected if using a self-signed certificate.For production, replace the self-signed certificate with one issued by your internal CA.
+// ====
+//
+// . In the __Add cluster__ dialog, enter the following information:
+// * *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
+// * *Description (Optional)*: Provide a description for the cluster.
+// * *Tags (Optional)*: Add tags in the format `key:value` if required.
+// * *Enable CloudCasa DR (Optional)*: Toggle if disaster recovery is required.
+// . Expand __Advanced options__ only if additional configuration is needed.
+// . Click __Register__ to register the cluster with CloudCasa.
 
 == Configuring {svirt-long}
 
@@ -346,25 +430,29 @@ After deploying {ccasa-long}, configure the {svirt-long} environment as the prot
 
 . Ensure local.cloudcasa.io is resolvable by adding an A record in your internal DNS server pointing to the IP address of your {ccasa} host.
 
-. Log in to the {ccasa} UI at {ccasa-ui-url}
+. Log in to the {ccasa} UI at {ccasa-ui-url}.
 
 . Open the Add cluster Wizard.
 
 . From the Dashboard, navigate to Clusters from the top navigation bar and select Add cluster.
-
++
 image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
 
++
 [NOTE]
 ====
-A browser certificate warning is expected if using a self-signed certificate.For production, replace the self-signed certificate with one issued by your internal CA.
+A browser certificate warning is expected if using a self-signed certificate. For production, replace the self-signed certificate with one issued by your internal CA.
 ====
 
 . In the __Add cluster__ dialog, enter the following information:
++
 * *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
 * *Description (Optional)*: Provide a description for the cluster.
 * *Tags (Optional)*: Add tags in the format `key:value` if required.
 * *Enable CloudCasa DR (Optional)*: Toggle if disaster recovery is required.
+
 . Expand __Advanced options__ only if additional configuration is needed.
+
 . Click __Register__ to register the cluster with CloudCasa.
 
 
@@ -430,8 +518,16 @@ kubectl get pods -n cloudcasa-io
 +
 image::cloudcasa_cluster_active.png[title="SUSE Virtualization Cluster Active in CloudCasa", alt="SUSE Virtualization Cluster Active in CloudCasa", scaledwidth="75%", align="center"]
 
-Only after the cluster becomes `ACTIVE` can you perform backup, restore, replication, or migration operations.
+. In the CloudCasa UI, navigate to __Configuration__ > __Storage__.
 
+. Add your target backup storage location, such as object storage (for example, AWS S3 or Azure Blob) or file storage (for example, NFS or CIFS).
+
+. Ensure that the storage status is validated and active before proceeding to define and run backup jobs.
+
+[NOTE]
+====
+Only after the cluster becomes `ACTIVE` can you perform backup, restore, replication, or migration operations.
+====
 
 
 == Validating the solution
@@ -541,6 +637,9 @@ This successfully demonstrates that {ccasa} correctly restored both the virtual 
 This does not validate Longhorn DR replication or the CloudCasa DR plan workflow.
 ====
 
+== Transitioning to production
+
+The deployment described in this guide is intended as a proof-of-concept (POC) environment. For production environments, it is recommended to deploy a multi-node cluster with adequate memory resources and proper persistent volume (PV) storage rather than local-path storage. Additionally, authentication should be integrated with your organization's authentication scheme, such as LDAP or OIDC. For further details, refer to the {ccasa-admin-guide}[CloudCasa Self-Hosted Admin Guide].
 
 == Summary
 
