@@ -178,14 +178,14 @@ For additional product information, refer to the following documentation:
 +
 [source,console]
 ----
-SUSEConnect -r <REGISTRATION_CODE> -e <EMAIL_ADDRESS>
+SUSEConnect -r <your_registration_code> -e <your_email_address>
 SUSEConnect -p sle-module-basesystem/15.7/x86_64
 SUSEConnect -p sle-module-server-applications/15.7/x86_64
 ----
 +
 [NOTE]
 ====
-The module names above are for SLES 15 SP7. If you are using a later SLES version, adjust the version in the module names to match (for example, `<VERSION>` in `sle-module-basesystem/<VERSION>/x86_64`).
+The module names above are for SLES 15 SP7. If you are using a later SLES version, adjust the version in the module names to match (for example, `<version>` in `sle-module-basesystem/<version>/x86_64`).
 ====
 
 . Install the required base packages.
@@ -214,7 +214,7 @@ sudo systemctl start rke2-server.service
 +
 [NOTE]
 ====
-Replace `<RKE2-VERSION>` with the appropriate value, such as `v1.34.2+rke2r1`.
+Replace `<rke2_version>` with the appropriate value, such as `v1.34.2+rke2r1`.
 ====
 
 . Configure kubectl access for your environment, matching the installed Kubernetes version, and confirm the node is ready.
@@ -228,7 +228,7 @@ echo 'export KUBECONFIG=/etc/rancher/rke2/rke2.yaml' >> ~/.bashrc
 echo 'export PATH=$PATH:/var/lib/rancher/rke2/bin' >> ~/.bashrc
 ----
 
-. Deploy the local-path-provisioner as the default storage class.
+. Deploy the local-path-provisioner as the default storage class, using the appropriate stable release version in place of <local_path_provisioner_version>.
 +
 [source,console]
 ----
@@ -252,12 +252,12 @@ For detailed product information and the latest deployment guidance, refer {ccas
 +
 [source,console]
 ----
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="v3.12.3" bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="<helm_version>" bash
 ----
 +
 [NOTE]
 ====
-Replace <HELM-VERSION> with the appropriate value, such as v3.12.3 or later.
+Replace `<helm_version>` with the appropriate version, such as `v3.12.3` or later.
 ====
 
 . Install cert-manager and create a self-signed issuer for the proof-of-concept.
@@ -266,8 +266,15 @@ Replace <HELM-VERSION> with the appropriate value, such as v3.12.3 or later.
 ----
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version <CERT-MANAGER-VERSION> --set installCRDs=true
+
+helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version <your_cert_manager_version> \
+  --set installCRDs=true
+
 kubectl create ns cloudcasa-server
+
 kubectl -n cloudcasa-server apply -f - <<EOF
 apiVersion: cert-manager.io/v1
 kind: Issuer
@@ -394,34 +401,6 @@ EOF
 ====
 It is best practice for production environments to configure a {ccasa-catalog-url}[catalog backup] to ensure metadata protection.
 ====
-
-// == Configuring {svirt-long}
-//
-// After deploying {ccasa-long}, configure the {svirt-long} environment as the protected environment.
-// {ccasa-long} runs independently on the {rke2} cluster and connects to {svirt-long} to discover and protect workloads.
-//
-// . Ensure local.cloudcasa.io is resolvable by adding an A record in your internal DNS server pointing to the IP address of your {ccasa} host.
-//
-// . Log in to the {ccasa} UI at {ccasa-ui-url}
-//
-// . Open the Add cluster Wizard.
-//
-// . From the Dashboard, navigate to Clusters from the top navigation bar and select Add cluster.
-//
-// image::cloudcasa_dashboard_shortcuts.png[title="Dashboard Shortcuts and Add Cluster", alt="Dashboard Shortcuts and Add Cluster", scaledwidth="75%", align="center"]
-//
-// [NOTE]
-// ====
-// A browser certificate warning is expected if using a self-signed certificate.For production, replace the self-signed certificate with one issued by your internal CA.
-// ====
-//
-// . In the __Add cluster__ dialog, enter the following information:
-// * *Name*: Enter the name of your {svirt-long} cluster (for example, `SUSE Virt`).
-// * *Description (Optional)*: Provide a description for the cluster.
-// * *Tags (Optional)*: Add tags in the format `key:value` if required.
-// * *Enable CloudCasa DR (Optional)*: Toggle if disaster recovery is required.
-// . Expand __Advanced options__ only if additional configuration is needed.
-// . Click __Register__ to register the cluster with CloudCasa.
 
 == Configuring {svirt-long}
 
