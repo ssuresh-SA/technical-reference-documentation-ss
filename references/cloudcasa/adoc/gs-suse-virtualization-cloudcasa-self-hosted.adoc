@@ -178,14 +178,15 @@ For additional product information, refer to the following documentation:
 +
 [source,console]
 ----
-SUSEConnect -r <your_registration_code> -e <your_email_address>
-SUSEConnect -p sle-module-basesystem/15.7/x86_64
+SUSEConnect -r <YOUR_SUSE_REGISTRATION_CODE> -e <YOUR_EMAIL_ADDRESS>
+SUSEConnect -p sle-module-basesystem/<15.7>/x86_64
 SUSEConnect -p sle-module-server-applications/15.7/x86_64
 ----
 +
 [NOTE]
 ====
-The module names above are for SLES 15 SP7. If you are using a later SLES version, adjust the version in the module names to match (for example, `<version>` in `sle-module-basesystem/<version>/x86_64`).
+This example illustrates registering the required modules for SUSE Linux Enterprise Server 15 SP7.
+If you are using a later version, be sure to adjust the module names accordingly.
 ====
 
 . Install the required base packages.
@@ -207,14 +208,14 @@ sudo systemctl enable --now iscsid
 +
 [source,console]
 ----
-curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION="v1.34.2+rke2r1" sh -
+curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION="<RKE2_VERSION>" sh -
 sudo systemctl enable rke2-server.service
 sudo systemctl start rke2-server.service
 ----
 +
 [NOTE]
 ====
-Replace `<rke2_version>` with the appropriate value, such as `v1.34.2+rke2r1`.
+Replace `<RKE2_VERSION>` with the appropriate value, such as `v1.34.2+rke2r1`.
 ====
 
 . Configure kubectl access for your environment, matching the installed Kubernetes version, and confirm the node is ready.
@@ -228,13 +229,18 @@ echo 'export KUBECONFIG=/etc/rancher/rke2/rke2.yaml' >> ~/.bashrc
 echo 'export PATH=$PATH:/var/lib/rancher/rke2/bin' >> ~/.bashrc
 ----
 
-. Deploy the local-path-provisioner as the default storage class, using the appropriate stable release version in place of <local_path_provisioner_version>.
+. Deploy the local-path-provisioner as the default storage class.
 +
 [source,console]
 ----
-kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.30/deploy/local-path-storage.yaml
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/<LPP-VERSION>/deploy/local-path-storage.yaml
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ----
++
+[NOTE]
+====
+Be sure to specify the appropriate stable release version of the local-path-provisioner in place of `<LPP_VERSION>`
+====
 +
 [IMPORTANT]
 ====
@@ -252,12 +258,12 @@ For detailed product information and the latest deployment guidance, refer {ccas
 +
 [source,console]
 ----
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="<helm_version>" bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION="<HELM_VERSION>" bash
 ----
 +
 [NOTE]
 ====
-Replace `<helm_version>` with the appropriate version, such as `v3.12.3` or later.
+Replace `<HELM_VERSION>` with the appropriate version, such as `v3.12.3` or later.
 ====
 
 . Install cert-manager and create a self-signed issuer for the proof-of-concept.
@@ -270,7 +276,7 @@ helm repo update
 helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version <your_cert_manager_version> \
+  --version <CERT_MANAGER_VERSION> \
   --set installCRDs=true
 
 kubectl create ns cloudcasa-server
@@ -287,7 +293,7 @@ EOF
 +
 [NOTE]
 ====
-Be sure to replace <CERT-MANAGER-VERSION> with the desired version (v1.12.4 or later).
+Be sure to replace <CERT_MANAGER_VERSION> with the desired version (v1.12.4 or later).
 ====
 
 . Create the image pull secret using the ACR credentials provided by the {ccasa} team.
@@ -297,8 +303,8 @@ These allow Kubernetes to pull container images from cloudcasa.azurecr.io.
 ----
 kubectl create secret docker-registry myregistrykey \
    --docker-server=https://cloudcasa.azurecr.io \
-   --docker-username='<your_ACR_username>' \
-   --docker-password='<your_ACR_password>' \
+   --docker-username='<YOUR_ACR_USERNAME>' \
+   --docker-password='<YOUR_ACR_PASSWORD>' \
    --namespace=cloudcasa-server
 ----
 
@@ -308,7 +314,7 @@ These are separate from the ACR credentials above and are used only to download 
 [source,console]
 ----
 helm repo add cloudcasa https://helm.cloudcasa.io \
-   --username '<your_CloudCasa_username>' --password '<your_Helm_password>'
+   --username '<YOUR_CLOUDCASA_USERNAME>' --password '<YOUR_HELM_PASSWORD>'
 helm repo update
 ----
 
@@ -318,14 +324,14 @@ The credentials under `auth.local.users` are new credentials you define yourself
 [source,yaml]
 ----
 storageClassName: local-path
-licenseKey: <insert_your_downloaded_license_key_here>
+licenseKey: <YOUR_DOWNLOADED_LICENSE_KEY>
 auth:
   local:
     enabled: true
     users:
-      - email: "<your_email>"
-        username: "<your_username>"
-        password: "<your_chosen_password>"
+      - email: "<YOUR_EMAIL_ADDRESS>"
+        username: "<YOUR_USERNAME>"
+        password: "<YOUR_PASSWORD>"
   ldap:
     enabled: false
   oidc:
@@ -336,8 +342,8 @@ auth:
     enabled: false
   google:
     enabled: false
-  allowedUsers: "<your_email>"
-  siteadminUsers: "<your_email>"
+  allowedUsers: "<YOUR_EMAIL_ADDRESS>"
+  siteadminUsers: "<YOUR_EMAIL_ADDRESS>"
 
 serviceType: NodePort
 
@@ -401,6 +407,7 @@ EOF
 ====
 It is best practice for production environments to configure a {ccasa-catalog-url}[catalog backup] to ensure metadata protection.
 ====
+
 
 == Configuring {svirt-long}
 
