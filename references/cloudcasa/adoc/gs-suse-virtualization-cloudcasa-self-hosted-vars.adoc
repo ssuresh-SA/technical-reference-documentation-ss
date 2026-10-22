@@ -29,7 +29,7 @@
 //   - Reference Configuration
 //   - Reference Implementation
 //   - Enterprise Architecture
-:doctype: Getting Started
+:trdtype: Getting Started
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 

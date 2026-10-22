@@ -82,6 +82,12 @@ To meet these goals, {rke2} provides defaults and configuration options that all
 {sles} ({sles-version} or later) is a modern, modular Linux operating system that provides a secure and stable platform for mission-critical workloads.
 
 
+
+== Preparing your environment
+
+Before you begin the deployment, ensure that the required infrastructure, software access, and credentials are available. This guide assumes that a {svirt-long} environment is available as the target platform for backup and restore validation.
+
+
 === Sizing and configuration guidance
 
 Deploy a virtual machine with the following minimum specifications:
@@ -94,10 +100,6 @@ Deploy a virtual machine with the following minimum specifications:
 
 * *Network*: static IP (recommended) with access to the {svirt-long} cluster management network.
 
-
-== Preparing your environment
-
-Before you begin the deployment, ensure that the required infrastructure, software access, and credentials are available. This guide assumes that a {svirt-long} environment is available as the target platform for backup and restore validation.
 
 
 === Ensuring network access
